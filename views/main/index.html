@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
@@ -28,7 +29,8 @@
 
         input[type="text"],
         input[type="password"] {
-            width: 100%;
+            width: calc(100% - 20px);
+            /* 좌우 여백 20px 추가 */
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
@@ -49,6 +51,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>로그인</h2>
@@ -63,4 +66,5 @@
         </form>
     </div>
 </body>
+
 </html>
