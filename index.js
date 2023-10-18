@@ -27,7 +27,7 @@ app.use(cors(corsOptions));
 
 // 라우팅 정의.start.html
 app.get("/", cors(), (req, res) => {
-    res.sendFile(__dirname + "/views/main/mainmenu.html");
+    res.sendFile(__dirname + "/views/main/index.html");
 });
 
 
