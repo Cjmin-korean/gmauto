@@ -1,0 +1,4 @@
+[ {
+    "Ipconfig": "http://gmauto.xyz"
+}]
+
