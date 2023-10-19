@@ -24,17 +24,34 @@
         width: 100%;
         /* Other table styles */
     }
-    .popup_title{
-    color: red;
+
+    .popup_title {
+        color: red;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    #datatable {
+        white-space: nowrap;
+    }
+
+    #datatable th,
+    #datatable td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
     }
 </style>
 
 <body>
-    <div class="main_header" >
+    <div class="main_header">
         <a>기초정보</a>
         <!-- <a style=" font-size: 16px;">기초정보 > 거래처리스트</a> -->
     </div>
-   
+
 
     <div id="loadingOverlay">
         <!-- <img src="/img/테크온로고.PNG" alt="로딩 이미지" class="loadingImage"> -->
@@ -70,6 +87,30 @@
                     <th style="width: auto;" onclick="sortTable(7)">프레스생산라인명</th>
                     <th style="width: auto;" onclick="sortTable(8)">프레스구분</th>
                     <th style="width: auto;" onclick="sortTable(9)">프레스Cavity</th>
+                    <th style="width: auto;" onclick="sortTable(10)">프레스Sepa</th>
+                    <th style="width: auto;" onclick="sortTable(11)">프레스Sepa품번</th>
+                    <th style="width: auto;" onclick="sortTable(12)">op10</th>
+                    <th style="width: auto;" onclick="sortTable(13)">op10공정명</th>
+                    <th style="width: auto;" onclick="sortTable(14)">op10설비번호</th>
+                    <th style="width: auto;" onclick="sortTable(15)">op20</th>
+                    <th style="width: auto;" onclick="sortTable(16)">op20공정명</th>
+                    <th style="width: auto;" onclick="sortTable(17)">op20설비번호</th>
+                    <th style="width: auto;" onclick="sortTable(18)">op30</th>
+                    <th style="width: auto;" onclick="sortTable(19)">op30공정명</th>
+                    <th style="width: auto;" onclick="sortTable(20)">op30설비번호</th>
+                    <th style="width: auto;" onclick="sortTable(21)">op40</th>
+                    <th style="width: auto;" onclick="sortTable(22)">op40공정명</th>
+                    <th style="width: auto;" onclick="sortTable(23)">op40설비번호</th>
+                    <th style="width: auto;" onclick="sortTable(24)">op50</th>
+                    <th style="width: auto;" onclick="sortTable(25)">op50공정명</th>
+                    <th style="width: auto;" onclick="sortTable(26)">op50설비번호</th>
+                    <th style="width: auto;" onclick="sortTable(27)">하위블랭킹품번</th>
+                    <th style="width: auto;" onclick="sortTable(28)">블랭킹생산라인코드</th>
+                    <th style="width: auto;" onclick="sortTable(29)">블랭킹생산라인명</th>
+                    <th style="width: auto;" onclick="sortTable(30)">블랭킹구분</th>
+                    <th style="width: auto;" onclick="sortTable(31)">블랭킹Cavity</th>
+                    <th style="width: auto;" onclick="sortTable(32)">원자재정보</th>
+                    <th style="width: auto;" onclick="sortTable(33)">원자재중량</th>
                     <th style="width:80px;"></th>
                     <th style="width:80px;"></th>
                 </tr>
@@ -87,57 +128,62 @@
             <div class="form-group">
                 <table style="width:100%;" class="popuptable">
                     <tr>
-                        <td colspan="2" class="popup_title">거래처 정보 추가</td>
+                        <td colspan="2" class="popup_title">기초정보 추가</td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">거래처코드</td>
+                        <td style="width: 200px">고객사</td>
                         <td><input type="text" id="accountcode-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">사업자등록번호</td>
+                        <td style="width: 200px">차종</td>
                         <td><input type="text" id="number-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">거래처명</td>
+                        <td style="width: 200px">End품번</td>
                         <td><input type="text" id="accountname-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">대표자명</td>
+                        <td style="width: 200px">End구분</td>
                         <td><input type="text" id="representativename-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">전화번호</td>
+                        <td style="width: 200px">하위Sub품번</td>
                         <td><input type="text" id="phone-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">Fax</td>
+                        <td style="width: 200px">하위Press품번</td>
                         <td><input type="text" id="fax-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">모바일</td>
+                        <td style="width: 200px">프레스생산라인코드</td>
                         <td><input type="text" id="mobile-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">E-mail</td>
+                        <td style="width: 200px">프레스생산라인명</td>
                         <td><input type="text" id="email-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">주소</td>
+                        <td style="width: 200px">프레스구분</td>
                         <td><input type="text" id="adress-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">기타</td>
+                        <td style="width: 200px">프레스Cavity</td>
                         <td><input type="text" id="etc-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                                style="width:200px; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">프레스Sepa</td>
+                        <td><input type="text" id="etc-save" class="data" autocomplete="off"
+                                style="width:200px; border:1px solid silver;"></td>
                     </tr>
                 </table>
             </div>
@@ -236,8 +282,9 @@
     <script>
         var server = '';
 
-        if (window.location.hostname == 'localhost') {
+        if (window.location.hostname == '127.0.0.1') {
             server = 'http://localhost:8080';
+
         } else {
             server = 'http://gmauto.xyz';
         }
@@ -503,7 +550,6 @@
 
                     }),
                     success: function (result) {
-                        console.log(result)
                     }
                 })
 
@@ -565,11 +611,43 @@
                         tableFoot.text('총 데이터 개수: 0');
                     } else {
                         for (var i = 0; i < data.length; i++) {
-                            console.log(data.length)
                             $('#datatable').append(
                                 '<tr>' +
                                 '<td>' + data[i].customer + '</td>' +
-                         
+                                '<td>' + data[i].cartype + '</td>' +
+                                '<td>' + data[i].endpartnumber + '</td>' +
+                                '<td>' + data[i].endcategory + '</td>' +
+                                '<td>' + data[i].subpartnumber + '</td>' +
+                                '<td>' + data[i].subpresspartnumber + '</td>' +
+                                '<td>' + data[i].pressproductionlinecode + '</td>' +
+                                '<td>' + data[i].pressproductionlinename + '</td>' +
+                                '<td>' + data[i].presscategory + '</td>' +
+                                '<td>' + data[i].presscavity + '</td>' +
+                                '<td>' + data[i].presssepartion + '</td>' +
+                                '<td>' + data[i].pressseparationpartnumber + '</td>' +
+                                '<td>' + data[i].op10 + '</td>' +
+                                '<td>' + data[i].op10proccessname + '</td>' +
+                                '<td>' + data[i].op10equipmentnumber + '</td>' +
+                                '<td>' + data[i].op20 + '</td>' +
+                                '<td>' + data[i].op20proccessname + '</td>' +
+                                '<td>' + data[i].op20equipmentnumber + '</td>' +
+                                '<td>' + data[i].op30 + '</td>' +
+                                '<td>' + data[i].op30proccessname + '</td>' +
+                                '<td>' + data[i].op30equipmentnumber + '</td>' +
+                                '<td>' + data[i].op40 + '</td>' +
+                                '<td>' + data[i].op40proccessname + '</td>' +
+                                '<td>' + data[i].op40equipmentnumber + '</td>' +
+                                '<td>' + data[i].op50 + '</td>' +
+                                '<td>' + data[i].op50proccessname + '</td>' +
+                                '<td>' + data[i].op50equipmentnumber + '</td>' +
+                                '<td>' + data[i].subblankingpartnumber + '</td>' +
+                                '<td>' + data[i].blankingproductionlinecode + '</td>' +
+                                '<td>' + data[i].blankingproductionlinename + '</td>' +
+                                '<td>' + data[i].blankingcategory + '</td>' +
+                                '<td>' + data[i].blankingcavity + '</td>' +
+                                '<td>' + data[i].rawmaterialinformation + '</td>' +
+                                '<td>' + data[i].rawmaterialweight + '</td>' +
+
                                 '<td><a class="data-edit" style="cursor:pointer; color:navy;">수정</a></td>' +
                                 '<td><a class="data-delete"style="cursor:pointer; color:red;">삭제</a></td>' +
                                 '<td id="data-id">' + data[i].id + '</td>' +

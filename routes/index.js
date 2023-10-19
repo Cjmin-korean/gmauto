@@ -25,7 +25,6 @@ module.exports = function (app) {
                 )
                 .then(result => {
                     res.json(result.recordset);
-                    console.log(result.recordset)
                     res.end();
                 });
 
