@@ -212,7 +212,7 @@
                                     <tr>
                                         <td style="width: 200px; padding: 10px;">OP10</td>
                                         <td>
-                                            <select id="op10-select" class="form-select" style="width: 100px;">
+                                            <select id="op10-save" class="form-select" style="width: 100px;">
                                                 <option value=""></option>
                                                 <option value="●">●</option>
                                             </select>
@@ -232,7 +232,7 @@
                                     <tr>
                                         <td style="width: 200px">OP20</td>
                                         <td>
-                                            <select id="op20-select" class="form-select" style="width: 100px;">
+                                            <select id="op20-save" class="form-select" style="width: 100px;">
                                                 <option value=""></option>
                                                 <option value="●">●</option>
                                             </select>
@@ -251,7 +251,7 @@
                                     <tr>
                                         <td style="width: 200px">OP30</td>
                                         <td>
-                                            <select id="op30-select" class="form-select" style="width: 100px;">
+                                            <select id="op30-save" class="form-select" style="width: 100px;">
                                                 <option value=""></option>
                                                 <option value="●">●</option>
                                             </select>
@@ -279,7 +279,7 @@
                                     <tr>
                                         <td style="width: 200px">OP40</td>
                                         <td>
-                                            <select id="op40-select" class="form-select" style="width: 100px;">
+                                            <select id="op40-save" class="form-select" style="width: 100px;">
                                                 <option value=""></option>
                                                 <option value="●">●</option>
                                             </select>
@@ -298,7 +298,7 @@
                                     <tr>
                                         <td style="width: 200px">OP50</td>
                                         <td>
-                                            <select id="op50-select" class="form-select" style="width: 100px;">
+                                            <select id="op50-save" class="form-select" style="width: 100px;">
                                                 <option value=""></option>
                                                 <option value="●">●</option>
                                             </select>
@@ -576,21 +576,45 @@
         }
 
         function New() {
-            $('#accountcode-save').val('')
-            $('#accountname-save').val('')
-            $('#representativename-save').val('')
-            $('#phone-save').val('')
-            $('#adress-save').val('')
-            $('#number-save').val('')
-            $('#fax-save').val('')
-            $('#mobile-save').val('')
-            $('#email-save').val('')
-            $('#etc-save').val('')
+            $('#customer-save').val('');
+            $('#cartype-save').val('');
+            $('#endpartnumber-save').val('');
+            $('#endcategory-save').val('');
+            $('#subpartnumber-save').val('');
+            $('#subpresspartnumber-save').val('');
+            $('#pressproductionlinecode-save').val('');
+            $('#pressproductionlinename-save').val('');
+            $('#presscategory-save').val('');
+            $('#presscavity-save').val('');
+            $('#presssepartion-save').val('');
+            $('#pressseparationpartnumber-save').val('');
+            $('#op10-save').val('');
+            $('#op10proccessname-save').val('');
+            $('#op10equipmentnumber-save').val('');
+            $('#op20-save').val('');
+            $('#op20proccessname-save').val('');
+            $('#op20equipmentnumber-save').val('');
+            $('#op30-save').val('');
+            $('#op30proccessname-save').val('');
+            $('#op30equipmentnumber-save').val('');
+            $('#op40-save').val('');
+            $('#op40proccessname-save').val('');
+            $('#op40equipmentnumber-save').val('');
+            $('#op50-save').val('');
+            $('#op50proccessname-save').val('');
+            $('#op50equipmentnumber-save').val('');
+            $('#subblankingpartnumber-save').val('');
+            $('#blankingproductionlinecode-save').val('');
+            $('#blankingproductionlinename-save').val('');
+            $('#blankingcategory-save').val('');
+            $('#blankingcavity-save').val('');
+            $('#rawmaterialinformation-save').val('');
+            $('#rawmaterialweight-save').val('');
 
 
 
             $('#popupOverlay').fadeIn();
-            $('#accountcode-save').focus()
+            $('#customer-save').focus()
 
         }
 
