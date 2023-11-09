@@ -39,7 +39,7 @@ app.get("/main", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/main/marchine.html");
 });
 app.get("/mainall", cors(), (req, res) => {
-    res.sendFile(__dirname + "/accountinformation.html");
+    res.sendFile(__dirname + "/main/accountinformation.html");
 });
 
 
