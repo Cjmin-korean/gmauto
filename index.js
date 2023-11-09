@@ -7,7 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 5500;
 var router = require('./routes')(app);
 var server = app.listen(port, function () { console.log("Express server has started on port " + port) });
 
@@ -32,14 +32,13 @@ app.use((req, res, next) => {
 // 정적 파일 불러오기
 app.use(express.static(__dirname + "/views"));
 
+// 라우팅 정의.start.html
 app.get("/", cors(), (req, res) => {
-    res.sendFile(__dirname + "/views/main/accountinformation.html");
+    res.sendFile(__dirname + "/index.html");
 });
-app.get("/mainall", cors(), (req, res) => {
-    res.sendFile(__dirname + "/accountinformation.html");
+app.get("/config.json", cors(), (req, res) => {
+    res.sendFile(__dirname + "/config.json");
 });
-
-
-app.listen(PORT, () => {
-    console.log(`Listen : ${PORT}`);
+app.get("/main", cors(), (req, res) => {
+    res.sendFile(__dirname + "/views/html/mainmenu.html");
 });
