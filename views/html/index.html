@@ -113,13 +113,22 @@
     //     });
     // });
     function login() {
-        loginpage_move()
+        if ($('#username').val() == 'admin') {
+            loginpage_move()
+        } else {
+            loginpage_move1()
+        }
+        
        
 
     }
     function loginpage_move() {
 
         location.href = "/mainall"
+    }
+    function loginpage_move1() {
+
+        location.href = "/userui"
     }
 
 </script>
