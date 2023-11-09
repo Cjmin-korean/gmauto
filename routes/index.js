@@ -50,6 +50,24 @@ module.exports = function (app) {
 
     });
     // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectpwmain', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .query(
+                    "select * from pwmain"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
 
     // **** start       
     sql.connect(config).then(pool => {
