@@ -33,7 +33,10 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname + "/views"));
 
 app.get("/", cors(), (req, res) => {
-    res.sendFile(__dirname + "/views/main/accountinformation.html");
+    res.sendFile(__dirname + "/views/main/index.html");
+});
+app.get("/main", cors(), (req, res) => {
+    res.sendFile(__dirname + "/views/main/marchine.html");
 });
 app.get("/mainall", cors(), (req, res) => {
     res.sendFile(__dirname + "/accountinformation.html");
