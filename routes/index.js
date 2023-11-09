@@ -34,6 +34,42 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/selectcartype', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .query(
+                    "select cartype from pwmain group by cartype order by cartype asc"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectcarnumber', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('cartype', sql.NVarChar, req.body.cartype)
+                .query(
+                    "select productnumber from pwmain where cartype=@cartype group by productnumber order by productnumber asc"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectpwplan', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()

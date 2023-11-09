@@ -20,6 +20,15 @@
         /* Add vertical scrollbars if the content exceeds the container height */
     }
 
+    .form-select {
+        display: block;
+        width: 80%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
     #datatable {
         width: 100%;
         /* Other table styles */
@@ -55,8 +64,7 @@
                 <td><input type="text" id="myInput" onclick="search()" class="data" autocomplete="off"
                         style="width: auto; border: 1px solid silver; font-size: 18px;" placeholder="검색내용을 입력하세요."></td>
                 <td style="width: 5%;"><input type="button" onclick="New()" value="신규" class="styled-button"></td>
-                <td style="width: 5%;"><input type="button" value="작업자" class="styled-button2"
-                        onclick="people()"></td>
+                <td style="width: 5%;"><input type="button" value="작업자" class="styled-button2" onclick="people()"></td>
                 <td style="width: 5%;"><input type="button" value="설비" class="styled-button2" onclick="marchinegroup()">
                 </td>
                 <td style="width: 5%;"><input type="button" value="일반" class="styled-button2" onclick="load()"></td>
@@ -75,6 +83,7 @@
                     <th style="width: auto;">차종</th>
                     <th style="width: auto;">품번</th>
                     <th style="width: auto;">품명</th>
+                    <th style="width: auto;">사양</th>
                     <th style="width: auto;">작업자</th>
                     <th style="width: auto;">지시수량(EA)</th>
                     <th style="width:80px;">수정</th>
@@ -98,13 +107,19 @@
                     </tr>
                     <tr>
                         <td style="width: 200px">차종</td>
-                        <td><input type="text" id="accountcode-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                        <td>
+                            <select id="cartype-select" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td style="width: 200px">품번</td>
-                        <td><input type="text" id="number-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                        <td>
+                            <select id="carnumber-select" class="form-select">
+                                <option value=""></option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td style="width: 200px">품명</td>
@@ -113,8 +128,71 @@
                     </tr>
                     <tr>
                         <td style="width: 200px">설비명</td>
-                        <td><input type="text" id="representativename-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
+                        <td>
+                            <select id="marchine-select" class="form-select">
+                                <option value="1호기">1호기 </option>
+                                <option value="2호기">2호기 </option>
+                                <option value="3호기">3호기 </option>
+                                <option value="4호기">4호기 </option>
+                                <option value="5호기">5호기 </option>
+                                <option value="6호기">6호기 </option>
+                                <option value="7호기">7호기 </option>
+                                <option value="8호기">8호기 </option>
+                                <option value="9호기">9호기 </option>
+                                <option value="10호기">10호기</option>
+                                <option value="11호기">11호기</option>
+                                <option value="12호기">12호기</option>
+                                <option value="13호기">13호기</option>
+                                <option value="14호기">14호기</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">작업자</td>
+                        <td>
+                            <select id="marchine-select" class="form-select">
+                                <option value="바룰">바룰</option>
+                                <option value="김경분">김경분</option>
+                                <option value="사리">사리</option>
+                                <option value="소전">소전</option>
+                                <option value="숀조이">숀조이</option>
+                                <option value="술리스툐">술리스툐</option>
+                                <option value="알리">알리</option>
+                                <option value="유광일">유광일</option>
+                                <option value="유습">유습</option>
+                                <option value="파이살">파이살</option>
+
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">하드웨어사양</td>
+                        <td>
+                            <select id="hw-select" class="form-select">
+                                <option value="6*14 BOLT">6*14 BOLT</option>
+                                <option value="6*16 BOLT">6*16 BOLT</option>
+                                <option value="6*18 BOLT">6*18 BOLT</option>
+                                <option value="6*20 BOLT">6*20 BOLT</option>
+                                <option value="6*20(돌기6EA)">6*20(돌기6EA)</option>
+                                <option value="8*18(도금볼트)">8*18(도금볼트)</option>
+                                <option value="8*20 BOLT">8*20 BOLT</option>
+                                <option value="8*25 BOLT">8*25 BOLT</option>
+                                <option value="8*45 BOLT">8*45 BOLT</option>
+                                <option value="8*50 BOLT">8*50 BOLT</option>
+                                <option value="수밀볼트">수밀볼트</option>
+                                <option value="M10 NUT">M10 NUT</option>
+                                <option value="M12 NUT">M12 NUT</option>
+                                <option value="M6 NUT">M6 NUT</option>
+                                <option value="M6(T-NUT)">M6(T-NUT)</option>
+                                <option value="M8 NUT">M8 NUT</option>
+                                <option value="M8*21 W/D PIN">M8*21 W/D PIN</option>
+                                <option value="RING NUT">RING NUT</option>
+                                <option value="SPOT">SPOT</option>
+
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td style="width: 200px">지시수량(EA)</td>
@@ -382,21 +460,12 @@
         }
 
         function New() {
-            $('#accountcode-save').val('')
-            $('#accountname-save').val('')
-            $('#representativename-save').val('')
-            $('#phone-save').val('')
-            $('#adress-save').val('')
-            $('#number-save').val('')
-            $('#fax-save').val('')
-            $('#mobile-save').val('')
-            $('#email-save').val('')
-            $('#etc-save').val('')
+            // $('#cartype-selct').val('')
+         
 
 
 
             $('#popupOverlay').fadeIn();
-            $('#accountcode-save').focus()
 
         }
 
@@ -556,6 +625,7 @@
                                 '<td>' + data[i].productnumber + '</td>' +
                                 '<td>' + data[i].productname + '</td>' +
                                 '<td>' + data[i].marchine + '</td>' +
+                                '<td>' + data[i].hw + '</td>' +
                                 '<td>' + data[i].people + '</td>' +
                                 '<td>' + data[i].count + '</td>' +
 
@@ -603,7 +673,7 @@
                         for (var machine in machineData) {
                             var machineEntries = machineData[machine];
                             $('#datatable').append(
-                                '<tr class="machine-row" style="background-color:rgb(230, 226, 226); color:white;"><td colspan="9"><strong>' + machine + '</strong></td></tr>'
+                                '<tr class="machine-row" style="background-color:rgb(230, 226, 226); color:white;"><td colspan="10"><strong>' + machine + '</strong></td></tr>'
                             );
                             for (var j = 0; j < machineEntries.length; j++) {
                                 $('#datatable').append(
@@ -613,6 +683,7 @@
                                     '<td>' + machineEntries[j].productnumber + '</td>' +
                                     '<td>' + machineEntries[j].productname + '</td>' +
                                     '<td>' + machineEntries[j].marchine + '</td>' +
+                                    '<td>' + machineEntries[j].hw + '</td>' +
                                     '<td>' + machineEntries[j].people + '</td>' +
                                     '<td>' + machineEntries[j].count + '</td>' +
                                     '<td><a class="data-edit" style="cursor:pointer; color:navy;">수정</a></td>' +
@@ -655,7 +726,7 @@
                         for (var people in peopleData) {
                             var peopleEntries = peopleData[people];
                             $('#datatable').append(
-                                '<tr class="people-row" style="background-color:rgb(230, 226, 226); color:white;"><td colspan="9"><strong>' + people + '</strong></td></tr>'
+                                '<tr class="people-row" style="background-color:rgb(230, 226, 226); color:white;"><td colspan="10"><strong>' + people + '</strong></td></tr>'
                             );
                             for (var j = 0; j < peopleEntries.length; j++) {
                                 $('#datatable').append(
@@ -665,6 +736,7 @@
                                     '<td>' + peopleEntries[j].productnumber + '</td>' +
                                     '<td>' + peopleEntries[j].productname + '</td>' +
                                     '<td>' + peopleEntries[j].marchine + '</td>' +
+                                    '<td>' + peopleEntries[j].hw + '</td>' +
                                     '<td>' + peopleEntries[j].people + '</td>' +
                                     '<td>' + peopleEntries[j].count + '</td>' +
                                     '<td><a class="data-edit" style="cursor:pointer; color:navy;">수정</a></td>' +
@@ -686,49 +758,62 @@
 
     <!-- 다음 스크립트를 사용하여 특정 열의 데이터를 엑셀 파일로 저장합니다. -->
     <script>
-        function exportToExcel() {
-            // 테이블 데이터를 JavaScript 객체로 추출합니다.
-            var table = document.getElementById("datatable");
-            var rows = table.getElementsByTagName("tr");
-            var data = [];
 
-            // 엑셀에 저장할 열의 인덱스를 지정합니다.
-            var columnIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]; // 1번부터 9번 열까지
 
-            // 첫 번째 행 (테이블 헤더) 추출
-            var headerRow = rows[0];
-            var headerCols = headerRow.getElementsByTagName("th");
-            var headerData = [];
+        const selectElement1 = document.getElementById("cartype-select");
+        const selectElement = document.getElementById("carnumber-select");
 
-            // 1번부터 9번 열까지의 헤더를 추가합니다.
-            for (var i = 0; i < columnIndices.length; i++) {
-                headerData.push(headerCols[columnIndices[i]].textContent);
-            }
-
-            data.push(headerData);
-
-            // 나머지 행 데이터 추출
-            for (var i = 1; i < rows.length; i++) {
-                var row = rows[i];
-                var cols = row.getElementsByTagName("td");
-                var rowData = [];
-
-                // 1번부터 9번 열까지의 데이터만 추출합니다.
-                for (var j = 0; j < columnIndices.length; j++) {
-                    rowData.push(cols[columnIndices[j]].textContent);
-                }
-
-                data.push(rowData);
-            }
-
-            // 엑셀 파일 생성
-            var ws = XLSX.utils.aoa_to_sheet(data);
-            var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "테이블 데이터");
-
-            // 엑셀 파일을 저장하고 다운로드합니다.
-            XLSX.writeFile(wb, "거래처리스트.xlsx");
+        if (selectElement1) {
+            // 첫 번째 셀렉트 박스 데이터 로딩
+            $.ajax({
+                type: 'POST',
+                url: server + '/api/selectcartype',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    for (let i = 0; i < result.length; i++) {
+                        const option = document.createElement("option");
+                        option.text = result[i].cartype;
+                        option.value = result[i].cartype;
+                        selectElement1.add(option);
+                    }
+                },
+            });
         }
+        function loadCarNumbers() {
+            $.ajax({
+                type: 'POST',
+                url: server + '/api/selectcarnumber',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "cartype": $('#cartype-select').val()
+                }),
+                success: function (result) {
+                    // 기존 옵션 제거
+                    selectElement.innerHTML = '';
+
+                    // 새로운 옵션 추가
+                    for (let i = 0; i < result.length; i++) {
+                        const option = document.createElement("option");
+                        option.text = result[i].productnumber;
+                        option.value = result[i].productnumber;
+                        selectElement.add(option);
+                    }
+                },
+            });
+        }
+
+
+
+        // 첫 번째 셀렉트 박스 값이 변경될 때마다 두 번째 셀렉트 박스 데이터 업데이트
+        selectElement1.addEventListener('change', function () {
+            loadCarNumbers();
+        });
+
+
+
+
     </script>
 
 
