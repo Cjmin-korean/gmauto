@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>거래처정보</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/main.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+    #datatable-container {
+        max-height: 1000px;
+        /* Adjust the maximum height as needed */
+        overflow-y: auto;
+        /* Add vertical scrollbars if the content exceeds the container height */
+    }
+
+    th {
+        width: inherit;
+    }
+
+    #datatable {
+        width: 100%;
+        /* Other table styles */
+    }
+
+    .popup_title {
+        color: red;
+    }
+
+    .table-container {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    #datatable {
+        white-space: nowrap;
+    }
+
+    #datatable th,
+    #datatable td {
+        padding: 8px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+</style>
+
+<body>
+    <div class="main_header">
+        <a>P.W기초정보</a>
+    </div>
+
+
+    <div id="loadingOverlay">
+        <img src="/img/logo.png" alt="로딩 이미지" class="loadingImage">
+
+    </div>
+    <div class="search_form-group">
+        <table class="search_div" style="width: 100%;">
+            <tr>
+                <td class="main_header_search">검색</td>
+                <td><input type="text" id="myInput" onclick="search()" class="data" autocomplete="off"
+                        style="width: auto; border: 1px solid silver; font-size: 18px;" placeholder="검색내용을 입력하세요."></td>
+                <td style="width: 5%;"><input type="button" onclick="New()" value="신규" class="styled-button"></td>
+                <td style="width: 5%;"><input type="button" value="Excel-Up" class="styled-button1"></td>
+                <td style="width: 5%;"><input type="button" value="Excel-Down" class="styled-button2"
+                        onclick="exportToExcel()"></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div id="datatable-container">
+
+        <table class="styled-table" id="datatable">
+            <thead>
+                <tr>
+                    <th style="width: auto; text-align:center;">고객사</th>
+                    <th style="width: auto; text-align:center;">차종</th>
+                    <th style="width: auto; text-align:center;">End품번</th>
+                    <th style="width: auto; text-align:center;">End구분</th>
+                    <th style="width: auto; text-align:center;">하위Sub품번</th>
+                    <th style="width: auto; text-align:center;">하위Press품번</th>
+                    <th style="width: auto; text-align:center;">프레스<br>생산라인<br>코드</th>
+                    <th style="width: auto; text-align:center;">프레스생산라인명</th>
+                    <th style="width: auto; text-align:center;">프레스구분</th>
+                    <th style="width: auto; text-align:center;">프레스<br>Cavity</th>
+                    <th style="width: auto; text-align:center;">프레스<br>Sepa</th>
+                    <th style="width: auto; text-align:center;">프레스<br>Sepa품번</th>
+                    <th style="width: auto; text-align:center;">OP10</th>
+                    <th style="width: auto; text-align:center;">OP10<br>공정명</th>
+                    <th style="width: auto; text-align:center;">OP10<br>설비번호</th>
+                    <th style="width: auto; text-align:center;">OP20</th>
+                    <th style="width: auto; text-align:center;">OP20<br>공정명</th>
+                    <th style="width: auto; text-align:center;">OP20<br>설비번호</th>
+                    <th style="width: auto; text-align:center;">OP30</th>
+                    <th style="width: auto; text-align:center;">OP30<br>공정명</th>
+                    <th style="width: auto; text-align:center;">OP30<br>설비번호</th>
+                    <th style="width: auto; text-align:center;">OP40</th>
+                    <th style="width: auto; text-align:center;">OP40<br>공정명</th>
+                    <th style="width: auto; text-align:center;">OP40<br>설비번호</th>
+                    <th style="width: auto; text-align:center;">OP50</th>
+                    <th style="width: auto; text-align:center;">OP50<br>공정명</th>
+                    <th style="width: auto; text-align:center;">OP50<br>설비번호</th>
+                    <th style="width: auto; text-align:center;">하위블랭킹<br>품번</th>
+                    <th style="width: auto; text-align:center;">블랭킹<br>생산라인<br>코드</th>
+                    <th style="width: auto; text-align:center;">블랭킹<br>생산라인명</th>
+                    <th style="width: auto; text-align:center;">블랭킹<br>구분</th>
+                    <th style="width: auto; text-align:center;">블랭킹<br>Cavity</th>
+                    <th style="width: auto; text-align:center;">원자재정보</th>
+                    <th style="width: auto; text-align:center;">RM중량</th>
+                    <th style="width:80px;"></th>
+                    <!-- <th style="width:80px;"></th> -->
+                </tr>
+            </thead>
+            <tbody id="Datatbody">
+            </tbody>
+
+        </table>
+
+    </div>
+    <!-- 등록창 -->
+    <div id="popupOverlay" style="display: none;">
+
+        <div id="popupContent">
+            <div class="form-group">
+                <table style="width:100%;" class="popuptable">
+                    <tr>
+                        <td colspan="4" class="popup_title">기초정보 추가</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="width: 200px">고객사</td>
+                                        <td><input type="text" id="customer-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">차종</td>
+                                        <td><input type="text" id="cartype-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 180px">End품번</td>
+                                        <td><input type="text" id="endpartnumber-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">End구분</td>
+                                        <td><input type="text" id="endcategory-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">하위Sub품번</td>
+                                        <td><input type="text" id="subpartnumber-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">하위Press품번</td>
+                                        <td><input type="text" id="subpresspartnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스생산라인코드</td>
+                                        <td><input type="text" id="pressproductionlinecode-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스생산라인명</td>
+                                        <td><input type="text" id="pressproductionlinename-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스구분</td>
+                                        <td><input type="text" id="presscategory-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스Cavity</td>
+                                        <td><input type="text" id="presscavity-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스Sepa</td>
+                                        <td>
+                                            <select id="presssepartion-select" class="form-select"
+                                                style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스Sepa품번</td>
+                                        <td><input type="text" id="pressseparationpartnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="width: 200px; padding: 10px;">OP10</td>
+                                        <td>
+                                            <select id="op10-save" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 200px">OP10공정명</td>
+                                        <td><input type="text" id="op10proccessname-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP10설비번호</td>
+                                        <td><input type="text" id="op10equipmentnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP20</td>
+                                        <td>
+                                            <select id="op20-save" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP20공정명</td>
+                                        <td><input type="text" id="op20proccessname-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP20설비번호</td>
+                                        <td><input type="text" id="op20equipmentnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP30</td>
+                                        <td>
+                                            <select id="op30-save" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP30공정명</td>
+                                        <td><input type="text" id="op30proccessname-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP30설비번호</td>
+                                        <td><input type="text" id="op30equipmentnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+
+
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+
+                                    <tr>
+                                        <td style="width: 200px">OP40</td>
+                                        <td>
+                                            <select id="op40-save" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP40공정명</td>
+                                        <td><input type="text" id="op40proccessname-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP40설비번호</td>
+                                        <td><input type="text" id="op40equipmentnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP50</td>
+                                        <td>
+                                            <select id="op50-save" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP50공정명</td>
+                                        <td><input type="text" id="op50proccessname-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP50설비번호</td>
+                                        <td><input type="text" id="op50equipmentnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="width: 200px">하위블랭킹품번</td>
+                                        <td><input type="text" id="subblankingpartnumber-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹생산라인코드</td>
+                                        <td><input type="text" id="blankingproductionlinecode-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹생산라인명</td>
+                                        <td><input type="text" id="blankingproductionlinename-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹구분</td>
+                                        <td><input type="text" id="blankingcategory-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹Cavity</td>
+                                        <td><input type="text" id="blankingcavity-save" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">원자재정보</td>
+                                        <td><input type="text" id="rawmaterialinformation-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">RM중량</td>
+                                        <td><input type="text" id="rawmaterialweight-save" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+
+                </table>
+            </div>
+            <button id="popupCloseBtn-save" onclick="Datasave()">저장</button>
+            <button id="popupCloseBtn-save-close">취소</button>
+
+        </div>
+    </div>
+    <!-- 수정창 -->
+    <div id="popupOverlay1" style="display: none;">
+
+        <div id="popupContent">
+            <div class="form-group">
+                <table style="width:100%;" class="popuptable">
+                    <tr>
+                        <td colspan="4" class="popup_title">기초정보 상세</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="width: 200px">고객사</td>
+                                        <td><input type="text" id="customer-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">차종</td>
+                                        <td><input type="text" id="cartype-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 180px">End품번</td>
+                                        <td><input type="text" id="endpartnumber-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">End구분</td>
+                                        <td><input type="text" id="endcategory-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">하위Sub품번</td>
+                                        <td><input type="text" id="subpartnumber-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">하위Press품번</td>
+                                        <td><input type="text" id="subpresspartnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스생산라인코드</td>
+                                        <td><input type="text" id="pressproductionlinecode-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스생산라인명</td>
+                                        <td><input type="text" id="pressproductionlinename-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스구분</td>
+                                        <td><input type="text" id="presscategory-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스Cavity</td>
+                                        <td><input type="text" id="presscavity-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스Sepa</td>
+                                        <td>
+                                            <select id="presssepartion-edit" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">프레스Sepa품번</td>
+                                        <td><input type="text" id="pressseparationpartnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="width: 200px; padding: 10px;">OP10</td>
+                                        <td>
+                                            <select id="op10-edit" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 200px">OP10공정명</td>
+                                        <td><input type="text" id="op10proccessname-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP10설비번호</td>
+                                        <td><input type="text" id="op10equipmentnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP20</td>
+                                        <td>
+                                            <select id="op20-edit" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP20공정명</td>
+                                        <td><input type="text" id="op20proccessname-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP20설비번호</td>
+                                        <td><input type="text" id="op20equipmentnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP30</td>
+                                        <td>
+                                            <select id="op30-edit" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP30공정명</td>
+                                        <td><input type="text" id="op30proccessname-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP30설비번호</td>
+                                        <td><input type="text" id="op30equipmentnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+
+
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+
+                                    <tr>
+                                        <td style="width: 200px">OP40</td>
+                                        <td>
+                                            <select id="op40-edit" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP40공정명</td>
+                                        <td><input type="text" id="op40proccessname-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP40설비번호</td>
+                                        <td><input type="text" id="op40equipmentnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP50</td>
+                                        <td>
+                                            <select id="op50-edit" class="form-select" style="width: 100px;">
+                                                <option value=""></option>
+                                                <option value="●">●</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP50공정명</td>
+                                        <td><input type="text" id="op50proccessname-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">OP50설비번호</td>
+                                        <td><input type="text" id="op50equipmentnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                        <td style="width: 25%; vertical-align: top;">
+                            <div>
+                                <table>
+                                    <tr>
+                                        <td style="width: 200px">하위블랭킹품번</td>
+                                        <td><input type="text" id="subblankingpartnumber-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹생산라인코드</td>
+                                        <td><input type="text" id="blankingproductionlinecode-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹생산라인명</td>
+                                        <td><input type="text" id="blankingproductionlinename-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹구분</td>
+                                        <td><input type="text" id="blankingcategory-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">블랭킹Cavity</td>
+                                        <td><input type="text" id="blankingcavity-edit" class="data" autocomplete="off"
+                                                style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">원자재정보</td>
+                                        <td><input type="text" id="rawmaterialinformation-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px">RM중량</td>
+                                        <td><input type="text" id="rawmaterialweight-edit" class="data"
+                                                autocomplete="off" style="width:200px; border:1px solid silver;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 200px"></td>
+                                        <td><input type="text" id="id-edit"
+                                                style="visibility: hidden; width: 10px; float: right;"
+                                                autocomplete="off"></td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+
+
+
+
+                </table>
+            </div>
+            <button id="popupCloseBtn-edit" onclick="Dataedit()">수정</button>
+            <button id="popupCloseBtn-edit-close" style="background-color: green;">취소</button>
+
+            <button id="popupCloseBtn-delete" style="float: right; margin-right: 20px; background-color: red;"
+                onclick="Datadelte()">삭제</button>
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        var server = '';
+
+        if (window.location.hostname == '127.0.0.1') {
+            server = 'http://localhost:8080';
+
+        } else {
+            server = 'http://gmauto.xyz';
+        }
+        $(document).ready(function () {
+            showLoading()
+            load()
+
+            $('#datatable').on('click', '.data-edit', function () {
+                var str = "";
+                var tdArr = new Array();// 배열 선언            
+                var checkBtn = $(this);
+
+                var tr = checkBtn.parent().parent();
+                var td = tr.children();
+
+                var a1 = td.eq(0).text();
+                var a2 = td.eq(1).text();
+                var a3 = td.eq(2).text();
+                var a4 = td.eq(3).text();
+                var a5 = td.eq(4).text();
+                var a6 = td.eq(5).text();
+                var a7 = td.eq(6).text();
+                var a8 = td.eq(7).text();
+                var a9 = td.eq(8).text();
+                var a10 = td.eq(9).text();
+                var a11 = td.eq(10).text();
+                var a12 = td.eq(11).text();
+                var a13 = td.eq(12).text();
+                var a14 = td.eq(13).text();
+                var a15 = td.eq(14).text();
+                var a16 = td.eq(15).text();
+                var a17 = td.eq(16).text();
+                var a18 = td.eq(17).text();
+                var a19 = td.eq(18).text();
+                var a20 = td.eq(19).text();
+                var a21 = td.eq(20).text();
+                var a22 = td.eq(21).text();
+                var a23 = td.eq(22).text();
+                var a24 = td.eq(23).text();
+                var a25 = td.eq(24).text();
+                var a26 = td.eq(25).text();
+                var a27 = td.eq(26).text();
+                var a28 = td.eq(27).text();
+                var a29 = td.eq(28).text();
+                var a30 = td.eq(29).text();
+                var a31 = td.eq(30).text();
+                var a32 = td.eq(31).text();
+                var a33 = td.eq(32).text();
+                var a34 = td.eq(33).text();
+                var id = td.eq(35).text();
+
+                $('#customer-edit').val(a1);
+                $('#cartype-edit').val(a2);
+                $('#endpartnumber-edit').val(a3);
+                $('#endcategory-edit').val(a4);
+                $('#subpartnumber-edit').val(a5);
+                $('#subpresspartnumber-edit').val(a6);
+                $('#pressproductionlinecode-edit').val(a7);
+                $('#pressproductionlinename-edit').val(a8);
+                $('#presscategory-edit').val(a9);
+                $('#presscavity-edit').val(a10);
+                $('#presssepartion-edit').val(a11);
+                $('#pressseparationpartnumber-edit').val(a12);
+                $('#op10-edit').val(a13);
+                $('#op10proccessname-edit').val(a14);
+                $('#op10equipmentnumber-edit').val(a15);
+                $('#op20-edit').val(a16);
+                $('#op20proccessname-edit').val(a17);
+                $('#op20equipmentnumber-edit').val(a18);
+                $('#op30-edit').val(a19);
+                $('#op30proccessname-edit').val(a20);
+                $('#op30equipmentnumber-edit').val(a21);
+                $('#op40-edit').val(a22);
+                $('#op40proccessname-edit').val(a23);
+                $('#op40equipmentnumber-edit').val(a24);
+                $('#op50-edit').val(a25);
+                $('#op50proccessname-edit').val(a26);
+                $('#op50equipmentnumber-edit').val(a27);
+                $('#subblankingpartnumber-edit').val(a28);
+                $('#blankingproductionlinecode-edit').val(a29);
+                $('#blankingproductionlinename-edit').val(a30);
+                $('#blankingcategory-edit').val(a31);
+                $('#blankingcavity-edit').val(a32);
+                $('#rawmaterialinformation-edit').val(a33);
+                $('#rawmaterialweight-edit').val(a34);
+
+
+                $('#id-edit').val(id)
+                $('#popupOverlay1').fadeIn();
+                $('#customer-edit').focus()
+
+            });
+            $('#datatable').on('click', '.data-delete', function () {
+                var str = "";
+                var tdArr = new Array();// 배열 선언            
+                var checkBtn = $(this);
+
+                var tr = checkBtn.parent().parent();
+                var td = tr.children();
+
+
+                var id = td.eq(12).text();
+                $('#id-edit').val(id)
+                $('#popupOverlay2').fadeIn();
+            });
+
+
+            $('#popupCloseBtn-save-close').click(function () {
+                $('#popupOverlay').fadeOut();
+            });
+            $('#popupCloseBtn-edit-close').click(function () {
+                $('#popupOverlay1').fadeOut();
+            });
+            $('#popupCloseBtn-delete-close').click(function () {
+                $('#popupOverlay2').fadeOut();
+            });
+
+
+        });
+
+
+
+        //오름차순 내림차순
+        function sortTable(columnIndex) {
+            var table, rows, switching, i, x, y, shouldSwitch, direction, switchcount = 0;
+            table = document.getElementById("datatable");
+            switching = true;
+            direction = "asc"; // 기본 정렬 방향은 오름차순
+
+            while (switching) {
+                switching = false;
+                rows = table.getElementsByTagName("tr");
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                    if (direction == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (direction == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && direction == "asc") {
+                        direction = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+
+        //검색
+        function search() {
+            const searchInput = document.getElementById('myInput');
+            const dataTable = document.getElementById('datatable');
+            const tableRows = dataTable.getElementsByTagName('tr');
+            const dataCountCell = document.getElementById('dataCount');
+
+            searchInput.addEventListener('input', function () {
+                const searchValue = this.value.toLowerCase();
+                let count = 0;
+
+                for (let i = 1; i < tableRows.length; i++) {
+                    const rowData = tableRows[i].getElementsByTagName('td');
+                    let found = false;
+
+                    for (let j = 0; j < rowData.length; j++) {
+                        const cellData = rowData[j].textContent.toLowerCase();
+
+                        if (cellData.includes(searchValue)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        tableRows[i].style.display = '';
+                        count++;
+                    } else {
+                        tableRows[i].style.display = 'none';
+                    }
+                }
+
+                dataCountCell.textContent = `검색 결과 개수: ${count - 1}`;
+            });
+        }
+
+        function showLoading() {
+            var loadingOverlay = document.getElementById("loadingOverlay");
+            loadingOverlay.style.display = "flex";
+
+            // 로딩 완료 후 일정 시간 후 로딩 창 숨기기 (테스트용)
+            setTimeout(function () {
+                loadingOverlay.style.display = "none";
+            }, 1000);
+        }
+
+        function New() {
+            $('#customer-save').val('');
+            $('#cartype-save').val('');
+            $('#endpartnumber-save').val('');
+            $('#endcategory-save').val('');
+            $('#subpartnumber-save').val('');
+            $('#subpresspartnumber-save').val('');
+            $('#pressproductionlinecode-save').val('');
+            $('#pressproductionlinename-save').val('');
+            $('#presscategory-save').val('');
+            $('#presscavity-save').val('');
+            $('#presssepartion-save').val('');
+            $('#pressseparationpartnumber-save').val('');
+            $('#op10-save').val('');
+            $('#op10proccessname-save').val('');
+            $('#op10equipmentnumber-save').val('');
+            $('#op20-save').val('');
+            $('#op20proccessname-save').val('');
+            $('#op20equipmentnumber-save').val('');
+            $('#op30-save').val('');
+            $('#op30proccessname-save').val('');
+            $('#op30equipmentnumber-save').val('');
+            $('#op40-save').val('');
+            $('#op40proccessname-save').val('');
+            $('#op40equipmentnumber-save').val('');
+            $('#op50-save').val('');
+            $('#op50proccessname-save').val('');
+            $('#op50equipmentnumber-save').val('');
+            $('#subblankingpartnumber-save').val('');
+            $('#blankingproductionlinecode-save').val('');
+            $('#blankingproductionlinename-save').val('');
+            $('#blankingcategory-save').val('');
+            $('#blankingcavity-save').val('');
+            $('#rawmaterialinformation-save').val('');
+            $('#rawmaterialweight-save').val('');
+
+
+
+            $('#popupOverlay').fadeIn();
+            $('#customer-save').focus()
+
+        }
+
+        function Datasave() {
+            if (confirm("기초정보를 등록 하시겠습니까??") == true) {
+                var customer = $('#customer-save').val();
+                var cartype = $('#cartype-save').val();
+                var endpartnumber = $('#endpartnumber-save').val();
+                var endcategory = $('#endcategory-save').val();
+                var subpartnumber = $('#subpartnumber-save').val();
+                var subpresspartnumber = $('#subpresspartnumber-save').val();
+                var pressproductionlinecode = $('#pressproductionlinecode-save').val();
+                var pressproductionlinename = $('#pressproductionlinename-save').val();
+                var presscategory = $('#presscategory-save').val();
+                var presscavity = $('#presscavity-save').val();
+                var presssepartion = $('#presssepartion-save').val();
+                var pressseparationpartnumber = $('#pressseparationpartnumber-save').val();
+                var op10 = $('#op10-save').val();
+                var op10proccessname = $('#op10proccessname-save').val();
+                var op10equipmentnumber = $('#op10equipmentnumber-save').val();
+                var op20 = $('#op20-save').val();
+                var op20proccessname = $('#op20proccessname-save').val();
+                var op20equipmentnumber = $('#op20equipmentnumber-save').val();
+                var op30 = $('#op30-save').val();
+                var op30proccessname = $('#op30proccessname-save').val();
+                var op30equipmentnumber = $('#op30equipmentnumber-save').val();
+                var op40 = $('#op40-save').val();
+                var op40proccessname = $('#op40proccessname-save').val();
+                var op40equipmentnumber = $('#op40equipmentnumber-save').val();
+                var op50 = $('#op50-save').val();
+                var op50proccessname = $('#op50proccessname-save').val();
+                var op50equipmentnumber = $('#op50equipmentnumber-save').val();
+                var subblankingpartnumber = $('#subblankingpartnumber-save').val();
+                var blankingproductionlinecode = $('#blankingproductionlinecode-save').val();
+                var blankingproductionlinename = $('#blankingproductionlinename-save').val();
+                var blankingcategory = $('#blankingcategory-save').val();
+                var blankingcavity = $('#blankingcavity-save').val();
+                var rawmaterialinformation = $('#rawmaterialinformation-save').val();
+                var rawmaterialweight = $('#rawmaterialweight-save').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/insertmain',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+
+
+                        "customer": customer,
+                        "cartype": cartype,
+                        "endpartnumber": endpartnumber,
+                        "endcategory": endcategory,
+                        "subpartnumber": subpartnumber,
+                        "subpresspartnumber": subpresspartnumber,
+                        "pressproductionlinecode": pressproductionlinecode,
+                        "pressproductionlinename": pressproductionlinename,
+                        "presscategory": presscategory,
+                        "presscavity": presscavity,
+                        "presssepartion": presssepartion,
+                        "pressseparationpartnumber": pressseparationpartnumber,
+                        "op10": op10,
+                        "op10proccessname": op10proccessname,
+                        "op10equipmentnumber": op10equipmentnumber,
+                        "op20": op20,
+                        "op20proccessname": op20proccessname,
+                        "op20equipmentnumber": op20equipmentnumber,
+                        "op30": op30,
+                        "op30proccessname": op30proccessname,
+                        "op30equipmentnumber": op30equipmentnumber,
+                        "op40": op40,
+                        "op40proccessname": op40proccessname,
+                        "op40equipmentnumber": op40equipmentnumber,
+                        "op50": op50,
+                        "op50proccessname": op50proccessname,
+                        "op50equipmentnumber": op50equipmentnumber,
+                        "subblankingpartnumber": subblankingpartnumber,
+                        "blankingproductionlinecode": blankingproductionlinecode,
+                        "blankingproductionlinename": blankingproductionlinename,
+                        "blankingcategory": blankingcategory,
+                        "blankingcavity": blankingcavity,
+                        "rawmaterialinformation": rawmaterialinformation,
+                        "rawmaterialweight": rawmaterialweight
+
+
+
+
+                    }),
+                    success: function (result) {
+
+
+                    }
+                })
+
+                $('#popupOverlay').fadeOut();
+                setTimeout(function () {
+                    load()
+                }, 50); // 3초 후에 알림을 사라지게 설정
+                var notification = $('<div class="notification"><img src="../img/check.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">기초정보등록 완료</span></div>');
+                $('body').append(notification);
+                setTimeout(function () {
+                    notification.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, 3000);
+            } else {
+                return false;
+            }
+        }
+
+        function Dataedit() {
+            if (confirm("기초정보를 수정 하시겠습니까??") == true) {
+                var customer = $('#customer-edit').val();
+                var cartype = $('#cartype-edit').val();
+                var endpartnumber = $('#endpartnumber-edit').val();
+                var endcategory = $('#endcategory-edit').val();
+                var subpartnumber = $('#subpartnumber-edit').val();
+                var subpresspartnumber = $('#subpresspartnumber-edit').val();
+                var pressproductionlinecode = $('#pressproductionlinecode-edit').val();
+                var pressproductionlinename = $('#pressproductionlinename-edit').val();
+                var presscategory = $('#presscategory-edit').val();
+                var presscavity = $('#presscavity-edit').val();
+                var presssepartion = $('#presssepartion-edit').val();
+                var pressseparationpartnumber = $('#pressseparationpartnumber-edit').val();
+                var op10 = $('#op10-edit').val();
+                var op10proccessname = $('#op10proccessname-edit').val();
+                var op10equipmentnumber = $('#op10equipmentnumber-edit').val();
+                var op20 = $('#op20-edit').val();
+                var op20proccessname = $('#op20proccessname-edit').val();
+                var op20equipmentnumber = $('#op20equipmentnumber-edit').val();
+                var op30 = $('#op30-edit').val();
+                var op30proccessname = $('#op30proccessname-edit').val();
+                var op30equipmentnumber = $('#op30equipmentnumber-edit').val();
+                var op40 = $('#op40-edit').val();
+                var op40proccessname = $('#op40proccessname-edit').val();
+                var op40equipmentnumber = $('#op40equipmentnumber-edit').val();
+                var op50 = $('#op50-edit').val();
+                var op50proccessname = $('#op50proccessname-edit').val();
+                var op50equipmentnumber = $('#op50equipmentnumber-edit').val();
+                var subblankingpartnumber = $('#subblankingpartnumber-edit').val();
+                var blankingproductionlinecode = $('#blankingproductionlinecode-edit').val();
+                var blankingproductionlinename = $('#blankingproductionlinename-edit').val();
+                var blankingcategory = $('#blankingcategory-edit').val();
+                var blankingcavity = $('#blankingcavity-edit').val();
+                var rawmaterialinformation = $('#rawmaterialinformation-edit').val();
+                var rawmaterialweight = $('#rawmaterialweight-edit').val();
+                var id = $('#id-edit').val();
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/updatemain',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+
+                        "customer": customer,
+                        "cartype": cartype,
+                        "endpartnumber": endpartnumber,
+                        "endcategory": endcategory,
+                        "subpartnumber": subpartnumber,
+                        "subpresspartnumber": subpresspartnumber,
+                        "pressproductionlinecode": pressproductionlinecode,
+                        "pressproductionlinename": pressproductionlinename,
+                        "presscategory": presscategory,
+                        "presscavity": presscavity,
+                        "presssepartion": presssepartion,
+                        "pressseparationpartnumber": pressseparationpartnumber,
+                        "op10": op10,
+                        "op10proccessname": op10proccessname,
+                        "op10equipmentnumber": op10equipmentnumber,
+                        "op20": op20,
+                        "op20proccessname": op20proccessname,
+                        "op20equipmentnumber": op20equipmentnumber,
+                        "op30": op30,
+                        "op30proccessname": op30proccessname,
+                        "op30equipmentnumber": op30equipmentnumber,
+                        "op40": op40,
+                        "op40proccessname": op40proccessname,
+                        "op40equipmentnumber": op40equipmentnumber,
+                        "op50": op50,
+                        "op50proccessname": op50proccessname,
+                        "op50equipmentnumber": op50equipmentnumber,
+                        "subblankingpartnumber": subblankingpartnumber,
+                        "blankingproductionlinecode": blankingproductionlinecode,
+                        "blankingproductionlinename": blankingproductionlinename,
+                        "blankingcategory": blankingcategory,
+                        "blankingcavity": blankingcavity,
+                        "rawmaterialinformation": rawmaterialinformation,
+                        "rawmaterialweight": rawmaterialweight,
+                        "id": id
+
+
+
+                    }),
+                    success: function (result) {
+                    }
+                })
+
+                $('#popupOverlay1').fadeOut();
+                setTimeout(function () {
+                    load()
+                }, 50); // 3초 후에 알림을 사라지게 설정
+                var notification = $('<div class="notification"><img src="../img/check.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">기초정보 수정 완료</span></div>');
+                $('body').append(notification);
+                setTimeout(function () {
+                    notification.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, 3000);
+            } else {
+                return false;
+            }
+        }
+
+
+        function Datadelte() {
+            if (confirm("기초정보를 삭제 하시겠습니까??") == true) {
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/deletemain',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+
+                        id: $('#id-edit').val(),
+
+                    }),
+                    success: function (result) {
+                    }
+
+                })
+                $('#popupOverlay1').fadeOut();
+                setTimeout(function () {
+                    load()
+                }, 50); // 3초 후에 알림을 사라지게 설정
+                var notification = $('<div class="notification"><img src="../img/check.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">기초정보 삭제 완료</span></div>');
+                $('body').append(notification);
+                setTimeout(function () {
+                    notification.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, 3000);
+            } else {
+                return false;
+            }
+
+        }
+
+        function load() {
+            $('#Datatbody').empty()
+            $.ajax({
+                type: 'POST',
+                url: server + '/api/mainall',
+                dataType: 'json',
+                success: function (data) {
+                    var tableFoot = $('#dataCount');
+                    if (data.length === 0) {
+                        // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
+                        tableFoot.text('총 데이터 개수: 0');
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            $('#datatable').append(
+                                '<tr >' +
+                                '<td>' + data[i].customer + '</td>' +
+                                '<td>' + data[i].cartype + '</td>' +
+                                '<td>' + data[i].endpartnumber + '</td>' +
+                                '<td>' + data[i].endcategory + '</td>' +
+                                '<td>' + data[i].subpartnumber + '</td>' +
+                                '<td>' + data[i].subpresspartnumber + '</td>' +
+                                '<td>' + data[i].pressproductionlinecode + '</td>' +
+                                '<td>' + data[i].pressproductionlinename + '</td>' +
+                                '<td>' + data[i].presscategory + '</td>' +
+                                '<td>' + data[i].presscavity + '</td>' +
+                                '<td>' + data[i].presssepartion + '</td>' +
+                                '<td>' + data[i].pressseparationpartnumber + '</td>' +
+                                '<td>' + data[i].op10 + '</td>' +
+                                '<td>' + data[i].op10proccessname + '</td>' +
+                                '<td>' + data[i].op10equipmentnumber + '</td>' +
+                                '<td>' + data[i].op20 + '</td>' +
+                                '<td>' + data[i].op20proccessname + '</td>' +
+                                '<td>' + data[i].op20equipmentnumber + '</td>' +
+                                '<td>' + data[i].op30 + '</td>' +
+                                '<td>' + data[i].op30proccessname + '</td>' +
+                                '<td>' + data[i].op30equipmentnumber + '</td>' +
+                                '<td>' + data[i].op40 + '</td>' +
+                                '<td>' + data[i].op40proccessname + '</td>' +
+                                '<td>' + data[i].op40equipmentnumber + '</td>' +
+                                '<td>' + data[i].op50 + '</td>' +
+                                '<td>' + data[i].op50proccessname + '</td>' +
+                                '<td>' + data[i].op50equipmentnumber + '</td>' +
+                                '<td>' + data[i].subblankingpartnumber + '</td>' +
+                                '<td>' + data[i].blankingproductionlinecode + '</td>' +
+                                '<td>' + data[i].blankingproductionlinename + '</td>' +
+                                '<td>' + data[i].blankingcategory + '</td>' +
+                                '<td>' + data[i].blankingcavity + '</td>' +
+                                '<td>' + data[i].rawmaterialinformation + '</td>' +
+                                '<td>' + data[i].rawmaterialweight + '</td>' +
+
+                                '<td><a class="data-edit" style="cursor:pointer; color:navy;">상세</a></td>' +
+                                // '<td><a class="data-delete"style="cursor:pointer; color:red;">삭제</a></td>' +
+                                '<td id="data-id">' + data[i].id + '</td>' +
+                                '</tr>'
+
+                            )
+                            $("td#data-id").hide();
+
+                            tableFoot.text('총 데이터 개수: ' + data.length);
+                        }
+                    }
+                }
+
+
+            })
+        }
+    </script>
+
+
+    <!-- 다음 스크립트를 사용하여 특정 열의 데이터를 엑셀 파일로 저장합니다. -->
+    <script>
+        function exportToExcel() {
+            // 테이블 데이터를 JavaScript 객체로 추출합니다.
+            var table = document.getElementById("datatable");
+            var rows = table.getElementsByTagName("tr");
+            var data = [];
+
+            // 엑셀에 저장할 열의 인덱스를 지정합니다.
+            var columnIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]; // 1번부터 9번 열까지
+
+            // 첫 번째 행 (테이블 헤더) 추출
+            var headerRow = rows[0];
+            var headerCols = headerRow.getElementsByTagName("th");
+            var headerData = [];
+
+            // 1번부터 9번 열까지의 헤더를 추가합니다.
+            for (var i = 0; i < columnIndices.length; i++) {
+                headerData.push(headerCols[columnIndices[i]].textContent);
+            }
+
+            data.push(headerData);
+
+            // 나머지 행 데이터 추출
+            for (var i = 1; i < rows.length; i++) {
+                var row = rows[i];
+                var cols = row.getElementsByTagName("td");
+                var rowData = [];
+
+                // 1번부터 9번 열까지의 데이터만 추출합니다.
+                for (var j = 0; j < columnIndices.length; j++) {
+                    rowData.push(cols[columnIndices[j]].textContent);
+                }
+
+                data.push(rowData);
+            }
+
+            // 엑셀 파일 생성
+            var ws = XLSX.utils.aoa_to_sheet(data);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "테이블 데이터");
+
+            // 엑셀 파일을 저장하고 다운로드합니다.
+            XLSX.writeFile(wb, "기초정보리스트.xlsx");
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

@@ -396,11 +396,26 @@
                     <ul class="big_menu">
                         <li class="big_menu_sub">기초정보<img class="arrow fas fa-angle-right" src="../img/down.png" /></li>
                         <ul class="small_menu">
-                            <li onclick="accountHtml()" class="small_menu_sub">
-                                <a>기초정보 조회</a>
+                            <li onclick="pwmainHtml()" class="small_menu_sub">
+                                <a>P.W기초정보</a>
+                            </li>
+                            <li onclick="pressmainHtml()" class="small_menu_sub">
+                                <a>PRESS기초정보</a>
                             </li>
 
 
+                        </ul>
+
+                    </ul>
+                    <ul class="big_menu">
+                        <li class="big_menu_sub">P.W<img class="arrow fas fa-angle-right" src="../img/down.png" /></li>
+                        <ul class="small_menu">
+                            <li onclick="pwplan()" class="small_menu_sub">
+                                <a>작업지시</a>
+                            </li>
+                            <li onclick="pwproduction()" class="small_menu_sub">
+                                <a>작업일보</a>
+                            </li>
                         </ul>
 
                     </ul>
@@ -526,9 +541,21 @@
 <script>
 
 
-    function accountHtml() {
+    function pressmainHtml() {
         $("#loadHtml").removeClass();
         $("#loadHtml").load("/html/accountinformation.html");
+    }
+    function pwmainHtml() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/accountinformation.html");
+    }
+    function pwplan() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/pwplan.html");
+    }
+    function pwproduction() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/pwproduction.html");
     }
 
 
@@ -606,7 +633,7 @@
     });
 
 
-  
+
 </script>
 
 </html>
