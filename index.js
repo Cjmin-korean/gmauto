@@ -33,14 +33,12 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname + "/views"));
 
 app.get("/", cors(), (req, res) => {
-    res.sendFile(__dirname + "/views/main/index.html");
+    res.sendFile(__dirname + "/views/html/index.html");
 });
 app.get("/main", cors(), (req, res) => {
-    res.sendFile(__dirname + "/views/main/marchine.html");
+    res.sendFile(__dirname + "/views/html/mainmenu.html");
 });
-app.get("/mainall", cors(), (req, res) => {
-    res.sendFile(__dirname + "/main/accountinformation.html");
-});
+
 
 
 app.listen(PORT, () => {
