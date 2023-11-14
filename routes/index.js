@@ -34,6 +34,24 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/pwmainselect', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('cartype', sql.NVarChar, req.body.cartype)
+                .query(
+                    "select * from pwmain where cartype=@cartype"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectcartype', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -88,12 +106,115 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/pwjisiwherepeople', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('people', sql.NVarChar, req.body.people)
+                .input('start', sql.NVarChar, req.body.start)
+                .input('finish', sql.NVarChar, req.body.finish)
+                .query(
+                    "select * from pw where people=@people and plandate BETWEEN @start AND @finish;"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectpwmain', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
                     "select * from pwmain"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/deletepwjisi', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+                .query(
+                    "delete from pw where id=@id"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/updatepwjisi', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+                .input('count', sql.Float, req.body.count)
+                .input('people', sql.NVarChar, req.body.people)
+                .query(
+                    "update pw set people=@people,count=@count where id=@id"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/startproduction', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+                .input('a', sql.Float, req.body.a)
+                .input('b', sql.NVarChar, req.body.b)
+                .input('c', sql.NVarChar, req.body.c)
+                .input('d', sql.NVarChar, req.body.d)
+                .input('starttime', sql.NVarChar, req.body.starttime)
+                .input('status', sql.NVarChar, req.body.status)
+                .query(
+                    "update pw set a=@a,b=@b,c=@c,d=@d,status=@status,starttime=@starttime where id=@id"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/finishproduction', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+                .input('finalcount', sql.Float, req.body.finalcount)
+                .input('finaltime', sql.NVarChar, req.body.finaltime)
+                .input('status', sql.NVarChar, req.body.status)
+                .query(
+                    "update pw set status=@status,finalcount=@finalcount,finaltime=@finaltime where id=@id"
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -149,6 +270,50 @@ module.exports = function (app) {
                 .query(
                     'insert into main(customer,cartype,endpartnumber,endcategory,subpartnumber,subpresspartnumber,pressproductionlinecode,pressproductionlinename,presscategory,presscavity,presssepartion,pressseparationpartnumber,op10,op10proccessname,op10equipmentnumber,op20,op20proccessname,op20equipmentnumber,op30,op30proccessname,op30equipmentnumber,op40,op40proccessname,op40equipmentnumber,op50,op50proccessname,op50equipmentnumber,subblankingpartnumber,blankingproductionlinecode,blankingproductionlinename,blankingcategory,blankingcavity,rawmaterialinformation,rawmaterialweight)' +
                     ' values(@customer,@cartype,@endpartnumber,@endcategory,@subpartnumber,@subpresspartnumber,@pressproductionlinecode,@pressproductionlinename,@presscategory,@presscavity,@presssepartion,@pressseparationpartnumber,@op10,@op10proccessname,@op10equipmentnumber,@op20,@op20proccessname,@op20equipmentnumber,@op30,@op30proccessname,@op30equipmentnumber,@op40,@op40proccessname,@op40equipmentnumber,@op50,@op50proccessname,@op50equipmentnumber,@subblankingpartnumber,@blankingproductionlinecode,@blankingproductionlinename,@blankingcategory,@blankingcavity,@rawmaterialinformation,@rawmaterialweight)'
+                )
+
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+
+
+                });
+        });
+
+    });
+    // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/insertpwjisi', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+
+
+            return pool.request()
+                .input('plandate', sql.NVarChar, req.body.plandate)
+                .input('customer', sql.NVarChar, req.body.customer)
+                .input('cartype', sql.NVarChar, req.body.cartype)
+                .input('productnumber', sql.NVarChar, req.body.productnumber)
+                .input('sub', sql.NVarChar, req.body.sub)
+                .input('productname', sql.NVarChar, req.body.productname)
+                .input('marchine', sql.NVarChar, req.body.marchine)
+                .input('touch', sql.NVarChar, req.body.touch)
+                .input('sanum', sql.NVarChar, req.body.sanum)
+                .input('sapum', sql.NVarChar, req.body.sapum)
+                .input('sacount', sql.NVarChar, req.body.sacount)
+                .input('a', sql.Float, req.body.a)
+                .input('b', sql.Float, req.body.b)
+                .input('c', sql.Float, req.body.c)
+                .input('d', sql.Float, req.body.d)
+                .input('count', sql.Float, req.body.count)
+                .input('status', sql.NVarChar, req.body.status)
+                .input('people', sql.NVarChar, req.body.people)
+                .input('starttime', sql.NVarChar, req.body.starttime)
+                .input('finaltime', sql.NVarChar, req.body.finaltime)
+                .input('finalcount', sql.Float, req.body.finalcount)
+       
+                .query(
+                    'insert into pw(plandate,customer,cartype,productnumber,sub,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,count,status,people,starttime,finaltime,finalcount)' +
+                    ' values(@plandate,@customer,@cartype,@productnumber,@sub,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@count,@status,@people,@starttime,@finaltime,@finalcount)'
                 )
 
                 .then(result => {

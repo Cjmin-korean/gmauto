@@ -425,11 +425,13 @@ td:nth-child(2) {
 }
 
 #popupCloseBtn-save-close,
+#popupCloseBtn-pwedit-close,
 #popupCloseBtn-save-close1,
 #popupCloseBtn-edit-close,
 #popupCloseBtn-delete-close,
 #popupCloseBtn-delete-close1,
 #popupCloseBtn-search-close,
+#popupCloseBtn-finish-close,
 #popupCloseBtn-POedit-close,
 #popupCloseBtn-content-close {
 
@@ -462,6 +464,8 @@ td:nth-child(2) {
 
 #popupCloseBtn-save,
 #popupCloseBtn-edit,
+#popupCloseBtn-pwedit,
+#popupCloseBtn-finish,
 #popupCloseBtn-delete,
 #popupCloseBtn-POedit,
 #popupCloseBtn-content {

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input with Buttons</title>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td style="width: 200px">통전</td>
+        <td>
+            <input type="text" id="a-edit" class="data" autocomplete="off" readonly
+                   style="width:auto; border:1px solid silver;">
+            <button class="change-value" data-target="#a-edit" data-increment="0.5">+</button>
+            <button class="change-value" data-target="#a-edit" data-increment="-0.5">-</button>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 200px">전류</td>
+        <td>
+            <input type="text" id="b-edit" class="data" autocomplete="off" readonly
+                   style="width:auto; border:1px solid silver;">
+            <button class="change-value" data-target="#b-edit" data-increment="0.5">+</button>
+            <button class="change-value" data-target="#b-edit" data-increment="-0.5">-</button>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 200px">초기가압</td>
+        <td>
+            <input type="text" id="c-edit" class="data" autocomplete="off" readonly
+                   style="width:auto; border:1px solid silver;">
+            <button class="change-value" data-target="#c-edit" data-increment="0.5">+</button>
+            <button class="change-value" data-target="#c-edit" data-increment="-0.5">-</button>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 200px">유지</td>
+        <td>
+            <input type="text" id="d-edit" class="data" autocomplete="off" readonly
+                   style="width:auto; border:1px solid silver;">
+            <button class="change-value" data-target="#d-edit" data-increment="0.5">+</button>
+            <button class="change-value" data-target="#d-edit" data-increment="-0.5">-</button>
+        </td>
+    </tr>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('.change-value').on('click', function () {
+            var targetInput = $($(this).data('target'));
+            var increment = parseFloat($(this).data('increment'));
+            var currentValue = parseFloat(targetInput.val()) || 0;
+            var newValue = currentValue + increment;
+
+            // Set the new value and trigger the change event
+            targetInput.val(newValue).change();
+        });
+    });
+</script>
+
+</body>
+</html>

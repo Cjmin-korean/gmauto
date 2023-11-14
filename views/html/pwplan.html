@@ -13,6 +13,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
+    #pwdatatable {
+        max-height: 60%;
+        /* 최대 높이를 60%로 설정 */
+        overflow-y: auto;
+        /* 세로 스크롤만 표시되도록 설정 */
+    }
+
     #datatable-container {
         max-height: 1000px;
         /* Adjust the maximum height as needed */
@@ -64,7 +71,7 @@
                 <td><input type="text" id="myInput" onclick="search()" class="data" autocomplete="off"
                         style="width: auto; border: 1px solid silver; font-size: 18px;" placeholder="검색내용을 입력하세요."></td>
                 <td style="width: 5%;"><input type="button" onclick="New()" value="신규" class="styled-button"></td>
-                <td style="width: 5%;"><input type="button" value="작업자" class="styled-button2" onclick="people()"></td>
+                <!-- <td style="width: 5%;"><input type="button" value="작업자" class="styled-button2" onclick="people()"></td> -->
                 <td style="width: 5%;"><input type="button" value="설비" class="styled-button2" onclick="marchinegroup()">
                 </td>
                 <td style="width: 5%;"><input type="button" value="일반" class="styled-button2" onclick="load()"></td>
@@ -79,15 +86,25 @@
             <thead>
                 <tr>
                     <th style="width: auto;">작업지시날짜</th>
-                    <th style="width: auto;">설비명</th>
+                    <th style="width: auto;">고객사</th>
                     <th style="width: auto;">차종</th>
                     <th style="width: auto;">품번</th>
+                    <th style="width: auto;">구분</th>
                     <th style="width: auto;">품명</th>
-                    <th style="width: auto;">사양</th>
+                    <th style="width: auto;">설비명</th>
+                    <th style="width: auto;">타점수</th>
+                    <th style="width: auto;">HW부번</th>
+                    <th style="width: auto;">HW품명</th>
+                    <th style="width: auto;">HW수량</th>
+                    <th style="width: auto;">통전</th>
+                    <th style="width: auto;">전류</th>
+                    <th style="width: auto;">초기가압</th>
+                    <th style="width: auto;">유지</th>
+                    <th style="width: auto;">지시수량</th>
                     <th style="width: auto;">작업자</th>
-                    <th style="width: auto;">지시수량(EA)</th>
-                    <th style="width:80px;">수정</th>
-                    <th style="width:80px;">삭제</th>
+                    <th style="width:auto;">상태</th>
+                    <th style="width:80px;"></th>
+                    <th style="width:80px;"></th>
                 </tr>
             </thead>
             <tbody id="Datatbody">
@@ -99,7 +116,7 @@
     <!-- 등록창 -->
     <div id="popupOverlay" style="display: none;">
 
-        <div id="popupContent" style="width:30%;">
+        <div id="popupContent" style="width:90%;  max-height: 80%; overflow-y: auto;">
             <div class="form-group">
                 <table style="width:100%;" class="popuptable">
                     <tr>
@@ -108,97 +125,37 @@
                     <tr>
                         <td style="width: 200px">차종</td>
                         <td>
-                            <select id="cartype-select" class="form-select">
+                            <select id="cartype-select" style="width: 150px" class="form-select">
                                 <option value=""></option>
                             </select>
                         </td>
                     </tr>
-                    <tr>
-                        <td style="width: 200px">품번</td>
-                        <td>
-                            <select id="carnumber-select" class="form-select">
-                                <option value=""></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px">품명</td>
-                        <td><input type="text" id="accountname-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px">설비명</td>
-                        <td>
-                            <select id="marchine-select" class="form-select">
-                                <option value="1호기">1호기 </option>
-                                <option value="2호기">2호기 </option>
-                                <option value="3호기">3호기 </option>
-                                <option value="4호기">4호기 </option>
-                                <option value="5호기">5호기 </option>
-                                <option value="6호기">6호기 </option>
-                                <option value="7호기">7호기 </option>
-                                <option value="8호기">8호기 </option>
-                                <option value="9호기">9호기 </option>
-                                <option value="10호기">10호기</option>
-                                <option value="11호기">11호기</option>
-                                <option value="12호기">12호기</option>
-                                <option value="13호기">13호기</option>
-                                <option value="14호기">14호기</option>
+                    <table class="styled-table" id="pwdatatable">
+                        <thead>
+                            <tr>
+                                <th style="width: auto;">고객사</th>
+                                <th style="width: auto;">차종</th>
+                                <th style="width: auto;">품번</th>
+                                <th style="width: auto;">구분</th>
+                                <th style="width: auto;">품명</th>
+                                <th style="width: auto;">설비</th>
+                                <th style="width: auto;">용접타점수</th>
+                                <th style="width: auto;">H/W품번</th>
+                                <th style="width: auto;">H/W품명</th>
+                                <th style="width: auto;">H/W개수</th>
+                                <th style="width: auto;">통전</th>
+                                <th style="width: auto;">전류</th>
+                                <th style="width: auto;">초기가압</th>
+                                <th style="width: auto;">유지</th>
+                                <th style="width:80px;">선택</th>
 
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px">작업자</td>
-                        <td>
-                            <select id="marchine-select" class="form-select">
-                                <option value="바룰">바룰</option>
-                                <option value="김경분">김경분</option>
-                                <option value="사리">사리</option>
-                                <option value="소전">소전</option>
-                                <option value="숀조이">숀조이</option>
-                                <option value="술리스툐">술리스툐</option>
-                                <option value="알리">알리</option>
-                                <option value="유광일">유광일</option>
-                                <option value="유습">유습</option>
-                                <option value="파이살">파이살</option>
+                            </tr>
+                        </thead>
+                        <tbody id="pwdatatabletbody">
+                        </tbody>
 
+                    </table>
 
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px">하드웨어사양</td>
-                        <td>
-                            <select id="hw-select" class="form-select">
-                                <option value="6*14 BOLT">6*14 BOLT</option>
-                                <option value="6*16 BOLT">6*16 BOLT</option>
-                                <option value="6*18 BOLT">6*18 BOLT</option>
-                                <option value="6*20 BOLT">6*20 BOLT</option>
-                                <option value="6*20(돌기6EA)">6*20(돌기6EA)</option>
-                                <option value="8*18(도금볼트)">8*18(도금볼트)</option>
-                                <option value="8*20 BOLT">8*20 BOLT</option>
-                                <option value="8*25 BOLT">8*25 BOLT</option>
-                                <option value="8*45 BOLT">8*45 BOLT</option>
-                                <option value="8*50 BOLT">8*50 BOLT</option>
-                                <option value="수밀볼트">수밀볼트</option>
-                                <option value="M10 NUT">M10 NUT</option>
-                                <option value="M12 NUT">M12 NUT</option>
-                                <option value="M6 NUT">M6 NUT</option>
-                                <option value="M6(T-NUT)">M6(T-NUT)</option>
-                                <option value="M8 NUT">M8 NUT</option>
-                                <option value="M8*21 W/D PIN">M8*21 W/D PIN</option>
-                                <option value="RING NUT">RING NUT</option>
-                                <option value="SPOT">SPOT</option>
-
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 200px">지시수량(EA)</td>
-                        <td><input type="text" id="phone-save" class="data" autocomplete="off"
-                                style="width:auto; border:1px solid silver;"></td>
-                    </tr>
 
                 </table>
             </div>
@@ -208,69 +165,220 @@
     </div>
 
     <!-- 수정창 -->
-    <div id="popupOverlay1" style="display: none;">
-        <div id="popupContent">
+    <div id="popupOverlay1" style="display: none; ">
+        <div id="popupContent" style="width: 40%;">
             <div class="form-group">
                 <table style="width:100%;">
                     <tr>
-                        <td colspan="2" class="popup_title">거래처 정보 수정</td>
+                        <td colspan="2" class="popup_title">PW 작업지시</td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">거래처코드</td>
-                        <td><input type="text" id="accountcode-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">고객사</td>
+                        <td><input type="text" id="customer-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">사업자등록번호</td>
-                        <td><input type="text" id="number-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">차종</td>
+                        <td><input type="text" id="cartype-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">거래처명</td>
-                        <td><input type="text" id="accountname-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">품번</td>
+                        <td><input type="text" id="productnumber-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">대표자명</td>
-                        <td><input type="text" id="representativename-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">구분</td>
+                        <td><input type="text" id="sub-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">전화번호</td>
-                        <td><input type="text" id="phone-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">품명</td>
+                        <td><input type="text" id="productname-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">Fax</td>
-                        <td><input type="text" id="fax-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">설비</td>
+                        <td><input type="text" id="marchine-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">모바일</td>
-                        <td><input type="text" id="mobile-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">타점수</td>
+                        <td><input type="text" id="touch-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">E-mail</td>
-                        <td><input type="text" id="email-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">H/W부번</td>
+                        <td><input type="text" id="sanum-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">주소</td>
-                        <td><input type="text" id="adress-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">H/W품명</td>
+                        <td><input type="text" id="sapum-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
-                        <td style="width: 200px">기타</td>
-                        <td><input type="text" id="etc-edit" class="data" autocomplete="off"
+                        <td style="width: 200px">H/W개수</td>
+                        <td><input type="text" id="sacount-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">통전</td>
+                        <td><input type="text" id="a-save" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">전류</td>
+                        <td><input type="text" id="b-save" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">초기가압</td>
+                        <td><input type="text" id="c-save" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">유지</td>
+                        <td><input type="text" id="d-save" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">지시수량</td>
+                        <td><input type="text" id="count-save" class="data" autocomplete="off"
+                                oninput="validateNumberInput(this)" style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">작업자</td>
+                        <td>
+                            <select id="people-save" style="width: 150px" class="form-select">
+                                <option value=""></option>
+                                <option value="바룰">바룰</option>
+                                <option value="김경분">김경분</option>
+                                <option value="숀조이">숀조이</option>
+                                <option value="술리스툐">술리스툐</option>
+                                <option value="알리">알리</option>
+                                <option value="사리">사리</option>
+                                <option value="유광일">유광일</option>
+                                <option value="유습">유습</option>
+                                <option value="소전">소전</option>
+                                <option value="파이살">파이살</option>
+                            </select>
+                        </td>
                     </tr>
 
                 </table>
             </div>
             <button id="popupCloseBtn-edit-close">취소</button>
-            <button id="popupCloseBtn-edit" onclick="Dataedit()">수정</button>
+            <button id="popupCloseBtn-edit" onclick="Dataedit()">저장</button>
             <input type="text" id="id-edit" style="visibility: hidden; width: 10px; float: right;" autocomplete="off">
+        </div>
+    </div>
+    <div id="popupOverlay3" style="display: none; ">
+        <div id="popupContent" style="width: 40%;">
+            <div class="form-group">
+                <table style="width:100%;">
+                    <tr>
+                        <td colspan="2" class="popup_title">PW 작업지시 수정</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">고객사</td>
+                        <td><input type="text" id="customer-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">차종</td>
+                        <td><input type="text" id="cartype-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">품번</td>
+                        <td><input type="text" id="productnumber-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">구분</td>
+                        <td><input type="text" id="sub-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">품명</td>
+                        <td><input type="text" id="productname-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">설비</td>
+                        <td><input type="text" id="marchine-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">타점수</td>
+                        <td><input type="text" id="touch-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">H/W부번</td>
+                        <td><input type="text" id="sanum-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">H/W품명</td>
+                        <td><input type="text" id="sapum-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">H/W개수</td>
+                        <td><input type="text" id="sacount-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">통전</td>
+                        <td><input type="text" id="a-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">전류</td>
+                        <td><input type="text" id="b-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">초기가압</td>
+                        <td><input type="text" id="c-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">유지</td>
+                        <td><input type="text" id="d-edit" class="data" autocomplete="off" readonly
+                                style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">지시수량</td>
+                        <td><input type="text" id="count-edit" class="data" autocomplete="off"
+                                oninput="validateNumberInput(this)" style="width:auto; border:1px solid silver;"></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 200px">작업자</td>
+                        <td>
+                            <select id="people-edit" style="width: 150px" class="form-select">
+                                <option value=""></option>
+                                <option value="바룰">바룰</option>
+                                <option value="김경분">김경분</option>
+                                <option value="숀조이">숀조이</option>
+                                <option value="술리스툐">술리스툐</option>
+                                <option value="알리">알리</option>
+                                <option value="사리">사리</option>
+                                <option value="유광일">유광일</option>
+                                <option value="유습">유습</option>
+                                <option value="소전">소전</option>
+                                <option value="파이살">파이살</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <button id="popupCloseBtn-pwedit-close">취소</button>
+            <button id="popupCloseBtn-pwedit" onclick="PWedit()">수정</button>
+            <input type="text" id="id-edit1" style="visibility: hidden; width: 10px; float: right;" autocomplete="off">
         </div>
     </div>
 
@@ -282,7 +390,7 @@
                 <table style="width:100%;">
 
                     <tr>
-                        <td style="width: 100%;" class="popup_title">거래처 정보를 삭제하시겠습니까?</td>
+                        <td style="width: 100%;" class="popup_title">지시 정보를 삭제하시겠습니까?</td>
                     </tr>
 
                 </table>
@@ -305,7 +413,67 @@
         $(document).ready(function () {
             showLoading()
             load()
+            const selectElement = document.getElementById("cartype-select");
 
+            if (selectElement) {
+                // 첫 번째 셀렉트 박스 데이터 로딩
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/selectcartype',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        for (let i = 0; i < result.length; i++) {
+                            const option = document.createElement("option");
+                            option.text = result[i].cartype;
+                            option.value = result[i].cartype;
+                            selectElement.add(option);
+                        }
+                    },
+                });
+            }
+            $('#pwdatatable').on('click', '.data-edit', function () {
+                var str = "";
+                var tdArr = new Array();// 배열 선언            
+                var checkBtn = $(this);
+
+                var tr = checkBtn.parent().parent();
+                var td = tr.children();
+
+                var customer = td.eq(0).text();
+                var cartype = td.eq(1).text();
+                var productnumber = td.eq(2).text();
+                var sub = td.eq(3).text();
+                var productname = td.eq(4).text();
+                var marchine = td.eq(5).text();
+                var touch = td.eq(6).text();
+                var sanum = td.eq(7).text();
+                var sapum = td.eq(8).text();
+                var sacount = td.eq(9).text();
+                var a = td.eq(10).text();
+                var b = td.eq(11).text();
+                var c = td.eq(12).text();
+                var d = td.eq(13).text();
+                $('#customer-save').val(customer)
+                $('#cartype-save').val(cartype)
+                $('#productnumber-save').val(productnumber)
+                $('#sub-save').val(sub)
+                $('#productname-save').val(productname)
+                $('#marchine-save').val(marchine)
+                $('#touch-save').val(touch)
+                $('#sanum-save').val(sanum)
+                $('#sapum-save').val(sapum)
+                $('#sacount-save').val(sacount)
+                $('#a-save').val(a)
+                $('#b-save').val(b)
+                $('#c-save').val(c)
+                $('#d-save').val(d)
+                $('#count-save').val('')
+                $('#people-save').val('')
+                $('#popupOverlay1').fadeIn();
+                $('#count-save').focus()
+
+            });
             $('#datatable').on('click', '.data-edit', function () {
                 var str = "";
                 var tdArr = new Array();// 배열 선언            
@@ -314,31 +482,40 @@
                 var tr = checkBtn.parent().parent();
                 var td = tr.children();
 
-                var accountcode = td.eq(0).text();
-                var number = td.eq(1).text();
-                var accountname = td.eq(2).text();
-                var representativename = td.eq(3).text();
-                var phone = td.eq(4).text();
-                var fax = td.eq(5).text();
-                var mobile = td.eq(6).text();
-                var email = td.eq(7).text();
-                var adress = td.eq(8).text();
-                var etc = td.eq(9).text();
-                var id = td.eq(12).text();
-                $('#accountcode-edit').val(accountcode)
-                $('#accountname-edit').val(accountname)
-                $('#representativename-edit').val(representativename)
-                $('#phone-edit').val(phone)
-                $('#adress-edit').val(adress)
-                $('#number-edit').val(number)
-                $('#mobile-edit').val(mobile)
-                $('#fax-edit').val(fax)
-                $('#email-edit').val(email)
-                $('#adress-edit').val(adress)
-                $('#etc-edit').val(etc)
-                $('#id-edit').val(id)
-                $('#popupOverlay1').fadeIn();
-                $('#accountcode-edit').focus()
+                var customer = td.eq(1).text();
+                var cartype = td.eq(2).text();
+                var productnumber = td.eq(3).text();
+                var sub = td.eq(4).text();
+                var productname = td.eq(5).text();
+                var marchine = td.eq(6).text();
+                var touch = td.eq(7).text();
+                var sanum = td.eq(8).text();
+                var sapum = td.eq(9).text();
+                var sacount = td.eq(10).text();
+                var a = td.eq(11).text();
+                var b = td.eq(12).text();
+                var c = td.eq(13).text();
+                var d = td.eq(14).text();
+                var id = td.eq(20).text();
+                $('#customer-edit').val(customer)
+                $('#cartype-edit').val(cartype)
+                $('#productnumber-edit').val(productnumber)
+                $('#sub-edit').val(sub)
+                $('#productname-edit').val(productname)
+                $('#marchine-edit').val(marchine)
+                $('#touch-edit').val(touch)
+                $('#sanum-edit').val(sanum)
+                $('#sapum-edit').val(sapum)
+                $('#sacount-edit').val(sacount)
+                $('#a-edit').val(a)
+                $('#b-edit').val(b)
+                $('#c-edit').val(c)
+                $('#d-edit').val(d)
+                $('#id-edit1').val(id)
+                $('#count-edit').val('')
+                $('#people-edit').val('')
+                $('#popupOverlay3').fadeIn();
+                $('#count-edit').focus()
 
             });
             $('#datatable').on('click', '.data-delete', function () {
@@ -350,7 +527,7 @@
                 var td = tr.children();
 
 
-                var id = td.eq(12).text();
+                var id = td.eq(20).text();
                 $('#id-edit').val(id)
                 $('#popupOverlay2').fadeIn();
             });
@@ -364,6 +541,9 @@
             });
             $('#popupCloseBtn-delete-close').click(function () {
                 $('#popupOverlay2').fadeOut();
+            });
+            $('#popupCloseBtn-pwedit-close').click(function () {
+                $('#popupOverlay3').fadeOut();
             });
 
 
@@ -461,7 +641,7 @@
 
         function New() {
             // $('#cartype-selct').val('')
-         
+
 
 
 
@@ -527,35 +707,94 @@
                 return false;
             }
         }
+        function PWedit() {
+            if (confirm("PW 정보 수정 하시겠습니까??") == true) {
 
-        function Dataedit() {
-            if (confirm("고객사 정보를 수정 하시겠습니까??") == true) {
+
+                var id = $('#id-edit1').val();
+                var people = $('#people-edit').val();
+                var count = $('#count-edit').val();
+              
 
                 $.ajax({
                     type: 'POST',
-                    url: server + '/api/accountupdatedata',
+                    url: server + '/api/updatepwjisi',
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify({
 
-                        id: $('#id-edit').val(),
-                        accountcode: $('#accountcode-edit').val(),
-                        accountname: $('#accountname-edit').val(),
-                        representativename: $('#representativename-edit').val(),
-                        phone: $('#phone-edit').val(),
-                        adress: $('#adress-edit').val(),
-                        number: $('#number-edit').val(),
-                        mobile: $('#mobile-edit').val(),
-                        fax: $('#fax-edit').val(),
-                        email: $('#email-edit').val(),
-                        etc: $('#etc-edit').val()
+                        "people": people,
+                        "count": count,
+                        "id": id
+                      
+                    }),
+                    success: function (result) {
 
+
+                    }
+                })
+
+                $('#popupOverlay3').fadeOut();
+                setTimeout(function () {
+                    load()
+                }, 50); // 3초 후에 알림을 사라지게 설정
+                var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">수정 완료</span></div>');
+                $('body').append(notification);
+                setTimeout(function () {
+                    notification.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, 3000);
+            } else {
+                return false;
+            }
+        }
+
+        function Dataedit() {
+            if (confirm("P.W지시를 등록 하시겠습니까??") == true) {
+                var today = new Date();
+
+                // 년, 월, 일을 가져오기
+                var year = today.getFullYear();
+                var month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 문자열로 변환
+                var day = today.getDate().toString().padStart(2, '0'); // 일자를 문자열로 변환
+
+                // 날짜를 문자열로 조합
+                var dateString = year + '-' + month + '-' + day;
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/insertpwjisi',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+
+
+                        plandate: dateString,
+                        customer: $('#customer-save').val(),
+                        cartype: $('#cartype-save').val(),
+                        productnumber: $('#productnumber-save').val(),
+                        sub: $('#sub-save').val(),
+                        productname: $('#productname-save').val(),
+                        marchine: $('#marchine-save').val(),
+                        touch: $('#touch-save').val(),
+                        sanum: $('#sanum-save').val(),
+                        sapum: $('#sapum-save').val(),
+                        sacount: $('#sacount-save').val(),
+                        a: $('#a-save').val(),
+                        b: $('#b-save').val(),
+                        c: $('#c-save').val(),
+                        d: $('#d-save').val(),
+                        count: $('#count-save').val(),
+                        people: $('#people-save').val(),
+                        status: '대기중',
+                        finalcount: '0',
+                        starttime: '',
+                        finaltime: '',
 
 
 
                     }),
                     success: function (result) {
-                        console.log(result)
                     }
                 })
 
@@ -563,7 +802,7 @@
                 setTimeout(function () {
                     load()
                 }, 50); // 3초 후에 알림을 사라지게 설정
-                var notification = $('<div class="notification"><img src="/img/테크온로고.PNG" alt="Notification Icon"><span class="notification-message" style="color:navy;">거래처 수정 완료</span></div>');
+                var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">작업지시 완료</span></div>');
                 $('body').append(notification);
                 setTimeout(function () {
                     notification.fadeOut(function () {
@@ -579,7 +818,7 @@
         function Datadelte() {
             $.ajax({
                 type: 'POST',
-                url: server + '/api/accountinfodeletedata',
+                url: server + '/api/deletepwjisi',
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify({
@@ -605,7 +844,7 @@
         }
 
         function load() {
-            $('#Datatbody').empty()
+            $('#Datatbody').empty();
             $.ajax({
                 type: 'POST',
                 url: server + '/api/selectpwplan',
@@ -617,32 +856,45 @@
                         tableFoot.text('총 데이터 개수: 0');
                     } else {
                         for (var i = 0; i < data.length; i++) {
+                            var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : '';
+                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : '';
+                            var blinkingClass = data[i].status === '생산중' ? 'blinking' : '';
 
                             $('#datatable').append(
-                                '<tr>' +
-                                '<td>' + data[i].plandate + '</td>' +
-                                '<td>' + data[i].cartype + '</td>' +
-                                '<td>' + data[i].productnumber + '</td>' +
-                                '<td>' + data[i].productname + '</td>' +
-                                '<td>' + data[i].marchine + '</td>' +
-                                '<td>' + data[i].hw + '</td>' +
-                                '<td>' + data[i].people + '</td>' +
-                                '<td>' + data[i].count + '</td>' +
-
+                                '<tr >' +
+                                '<td style="font-weight:bold;">' + data[i].plandate + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].customer + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].cartype + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].productnumber + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].sub + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].productname + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].marchine + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].touch + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].sanum + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].sapum + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].sacount + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].a + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].b + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].c + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].d + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].count + '</td>' +
+                                '<td style="font-weight:bold;">' + data[i].people + '</td>' +
+                                '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + data[i].status + '</td>' +
                                 '<td><a class="data-edit" style="cursor:pointer; color:navy;">수정</a></td>' +
                                 '<td><a class="data-delete"style="cursor:pointer; color:red;">삭제</a></td>' +
                                 '<td id="data-id">' + data[i].id + '</td>' +
                                 '</tr>'
-
                             )
                             $("td#data-id").hide();
-
                         }
                     }
+
+                    // 생산중인 행에 대해 깜빡이는 효과
+                    setInterval(function () {
+                        $('.blinking').toggleClass('blink');
+                    }, 500);
                 }
-
-
-            })
+            });
         }
 
         function marchinegroup() {
@@ -673,31 +925,62 @@
                         for (var machine in machineData) {
                             var machineEntries = machineData[machine];
                             $('#datatable').append(
-                                '<tr class="machine-row" style="background-color:rgb(230, 226, 226); color:white;"><td colspan="10"><strong>' + machine + '</strong></td></tr>'
+                                '<tr class="machine-row" style="background-color: rgb(230, 226, 226); color: white;">' +
+                                '<td colspan="20"><strong>' + machine + '</strong></td>' +
+                                '</tr>'
                             );
+
                             for (var j = 0; j < machineEntries.length; j++) {
-                                $('#datatable').append(
-                                    '<tr>' +
-                                    '<td>' + machineEntries[j].plandate + '</td>' +
-                                    '<td>' + machineEntries[j].cartype + '</td>' +
-                                    '<td>' + machineEntries[j].productnumber + '</td>' +
-                                    '<td>' + machineEntries[j].productname + '</td>' +
-                                    '<td>' + machineEntries[j].marchine + '</td>' +
-                                    '<td>' + machineEntries[j].hw + '</td>' +
-                                    '<td>' + machineEntries[j].people + '</td>' +
-                                    '<td>' + machineEntries[j].count + '</td>' +
-                                    '<td><a class="data-edit" style="cursor:pointer; color:navy;">수정</a></td>' +
-                                    '<td><a class="data-delete" style="cursor:pointer; color:red;">삭제</a></td>' +
-                                    '<td id="data-id">' + machineEntries[j].id + '</td>' +
-                                    '</tr>'
-                                );
-                                $("td#data-id").hide();
+                                var status = machineEntries[j].status; // Ensure status is accessible here
+                                var statusColor = status === '대기중' ? 'lime' : status === '생산중' ? 'blue' : '';
+                                var statusTextColor = status === '대기중' ? 'black' : status === '생산중' ? 'white' : '';
+
+                                var row = $('<tr></tr>');
+                                row.append(createCell(machineEntries[j].plandate));
+                                row.append(createCell(machineEntries[j].customer));
+                                row.append(createCell(machineEntries[j].cartype));
+                                row.append(createCell(machineEntries[j].productnumber));
+                                row.append(createCell(machineEntries[j].sub));
+                                row.append(createCell(machineEntries[j].productname));
+                                row.append(createCell(machineEntries[j].marchine));
+                                row.append(createCell(machineEntries[j].touch));
+                                row.append(createCell(machineEntries[j].sanum));
+                                row.append(createCell(machineEntries[j].sapum));
+                                row.append(createCell(machineEntries[j].sacount));
+                                row.append(createCell(machineEntries[j].a));
+                                row.append(createCell(machineEntries[j].b));
+                                row.append(createCell(machineEntries[j].c));
+                                row.append(createCell(machineEntries[j].d));
+                                row.append(createCell(machineEntries[j].count));
+                                row.append(createCell(machineEntries[j].people));
+                                row.append(createStatusCell(statusTextColor, statusColor, status));
+                                row.append(createCellLink('수정', 'navy', 'data-edit'));
+                                row.append(createCellLink('삭제', 'red', 'data-delete'));
+                              
+
+                                $('#datatable').append(row);
                             }
+                           
                         }
                     }
                 }
             });
+
+            function createCell(value) {
+                return '<td>' + value + '</td>';
+            }
+
+            function createStatusCell(textColor, bgColor, status) {
+                return '<td style="color: ' + textColor + '; background-color: ' + bgColor + ';">' + status + '</td>';
+            }
+
+            function createCellLink(text, color, className) {
+                return '<td><a class="' + className + '" style="cursor: pointer; color: ' + color + ';">' + text + '</a></td>';
+            }
         }
+
+
+
         function people() {
             $('#Datatbody').empty();
             $.ajax({
@@ -754,67 +1037,74 @@
 
 
     </script>
-
-
-    <!-- 다음 스크립트를 사용하여 특정 열의 데이터를 엑셀 파일로 저장합니다. -->
     <script>
 
+        var cartypeSelect = document.getElementById('cartype-select');
+        cartypeSelect.addEventListener('change', function () {
+            var selectedValue = cartypeSelect.value;
 
-        const selectElement1 = document.getElementById("cartype-select");
-        const selectElement = document.getElementById("carnumber-select");
-
-        if (selectElement1) {
-            // 첫 번째 셀렉트 박스 데이터 로딩
             $.ajax({
                 type: 'POST',
-                url: server + '/api/selectcartype',
-                dataType: 'json',
-                contentType: 'application/json',
-                success: function (result) {
-                    for (let i = 0; i < result.length; i++) {
-                        const option = document.createElement("option");
-                        option.text = result[i].cartype;
-                        option.value = result[i].cartype;
-                        selectElement1.add(option);
-                    }
-                },
-            });
-        }
-        function loadCarNumbers() {
-            $.ajax({
-                type: 'POST',
-                url: server + '/api/selectcarnumber',
+                url: server + '/api/pwmainselect',
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    "cartype": $('#cartype-select').val()
+                    cartype: selectedValue
+
                 }),
                 success: function (result) {
-                    // 기존 옵션 제거
-                    selectElement.innerHTML = '';
-
-                    // 새로운 옵션 추가
-                    for (let i = 0; i < result.length; i++) {
-                        const option = document.createElement("option");
-                        option.text = result[i].productnumber;
-                        option.value = result[i].productnumber;
-                        selectElement.add(option);
+                    var tableBody = $('#pwdatatabletbody');
+                    tableBody.empty()
+                    if (result.length === 0) {
+                        // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
+                        tableFoot.text('총 데이터 개수: 0');
+                    } else {
+                        for (var i = 0; i < result.length; i++) {
+                            tableBody.append(
+                                '<tr>' +
+                                '<td>' + result[i].customer + '</td>' +
+                                '<td>' + result[i].cartype + '</td>' +
+                                '<td>' + result[i].productnumber + '</td>' +
+                                '<td>' + result[i].sub + '</td>' +
+                                '<td>' + result[i].productname + '</td>' +
+                                '<td>' + result[i].marchine + '</td>' +
+                                '<td>' + result[i].touch + '</td>' +
+                                '<td>' + result[i].sanum + '</td>' +
+                                '<td>' + result[i].sapum + '</td>' +
+                                '<td>' + result[i].sacount + '</td>' +
+                                '<td>' + result[i].a + '</td>' +
+                                '<td>' + result[i].b + '</td>' +
+                                '<td>' + result[i].c + '</td>' +
+                                '<td>' + result[i].d + '</td>' +
+                                '<td><a class="data-edit" style="cursor:pointer; color:blue;">선택</a></td>' +
+                                '</tr>'
+                            );
+                        }
                     }
-                },
+
+                    var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span style="color:navy;" class="notification-message">조회 완료</span></div>');
+                    $('body').append(notification);
+                    setTimeout(function () {
+                        notification.fadeOut(function () {
+                            $(this).remove();
+                        });
+                    }, 3000);
+                }
             });
-        }
-
-
-
-        // 첫 번째 셀렉트 박스 값이 변경될 때마다 두 번째 셀렉트 박스 데이터 업데이트
-        selectElement1.addEventListener('change', function () {
-            loadCarNumbers();
         });
+        function validateNumberInput(input) {
+            // 입력된 값에서 숫자와 소수점 이외의 문자 제거
+            input.value = input.value.replace(/[^0-9.]/g, '');
 
-
-
-
+            // 여러 개의 소수점이 있는 경우 첫 번째 소수점 이후의 모든 소수점 제거
+            var dotIndex = input.value.indexOf('.');
+            if (dotIndex !== -1) {
+                var remainingDots = input.value.substring(dotIndex + 1).replace(/\./g, '');
+                input.value = input.value.substring(0, dotIndex + 1) + remainingDots;
+            }
+        }
     </script>
+
 
 
 </body>
