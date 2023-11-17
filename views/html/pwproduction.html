@@ -107,6 +107,7 @@
                 <td style=" padding-right: 10px;"><input type="date" id="date2" class="form-input"
                         style="font-size: 15px; font-weight: bold;"></td>
                 <td><button class="styled-button" onclick="peopleload()">조회</button></td>
+                <td><button class="styled-button" onclick="peopleload()">!</button></td>
 
             </tr>
         </table>
@@ -657,6 +658,27 @@
             $('#accountcode-save').focus()
 
         }
+        // Define a function to load data
+      
+
+        // Set an interval to call newload every 30 seconds (30000 milliseconds)
+        var intervalId = setInterval(newload, 30000);
+
+        // To stop the interval after a specific number of iterations (e.g., 10 times), you can use a counter
+        var counter = 0;
+        var maxIterations = 10;
+
+        // Set an interval with a counter
+        var intervalIdWithCounter = setInterval(function () {
+            peopleload();
+            counter++;
+
+            // Check if the counter reaches the maximum number of iterations
+            if (counter >= maxIterations) {
+                // Stop the interval
+                clearInterval(intervalIdWithCounter);
+            }
+        }, 30000);
 
         function Datasave() {
             if (confirm("고객사 정보를 등록 하시겠습니까??") == true) {

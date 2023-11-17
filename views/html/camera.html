@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내장 카메라 실행</title>
+</head>
+<body>
+
+<button id="startCamera">카메라 실행</button>
+<button id="captureScreen">화면 캡처</button>
+
+<video id="cameraFeed" width="640" height="480" style="display:none;"></video>
+<canvas id="cameraCanvas" width="640" height="480"></canvas>
+
+<script>
+    document.getElementById('startCamera').addEventListener('click', startCamera);
+    document.getElementById('captureScreen').addEventListener('click', captureScreen);
+
+    let videoElement = document.getElementById('cameraFeed');
+    let canvasElement = document.getElementById('cameraCanvas');
+    let canvasContext = canvasElement.getContext('2d');
+
+    
+</script>
+
+</body>
+</html>

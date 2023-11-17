@@ -59,6 +59,7 @@ body {
     left: 0;
     top: 0;
     z-index: 10;
+    cursor: pointer;
 }
 
 .data-table {
@@ -501,7 +502,7 @@ td:nth-child(2) {
 
 
 #popupContent .form-group td {
-    background-color: white;
+    /* background-color: white; */
     color: rgb(113, 113, 122);
     height: 40px;
     font-size: 19px;

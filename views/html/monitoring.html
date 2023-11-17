@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>거래처정보</title>
+    <title>PW모니터링</title>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../css/main.css">
@@ -18,12 +18,6 @@
         /* 최대 높이를 60%로 설정 */
         overflow-y: auto;
         /* 세로 스크롤만 표시되도록 설정 */
-    }
-
-    #pwdatatabletbody tr:hover {
-        background-color: #d4d1d1;
-        /* Change this to the desired background color */
-        cursor: pointer;
     }
 
     #datatable-container {
@@ -58,11 +52,48 @@
         background-color: rgb(230, 226, 226);
         /* 원하는 배경색으로 변경 */
     }
+
+    .main_header {
+        background-color: #3498db;
+        /* Header background color */
+        color: #fff;
+        /* Text color */
+        padding: 10px;
+        /* Padding around the content */
+        text-align: center;
+        /* Center-align text */
+        font-size: 24px;
+        /* Font size */
+        font-weight: bold;
+        /* Font weight */
+        text-decoration: none;
+        /* Remove default text underline */
+        display: flex;
+        /* Use flexbox for better layout control */
+        justify-content: center;
+        /* Center content horizontally */
+        align-items: center;
+        /* Center content vertically */
+    }
+
+    .main_header a {
+        color: #fff;
+        /* Text color for the link */
+        text-decoration: none;
+        /* Remove default text underline for the link */
+    }
+
+    /* Optional: Add a hover effect for the link */
+    .main_header a:hover {
+        text-decoration: underline;
+        /* Underline the link on hover */
+    }
 </style>
 
 <body>
     <div class="main_header">
-        <a>P.W 작업지시</a>
+        <img src="/img/logo.png" width="100" height="50">
+        <a style="font-size:30px;">P.W Production Monitoring</a>
     </div>
 
 
@@ -70,20 +101,7 @@
         <img src="/img/logo.png" alt="로딩 이미지" class="loadingImage">
 
     </div>
-    <div class="search_form-group">
-        <table class="search_div" style="width: 100%;">
-            <tr>
-                <td class="main_header_search">검색</td>
-                <td><input type="text" id="myInput" onclick="search()" class="data" autocomplete="off"
-                        style="width: auto; border: 1px solid silver; font-size: 18px;" placeholder="검색내용을 입력하세요."></td>
-                <td style="width: 5%;"><input type="button" onclick="New()" value="신규" class="styled-button"></td>
-                <!-- <td style="width: 5%;"><input type="button" value="작업자" class="styled-button2" onclick="people()"></td> -->
-                <td style="width: 5%;"><input type="button" value="설비" class="styled-button2" onclick="marchinegroup()">
-                </td>
-                <td style="width: 5%;"><input type="button" value="일반" class="styled-button2" onclick="load()"></td>
-            </tr>
-        </table>
-    </div>
+
 
 
     <div id="datatable-container">
@@ -91,26 +109,25 @@
         <table class="styled-table" id="datatable">
             <thead>
                 <tr>
-                    <th style="width: auto;">작업지시날짜</th>
-                    <th style="width: auto;">고객사</th>
-                    <th style="width: auto;">차종</th>
-                    <th style="width: auto;">품번</th>
-                    <th style="width: auto;">구분</th>
-                    <th style="width: auto;">품명</th>
-                    <th style="width: auto;">설비명</th>
-                    <th style="width: auto;">타점수</th>
-                    <th style="width: auto;">HW부번</th>
-                    <th style="width: auto;">HW품명</th>
-                    <th style="width: auto;">HW수량</th>
-                    <th style="width: auto;">통전</th>
-                    <th style="width: auto;">전류</th>
-                    <th style="width: auto;">초기가압</th>
-                    <th style="width: auto;">유지</th>
-                    <th style="width: auto;">지시수량</th>
-                    <th style="width: auto;">작업자</th>
-                    <th style="width:auto;">상태</th>
-                    <th style="width:80px;"></th>
-                    <th style="width:80px;"></th>
+                    <th style="width:auto; font-weight: bold;">작업지시날짜</th>
+                    <th style="width:auto; font-weight: bold;">고객사</th>
+                    <th style="width:auto; font-weight: bold;">차종</th>
+                    <th style="width:auto; font-weight: bold;">품번</th>
+                    <th style="width:auto; font-weight: bold;">구분</th>
+                    <th style="width:auto; font-weight: bold;">품명</th>
+                    <th style="width:auto; font-weight: bold;">설비명</th>
+                    <th style="width:auto; font-weight: bold;">타점수</th>
+                    <th style="width:auto; font-weight: bold;">HW부번</th>
+                    <th style="width:auto; font-weight: bold;">HW품명</th>
+                    <th style="width:auto; font-weight: bold;">HW수량</th>
+                    <th style="width:auto; font-weight: bold;">통전</th>
+                    <th style="width:auto; font-weight: bold;">전류</th>
+                    <th style="width:auto; font-weight: bold;">초기가압</th>
+                    <th style="width:auto; font-weight: bold;">유지</th>
+                    <th style="width:auto; font-weight: bold;">지시수량</th>
+                    <th style="width:auto; font-weight: bold;">작업자</th>
+                    <th style="width:auto; font-weight: bold;">상태</th>
+
                 </tr>
             </thead>
             <tbody id="Datatbody">
@@ -124,7 +141,7 @@
 
         <div id="popupContent" style="width:90%;  max-height: 80%; overflow-y: auto;">
             <div class="form-group">
-                <table style="width:100%;" class="styled-table" id="datatable">
+                <table style="width:100%;" class="popuptable">
                     <tr>
                         <td colspan="2" class="popup_title">작업지시추가</td>
                     </tr>
@@ -166,7 +183,7 @@
                 </table>
             </div>
             <button id="popupCloseBtn-save-close">취소</button>
-            <!-- <button id="popupCloseBtn-save" onclick="Datasave()">저장</button> -->
+            <button id="popupCloseBtn-save" onclick="Datasave()">저장</button>
         </div>
     </div>
 
@@ -205,7 +222,7 @@
                     </tr>
                     <tr>
                         <td style="width: 200px">설비</td>
-                        <td><input type="text" id="marchine-save" class="data" autocomplete="off"
+                        <td><input type="text" id="marchine-save" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
@@ -313,7 +330,7 @@
                     </tr>
                     <tr>
                         <td style="width: 200px">설비</td>
-                        <td><input type="text" id="marchine-edit" class="data" autocomplete="off"
+                        <td><input type="text" id="marchine-edit" class="data" autocomplete="off" readonly
                                 style="width:auto; border:1px solid silver;"></td>
                     </tr>
                     <tr>
@@ -417,6 +434,11 @@
             server = 'http://gmauto.xyz';
         }
         $(document).ready(function () {
+            setInterval(function () {
+                if (newWindow && !newWindow.closed) {
+                    newWindow.location.reload(true);
+                }
+            }, 10000);
             showLoading()
             load()
             const selectElement = document.getElementById("cartype-select");
@@ -714,132 +736,110 @@
             }
         }
         function PWedit() {
-            var peopleInput = document.getElementById('people-edit').value; // Change 'people-input' to the actual ID of the input field
-            var countInput = document.getElementById('count-edit').value; // Change 'count-input' to the actual ID of the input field
-            var marchineInput = document.getElementById('marchine-edit').value; // Change 'count-input' to the actual ID of the input field
+            if (confirm("PW 정보 수정 하시겠습니까??") == true) {
 
-            if (peopleInput.trim() === '' || countInput.trim() === '' || marchineInput.trim() === '') {
-                alert('공란 확인 바랍니다.');
 
+                var id = $('#id-edit1').val();
+                var people = $('#people-edit').val();
+                var count = $('#count-edit').val();
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/updatepwjisi',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+
+                        "people": people,
+                        "count": count,
+                        "id": id
+
+                    }),
+                    success: function (result) {
+
+
+                    }
+                })
+
+                $('#popupOverlay3').fadeOut();
+                setTimeout(function () {
+                    load()
+                }, 50); // 3초 후에 알림을 사라지게 설정
+                var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">수정 완료</span></div>');
+                $('body').append(notification);
+                setTimeout(function () {
+                    notification.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, 3000);
             } else {
-                if (confirm("PW 정보 수정 하시겠습니까??") == true) {
-
-
-                    var id = $('#id-edit1').val();
-                    var people = $('#people-edit').val();
-                    var count = $('#count-edit').val();
-                    var marchine = $('#marchine-edit').val();
-
-
-                    $.ajax({
-                        type: 'POST',
-                        url: server + '/api/updatepwjisi',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-
-                            "people": people,
-                            "count": count,
-                            "id": id,
-                            "marchine": marchine
-
-                        }),
-                        success: function (result) {
-
-
-                        }
-                    })
-
-                    $('#popupOverlay3').fadeOut();
-                    setTimeout(function () {
-                        load()
-                    }, 50); // 3초 후에 알림을 사라지게 설정
-                    var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">수정 완료</span></div>');
-                    $('body').append(notification);
-                    setTimeout(function () {
-                        notification.fadeOut(function () {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                } else {
-                    return false;
-                }
+                return false;
             }
-
         }
 
         function Dataedit() {
-            var peopleInput = document.getElementById('people-save').value; // Change 'people-input' to the actual ID of the input field
-            var countInput = document.getElementById('count-save').value; // Change 'count-input' to the actual ID of the input field
-            var marchineInput = document.getElementById('marchine-save').value; // Change 'count-input' to the actual ID of the input field
+            if (confirm("P.W지시를 등록 하시겠습니까??") == true) {
+                var today = new Date();
 
-            if (peopleInput.trim() === '' || countInput.trim() === '' || marchineInput.trim() === '') {
-                alert('공란 확인 바랍니다.');
-                // You can customize the alert message as needed
+                // 년, 월, 일을 가져오기
+                var year = today.getFullYear();
+                var month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 문자열로 변환
+                var day = today.getDate().toString().padStart(2, '0'); // 일자를 문자열로 변환
+
+                // 날짜를 문자열로 조합
+                var dateString = year + '-' + month + '-' + day;
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/insertpwjisi',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+
+
+                        plandate: dateString,
+                        customer: $('#customer-save').val(),
+                        cartype: $('#cartype-save').val(),
+                        productnumber: $('#productnumber-save').val(),
+                        sub: $('#sub-save').val(),
+                        productname: $('#productname-save').val(),
+                        marchine: $('#marchine-save').val(),
+                        touch: $('#touch-save').val(),
+                        sanum: $('#sanum-save').val(),
+                        sapum: $('#sapum-save').val(),
+                        sacount: $('#sacount-save').val(),
+                        a: $('#a-save').val(),
+                        b: $('#b-save').val(),
+                        c: $('#c-save').val(),
+                        d: $('#d-save').val(),
+                        count: $('#count-save').val(),
+                        people: $('#people-save').val(),
+                        status: '대기중',
+                        finalcount: '0',
+                        starttime: '',
+                        finaltime: '',
+
+
+
+                    }),
+                    success: function (result) {
+                    }
+                })
+
+                $('#popupOverlay1').fadeOut();
+                setTimeout(function () {
+                    load()
+                }, 50); // 3초 후에 알림을 사라지게 설정
+                var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">작업지시 완료</span></div>');
+                $('body').append(notification);
+                setTimeout(function () {
+                    notification.fadeOut(function () {
+                        $(this).remove();
+                    });
+                }, 3000);
             } else {
-                if (confirm("P.W지시를 등록 하시겠습니까??") == true) {
-                    var today = new Date();
-
-                    // 년, 월, 일을 가져오기
-                    var year = today.getFullYear();
-                    var month = (today.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더하고, 문자열로 변환
-                    var day = today.getDate().toString().padStart(2, '0'); // 일자를 문자열로 변환
-
-                    // 날짜를 문자열로 조합
-                    var dateString = year + '-' + month + '-' + day;
-                    $.ajax({
-                        type: 'POST',
-                        url: server + '/api/insertpwjisi',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-
-
-                            plandate: dateString,
-                            customer: $('#customer-save').val(),
-                            cartype: $('#cartype-save').val(),
-                            productnumber: $('#productnumber-save').val(),
-                            sub: $('#sub-save').val(),
-                            productname: $('#productname-save').val(),
-                            marchine: $('#marchine-save').val(),
-                            touch: $('#touch-save').val(),
-                            sanum: $('#sanum-save').val(),
-                            sapum: $('#sapum-save').val(),
-                            sacount: $('#sacount-save').val(),
-                            a: $('#a-save').val(),
-                            b: $('#b-save').val(),
-                            c: $('#c-save').val(),
-                            d: $('#d-save').val(),
-                            count: $('#count-save').val(),
-                            people: $('#people-save').val(),
-                            status: '대기중',
-                            finalcount: '0',
-                            starttime: '',
-                            finaltime: '',
-
-
-
-                        }),
-                        success: function (result) {
-                        }
-                    })
-
-                    $('#popupOverlay1').fadeOut();
-                    setTimeout(function () {
-                        load()
-                    }, 50); // 3초 후에 알림을 사라지게 설정
-                    var notification = $('<div class="notification"><img src="/img/logo.png" alt="Notification Icon"><span class="notification-message" style="color:navy;">작업지시 완료</span></div>');
-                    $('body').append(notification);
-                    setTimeout(function () {
-                        notification.fadeOut(function () {
-                            $(this).remove();
-                        });
-                    }, 3000);
-                } else {
-                    return false;
-                }
+                return false;
             }
-
         }
 
 
@@ -884,32 +884,31 @@
                         tableFoot.text('총 데이터 개수: 0');
                     } else {
                         for (var i = 0; i < data.length; i++) {
-                            var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : '';
-                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : '';
+                            var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : data[i].status === '생산완료' ? 'red' : '';
+                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : data[i].status === '생산완료' ? 'white' : '';
                             var blinkingClass = data[i].status === '생산중' ? 'blinking' : '';
 
                             $('#datatable').append(
-                                '<tr >' +
-                                '<td style="font-weight:bold;">' + data[i].plandate + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].customer + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].cartype + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].productnumber + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].sub + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].productname + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].marchine + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].touch + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].sanum + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].sapum + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].sacount + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].a + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].b + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].c + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].d + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].count + '</td>' +
-                                '<td style="font-weight:bold;">' + data[i].people + '</td>' +
+                                '<tr>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].plandate + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].customer + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].cartype + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].productnumber + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sub + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].productname + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].marchine + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].touch + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sanum + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sapum + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sacount + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].a + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].b + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].c + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].d + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].count + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + data[i].people + '</td>' +
                                 '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + data[i].status + '</td>' +
-                                '<td><a class="data-edit" style="cursor:pointer; color:navy;">수정</a></td>' +
-                                '<td><a class="data-delete"style="cursor:pointer; color:red;">삭제</a></td>' +
+
                                 '<td id="data-id">' + data[i].id + '</td>' +
                                 '</tr>'
                             )
@@ -917,13 +916,14 @@
                         }
                     }
 
-                    // 생산중인 행에 대해 깜빡이는 효과
+                    // 생산중 및 생산완료인 행에 대해 깜빡이는 효과
                     setInterval(function () {
                         $('.blinking').toggleClass('blink');
                     }, 500);
                 }
             });
         }
+
 
         function marchinegroup() {
             $('#Datatbody').empty();

@@ -1,66 +1,281 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Input with Buttons</title>
-    <!-- Include jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-</head>
-<body>
+    <title>초중종물성적서 폼</title>
+    <style>
+        table {
+            width: 60%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-<table>
-    <tr>
-        <td style="width: 200px">통전</td>
-        <td>
-            <input type="text" id="a-edit" class="data" autocomplete="off" readonly
-                   style="width:auto; border:1px solid silver;">
-            <button class="change-value" data-target="#a-edit" data-increment="0.5">+</button>
-            <button class="change-value" data-target="#a-edit" data-increment="-0.5">-</button>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 200px">전류</td>
-        <td>
-            <input type="text" id="b-edit" class="data" autocomplete="off" readonly
-                   style="width:auto; border:1px solid silver;">
-            <button class="change-value" data-target="#b-edit" data-increment="0.5">+</button>
-            <button class="change-value" data-target="#b-edit" data-increment="-0.5">-</button>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 200px">초기가압</td>
-        <td>
-            <input type="text" id="c-edit" class="data" autocomplete="off" readonly
-                   style="width:auto; border:1px solid silver;">
-            <button class="change-value" data-target="#c-edit" data-increment="0.5">+</button>
-            <button class="change-value" data-target="#c-edit" data-increment="-0.5">-</button>
-        </td>
-    </tr>
-    <tr>
-        <td style="width: 200px">유지</td>
-        <td>
-            <input type="text" id="d-edit" class="data" autocomplete="off" readonly
-                   style="width:auto; border:1px solid silver;">
-            <button class="change-value" data-target="#d-edit" data-increment="0.5">+</button>
-            <button class="change-value" data-target="#d-edit" data-increment="-0.5">-</button>
-        </td>
-    </tr>
-</table>
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
 
-<script>
-    $(document).ready(function () {
-        $('.change-value').on('click', function () {
-            var targetInput = $($(this).data('target'));
-            var increment = parseFloat($(this).data('increment'));
-            var currentValue = parseFloat(targetInput.val()) || 0;
-            var newValue = currentValue + increment;
+        th {
+            background-color: white;
+        }
 
-            // Set the new value and trigger the change event
-            targetInput.val(newValue).change();
-        });
-    });
-</script>
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-</body>
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .logo-container {
+            position: relative;
+            height: 100px;
+            font-weight: bold;
+            font-size: 25px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 60px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .company-name {
+            margin-left: 110px;
+            /* Adjust the margin based on your logo width */
+            line-height: 60px;
+            /* Match the logo height for vertical alignment */
+            font-size: 32px;
+        }
+    </style>
+
+    <table>
+        <tr style="height:100px;">
+            <th colspan="5" style="font-size: 38px;">P.W 초.중.종물 파괴검사 C/S</th>
+            <!-- <th  style="font-size: 10px;">(주)지엠오토</th> -->
+        </tr>
+        <tr>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">작업일자</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">차종</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber3">품번</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber4">생산수량(EA)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber4">작성자</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">2023-11-15</label>
+            </td>
+            <td>
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">BD</label>
+            </td>
+            <td>
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber3">M6844-30000</label>
+            </td>
+            <td>
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber4">20,000</label>
+            </td>
+            <td>
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber4">나한수</label>
+            </td>
+        </tr>
+    </table>
+    <table>
+
+        <tr>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">설비명</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">통전<br>(Hz)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">전류<br>(A)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber3">초기가압(kg/cm2)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber4">유지<br>(Hz)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber4">에어압력(kg/cm2)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber4">냉각수온도<br>(C)</label>
+            </td>
+        </tr>
+        <tr>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">1호기</label>
+            </td>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">3</label>
+            </td>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">15.3</label>
+            </td>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">30</label>
+            </td>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">5</label>
+            </td>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">20</label>
+            </td>
+            <td style="width:14%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">6.5</label>
+            </td>
+
+        </tr>
+    </table>
+    <table>
+
+        <tr>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">H/W품번</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">H/W사양</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">두께(T)</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">개수(EA)</label>
+            </td>
+          
+
+
+        </tr>
+        <tr>
+            <td style="width:16%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">13905-06000</label>
+            </td>
+            <td style="width:16%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">M6 NUT</label>
+            </td>
+            <td style="width:16%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">1.2</label>
+            </td>
+
+            <td style="width:16%">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">3</label>
+            </td>
+          
+
+
+        </tr>
+    </table>
+    <table>
+
+        <tr>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber1">제품이미지</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold;" for="productNumber2">초물검사</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber3">중물검사</label>
+            </td>
+            <td style="background-color: #f2f2f2;">
+                <label style="font-size: 20px; font-weight: bold; " for="productNumber4">종물검사</label>
+            </td>
+
+        </tr>
+        <tr>
+            <td style="height: 300px;"><img src="../img/L8844-31100.PNG" width="100%" height="100%"></td>
+            <td style="height: 300px;"><img src="../img/33100.PNG" width="100%" height="100%"></td>
+            <td style="height: 300px;"><img src="../img/31100.PNG" width="100%" height="100%"></td>
+            <td style="height: 300px;"><img src="../img/33100.PNG" width="100%" height="100%"></td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">검사날짜</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">2023-11-15</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">2023-11-15</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">2023-11-15</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">검사시간</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">09:06:01</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">10:06:05 </td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">11:06:07</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">작업자</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">바룰</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">바룰</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">바룰</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">외관검사</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">체결검사</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">용접 스펙터 없을것</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">OK</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">파괴검사(kgf/cm)</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">866</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">867</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">866</td>
+
+        </tr>
+        <tr>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">최종 판정</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">합격</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">합격</td>
+            <td style="height: 20px; font-weight: bold; font-size:20px;">합격</td>
+
+        </tr>
+        <tr>
+
+            <td colspan="4" class="logo-container">
+                <img src="../img/logo.png" class="logo" alt="Company Logo">
+                <span class="company-name">(주)지엠오토</span>
+            </td>
+        </tr>
+    </table>
+    </body>
+
 </html>

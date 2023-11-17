@@ -93,7 +93,7 @@ module.exports = function (app) {
             return pool.request()
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
-                    "select * from pw"
+                    "select * from pw order by status desc "
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -168,8 +168,9 @@ module.exports = function (app) {
                 .input('id', sql.Int, req.body.id)
                 .input('count', sql.Float, req.body.count)
                 .input('people', sql.NVarChar, req.body.people)
+                .input('marchine', sql.NVarChar, req.body.marchine)
                 .query(
-                    "update pw set people=@people,count=@count where id=@id"
+                    "update pw set people=@people,count=@count,marchine=@marchine where id=@id"
                 )
                 .then(result => {
                     res.json(result.recordset);
