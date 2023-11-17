@@ -886,7 +886,7 @@
                     } else {
                         for (var i = 0; i < data.length; i++) {
                             var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : data[i].status === '생산종료' ? 'red' : '';
-                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : data[i].status === '생산완료' ? 'white' : '';
+                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : data[i].status === '생산종료' ? 'white' : '';
                             var blinkingClass = data[i].status === '생산중' ? 'blinking' : '';
 
                             // Calculate percentage
