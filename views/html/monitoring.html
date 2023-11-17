@@ -120,13 +120,21 @@
                     <th style="width:auto; font-weight: bold;">HW부번</th>
                     <th style="width:auto; font-weight: bold;">HW품명</th>
                     <th style="width:auto; font-weight: bold;">HW수량</th>
-                    <th style="width:auto; font-weight: bold;">통전</th>
-                    <th style="width:auto; font-weight: bold;">전류</th>
-                    <th style="width:auto; font-weight: bold;">초기가압</th>
-                    <th style="width:auto; font-weight: bold;">유지</th>
-                    <th style="width:auto; font-weight: bold;">지시수량</th>
+        
+               
                     <th style="width:auto; font-weight: bold;">작업자</th>
-                    <th style="width:auto; font-weight: bold;">상태</th>
+                    <th style="width:auto; font-weight: bold;">지시수량</th>
+                    <th style="width:auto; font-weight: bold;">시작시간</th>
+                    <th style="width:auto; font-weight: bold;">종료시간</th>
+                    <th style="width:auto; font-weight: bold;">생산수량</th>
+                    <th style="width:auto; font-weight: bold;">지시/생산</th>
+                    <th style="width:auto; font-weight: bold;">상태<h/t>
+
+                    <!-- data[i].people + '</td>' +
+data[i].count + '</td>' +
+data[i].starttime + '</td>' +
+data[i].finaltime + '</td>' +
+data[i].finalcount + '</td>' + -->
 
                 </tr>
             </thead>
@@ -872,57 +880,62 @@
         }
 
         function load() {
-            $('#Datatbody').empty();
-            $.ajax({
-                type: 'POST',
-                url: server + '/api/selectpwplan',
-                dataType: 'json',
-                success: function (data) {
-                    var tableFoot = $('#dataCount');
-                    if (data.length === 0) {
-                        // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
-                        tableFoot.text('총 데이터 개수: 0');
-                    } else {
-                        for (var i = 0; i < data.length; i++) {
-                            var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : data[i].status === '생산완료' ? 'red' : '';
-                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : data[i].status === '생산완료' ? 'white' : '';
-                            var blinkingClass = data[i].status === '생산중' ? 'blinking' : '';
+    $('#Datatbody').empty();
+    $.ajax({
+        type: 'POST',
+        url: server + '/api/selectpwplan',
+        dataType: 'json',
+        success: function (data) {
+            var tableFoot = $('#dataCount');
+            if (data.length === 0) {
+                // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
+                tableFoot.text('총 데이터 개수: 0');
+            } else {
+                for (var i = 0; i < data.length; i++) {
+                    var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : data[i].status === '생산완료' ? 'red' : '';
+                    var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : data[i].status === '생산완료' ? 'white' : '';
+                    var blinkingClass = data[i].status === '생산중' ? 'blinking' : '';
 
-                            $('#datatable').append(
-                                '<tr>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].plandate + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].customer + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].cartype + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].productnumber + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sub + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].productname + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].marchine + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].touch + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sanum + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sapum + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sacount + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].a + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].b + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].c + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].d + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].count + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].people + '</td>' +
-                                '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + data[i].status + '</td>' +
+                    // Calculate percentage
+                    var percentage = (data[i].finalcount / data[i].count * 100).toFixed(1);
 
-                                '<td id="data-id">' + data[i].id + '</td>' +
-                                '</tr>'
-                            )
-                            $("td#data-id").hide();
-                        }
-                    }
+                    $('#datatable').append(
+                        '<tr>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].plandate + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].customer + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].cartype + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].productnumber + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].sub + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].productname + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].marchine + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].touch + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].sanum + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].sapum + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].sacount + '</td>' +
 
-                    // 생산중 및 생산완료인 행에 대해 깜빡이는 효과
-                    setInterval(function () {
-                        $('.blinking').toggleClass('blink');
-                    }, 500);
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].people + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].count + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].starttime + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].finaltime + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + data[i].finalcount + '</td>' +
+                        '<td style="font-weight:bold; font-size:18px;">' + percentage + '%</td>' + // Display the percentage
+                        '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + data[i].status + '</td>' +
+
+                        '<td id="data-id">' + data[i].id + '</td>' +
+                        '</tr>'
+                    )
+                    $("td#data-id").hide();
                 }
-            });
+            }
+
+            // 생산중 및 생산완료인 행에 대해 깜빡이는 효과
+            setInterval(function () {
+                $('.blinking').toggleClass('blink');
+            }, 500);
         }
+    });
+}
+
 
 
         function marchinegroup() {
