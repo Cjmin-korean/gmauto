@@ -106,6 +106,24 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/selectpwplanmonitoring', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('plandate', sql.NVarChar, req.body.plandate)
+                .query(
+                    "select * from pw where plandate=@plandate order by status desc "
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/pwjisiwherepeople', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -113,7 +131,7 @@ module.exports = function (app) {
                 .input('start', sql.NVarChar, req.body.start)
                 .input('finish', sql.NVarChar, req.body.finish)
                 .query(
-                    "select * from pw where people=@people and plandate BETWEEN @start AND @finish;"
+                    "select * from pw where people=@people and plandate BETWEEN @start AND @finish order by status desc"
                 )
                 .then(result => {
                     res.json(result.recordset);

@@ -126,7 +126,8 @@
                     <th style="width:auto; font-weight: bold;">달성율</th>
                     <th style="width:auto; font-weight: bold;">시작시간</th>
                     <th style="width:auto; font-weight: bold;">종료시간</th>
-                    <th style="width:auto; font-weight: bold;">상태<th>
+                    <th style="width:auto; font-weight: bold;">상태</th>
+
 
 
                 </tr>
@@ -874,47 +875,59 @@
 
         function load() {
             $('#Datatbody').empty();
+            var currentDate = new Date();
+            var formattedDate =
+                currentDate.getFullYear() +
+                '-' +
+                ('0' + (currentDate.getMonth() + 1)).slice(-2) +
+                '-' +
+                ('0' + currentDate.getDate()).slice(-2);
             $.ajax({
                 type: 'POST',
-                url: server + '/api/selectpwplan',
+                url: server + '/api/selectpwplanmonitoring',
                 dataType: 'json',
-                success: function (data) {
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    plandate: formattedDate
+                }),
+
+                success: function (result) {
+                    console.log(result)
                     var tableFoot = $('#dataCount');
-                    if (data.length === 0) {
+                    if (result.length === 0) {
                         // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
                         tableFoot.text('총 데이터 개수: 0');
                     } else {
-                        for (var i = 0; i < data.length; i++) {
-                            var statusColor = data[i].status === '대기중' ? 'lime' : data[i].status === '생산중' ? 'blue' : data[i].status === '생산종료' ? 'red' : '';
-                            var statusTextColor = data[i].status === '대기중' ? 'black' : data[i].status === '생산중' ? 'white' : data[i].status === '생산종료' ? 'white' : '';
-                            var blinkingClass = data[i].status === '생산중' ? 'blinking' : '';
+                        for (var i = 0; i < result.length; i++) {
+                            var statusColor = result[i].status === '대기중' ? 'lime' : result[i].status === '생산중' ? 'blue' : result[i].status === '생산종료' ? 'red' : '';
+                            var statusTextColor = result[i].status === '대기중' ? 'black' : result[i].status === '생산중' ? 'white' : result[i].status === '생산종료' ? 'white' : '';
+                            var blinkingClass = result[i].status === '생산중' ? 'blinking' : '';
 
                             // Calculate percentage
-                            var percentage = (data[i].finalcount / data[i].count * 100).toFixed(1);
+                            var percentage = (result[i].finalcount / result[i].count * 100).toFixed(1);
 
                             $('#datatable').append(
                                 '<tr>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].plandate + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].customer + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].cartype + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].productnumber + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sub + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].productname + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].marchine + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].touch + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sanum + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sapum + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].sacount + '</td>' +
-
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].people + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].count + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].finalcount + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].plandate + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].customer + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].cartype + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].productnumber + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].sub + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].productname + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].marchine + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].touch + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].sanum + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].sapum + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].sacount + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].people + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].count + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].finalcount + '</td>' +
                                 '<td style="font-weight:bold; font-size:18px;">' + percentage + '%</td>' + // Display the percentage
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].starttime + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + data[i].finaltime + '</td>' +
-                                '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + data[i].status + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].starttime + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].finaltime + '</td>' +
+                                '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + result[i].status + '</td>' +
 
-                                '<td id="data-id">' + data[i].id + '</td>' +
+                                '<td id="data-id">' + result[i].id + '</td>' +
                                 '</tr>'
                             )
                             $("td#data-id").hide();

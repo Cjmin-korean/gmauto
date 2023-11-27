@@ -567,18 +567,7 @@
         $("#loadHtml").removeClass();
         $("#loadHtml").load("/html/camera.html");
     }
-    function monitoring() {
-        // Open a new window with the URL of monitoring.html
-        var newWindow = window.open('monitoring.html', '_blank', 'width=800,height=600');
-
-        // You can customize the width and height values as per your requirements
-        // The third parameter is optional and allows you to specify additional window features
-
-        // Focus on the new window (optional)
-        if (newWindow) {
-            newWindow.focus();
-        }
-    }
+   
 
     document.getElementById('monitoring').addEventListener('click', function () {
         // Open a new window with the URL of monitoring.html

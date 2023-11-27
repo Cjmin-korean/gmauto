@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>내장 카메라 실행</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>웹캠 스트리밍</title>
 </head>
 <body>
+  <video id="videoElement" autoplay></video>
 
-<button id="startCamera">카메라 실행</button>
-<button id="captureScreen">화면 캡처</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const video = document.getElementById('videoElement');
 
-<video id="cameraFeed" width="640" height="480" style="display:none;"></video>
-<canvas id="cameraCanvas" width="640" height="480"></canvas>
-
-<script>
-    document.getElementById('startCamera').addEventListener('click', startCamera);
-    document.getElementById('captureScreen').addEventListener('click', captureScreen);
-
-    let videoElement = document.getElementById('cameraFeed');
-    let canvasElement = document.getElementById('cameraCanvas');
-    let canvasContext = canvasElement.getContext('2d');
-
-    
-</script>
-
+      // 웹캠에서 비디오 스트림 가져오기
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+          video.srcObject = stream;
+        })
+        .catch((error) => {
+          console.error('웹캠 스트림을 가져오는 동안 오류 발생:', error);
+        });
+    });
+  </script>
 </body>
 </html>

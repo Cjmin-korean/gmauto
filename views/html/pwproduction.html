@@ -6,11 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>거래처정보</title>
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <link rel="stylesheet" href="../css/main.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 </head>
 <style>
     /* Apply styles to the select input */
@@ -107,7 +114,7 @@
                 <td style=" padding-right: 10px;"><input type="date" id="date2" class="form-input"
                         style="font-size: 15px; font-weight: bold;"></td>
                 <td><button class="styled-button" onclick="peopleload()">조회</button></td>
-                <td><button class="styled-button" onclick="peopleload()">!</button></td>
+                <!-- <td><button class="styled-button" onclick="peopleload()">!</button></td> -->
 
             </tr>
         </table>
@@ -659,7 +666,7 @@
 
         }
         // Define a function to load data
-      
+
 
         // Set an interval to call newload every 30 seconds (30000 milliseconds)
         var intervalId = setInterval(newload, 30000);
@@ -889,7 +896,7 @@
                             if (result[i].status === '대기중') {
                                 statusColor = 'lime';
                                 statusTextColor = 'black';
-                                editLink = '<td><a class="data-edit" style="cursor:pointer; color:blue;">선택</a></td>';
+                                editLink = '<td><a id="firstinspection" style="cursor:pointer; color:blue;">초물검사</a></td>';
                             } else if (result[i].status === '생산중') {
                                 statusColor = 'blue';
                                 statusTextColor = 'white';
@@ -942,8 +949,86 @@
         }
 
 
-    </script>
 
+
+    </script>
+    <script>
+        $('#datatable').on('click', '#firstinspection', function () {
+            var checkBtn = $(this);
+            var tr = checkBtn.closest('tr');
+            var plandate = tr.find('td:eq(0)').text();
+            var customer = tr.find('td:eq(1)').text();
+            var cartype = tr.find('td:eq(2)').text();
+            var productnumber = tr.find('td:eq(3)').text();
+            var productname = tr.find('td:eq(5)').text();
+            var sapum = tr.find('td:eq(8)').text();
+            var sanum = tr.find('td:eq(9)').text();
+            var sacount = tr.find('td:eq(10)').text();
+            var part = tr.find('td:eq(4)').text();
+            var marchine = tr.find('td:eq(6)').text();
+            var touch = tr.find('td:eq(7)').text();
+            var people = tr.find('td:eq(16)').text();
+            var count = tr.find('td:eq(15)').text();
+            var a = tr.find('td:eq(11)').text();
+            var b = tr.find('td:eq(12)').text();
+            var c = tr.find('td:eq(13)').text();
+            var d = tr.find('td:eq(14)').text();
+            // var e = tr.find('td:eq(15)').text();
+            // var f = tr.find('td:eq(15)').text();
+
+            // Open the new window
+            var newWindow = window.open('/html/cscheck.html', '초물검사', 'fullscreen=yes');
+
+            // Wait for the new window to load
+            $(newWindow).on('load', function () {
+        
+                // Access the plandate-save element in the new window
+                var plandateSaveInput = $(newWindow.document).find('#plandate-save');
+                var customerInput = $(newWindow.document).find('#customer-save');
+                var cartypeInput = $(newWindow.document).find('#cartype-save');
+                var productnumberInput = $(newWindow.document).find('#productnumber-save');
+                var productnameInput = $(newWindow.document).find('#productname-save');
+                var sapumInput = $(newWindow.document).find('#sapum-save');
+                var sanumInput = $(newWindow.document).find('#sanum-save');
+                var sacountInput = $(newWindow.document).find('#sacount-save');
+                var partInput = $(newWindow.document).find('#part-save');
+                var marchineInput = $(newWindow.document).find('#marchine-save');
+                var touchInput = $(newWindow.document).find('#touch-save');
+                var peopleInput = $(newWindow.document).find('#people-save');
+                var countInput = $(newWindow.document).find('#count-save');
+                var aInput = $(newWindow.document).find('#a-save');
+                var bInput = $(newWindow.document).find('#b-save');
+                var cInput = $(newWindow.document).find('#c-save');
+                var dInput = $(newWindow.document).find('#d-save');
+
+                // Set the value in the new window
+                plandateSaveInput.val(plandate);
+                customerInput.val(customer);
+                cartypeInput.val(cartype);
+                productnumberInput.val(productnumber);
+                productnameInput.val(productname);
+                sapumInput.val(sapum);
+                sanumInput.val(sanum);
+                sacountInput.val(sacount);
+                partInput.val(part);
+                marchineInput.val(marchine);
+                touchInput.val(touch);
+                peopleInput.val(people);
+                countInput.val(count);
+                aInput.val(a);
+                bInput.val(b);
+                cInput.val(c);
+                dInput.val(d);
+
+                if (newWindow) {
+                    newWindow.focus();
+                }
+            });
+        });
+
+
+
+    </script>
 
     <!-- 다음 스크립트를 사용하여 특정 열의 데이터를 엑셀 파일로 저장합니다. -->
     <script>
@@ -988,7 +1073,7 @@
             XLSX.utils.book_append_sheet(wb, ws, "테이블 데이터");
 
             // 엑셀 파일을 저장하고 다운로드합니다.
-            XLSX.writeFile(wb, "거래처리스트.xlsx");
+            XLSX.writeFile(wb, "PW작업일보.xlsx");
         }
     </script>
 
