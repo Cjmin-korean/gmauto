@@ -123,22 +123,32 @@
         </tr>
 
     </table>
-    <table>
+    <table style="width:50%; float: left;">
         <tr>
             <th colspan="12">SPEC정보</th>
         </tr>
         <tr>
-            <td style="width:5%;">통전</td>
+            <td style="width:50%;">통전</td>
             <td><input type="text" id="a-save"></td>
-            <td style="width:5%;">전류</td>
+        </tr>
+        <tr>
+            <td style="width:50%;">전류</td>
             <td><input type="text" id="b-save"></td>
-            <td style="width:5%;">초기가압</td>
+        </tr>
+        <tr>
+            <td style="width:50%;">초기가압</td>
             <td><input type="text" id="c-save"></td>
-            <td style="width:5%;">유지</td>
+        </tr>
+        <tr>
+            <td style="width:50%;">유지</td>
             <td><input type="text" id="d-save"></td>
-            <td style="width:5%;">에어압력</td>
+        </tr>
+        <tr>
+            <td style="width:50%;">에어압력</td>
             <td><input type="text" id="e-save"></td>
-            <td style="width:7%;">냉각수온도</td>
+        </tr>
+        <tr>
+            <td style="width:50%;">냉각수온도</td>
             <td><input type="text" id="f-save"></td>
         </tr>
 
@@ -156,10 +166,7 @@
             <td style="border: 1px solid silver;">체결검사</td>
             <td style="border: 1px solid silver;">검사</td>
         </tr>
-        <tr>
-            <td style="border: 1px solid silver;">용접 스펙터 없을것</td>
-            <td style="border: 1px solid silver;">검사</td>
-        </tr>
+
         <tr>
             <td style="border: 1px solid silver;">파괴검사1(kgf/cm)</td>
             <td style="border: 1px solid silver;">검사</td>
@@ -173,25 +180,49 @@
         </tr>
         <tr>
             <td style="height: 300px;"><img src="../img/L8844-31100.PNG" width="100%" height="100%"></td>
-           
+
 
         </tr>
-     
+
 
 
     </table>
     <table style="width:20%; float: left;">
-        <tr>
-            <th colspan="2">검사이미지</th>
-        </tr>
-        <tr>
-            <td style="height: 300px;"><img src="../img/33100.PNG" width="100%" height="100%"></td>
-           
 
-        </tr>
+
+        <video id="videoElement" autoplay style="width: 500px; height: 500px;"></video>
+        <button id="captureButton">스크린샷 찍기</button>
+        <canvas id="canvas" style="display: none;"></canvas>
+
 
 
     </table>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const video = document.getElementById('videoElement');
+        const captureButton = document.getElementById('captureButton');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // 웹캠에서 비디오 스트림 가져오기
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('웹캠 스트림을 가져오는 동안 오류 발생:', error);
+            });
+
+        // 스크린샷 찍기 버튼 클릭 시
+        captureButton.addEventListener('click', () => {
+            // 캔버스에 현재 비디오 프레임 그리기
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // 캔버스를 화면에 표시
+            canvas.style.display = 'block';
+        });
+    });
+</script>
 
 </html>
