@@ -2,6 +2,7 @@
 const multer = require('multer');
 const xlsx = require('xlsx');
 const fs = require('fs');
+const sql = require("mssql");
 module.exports = function (app) {
     const sql = require('mssql');
     var config = {
@@ -303,6 +304,29 @@ module.exports = function (app) {
     // **** finish
     // **** start       
     sql.connect(config).then(pool => {
+        app.post('/api/insertimg', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+
+
+            return pool.request()
+                .input('img', sql.VarBinary, req.body.img)
+
+                .query(
+                    'insert into img(img)' +
+                    ' values(@img')
+
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+
+
+                });
+        });
+
+    });
+    // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
         app.post('/api/insertpwjisi', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
 
@@ -329,7 +353,7 @@ module.exports = function (app) {
                 .input('starttime', sql.NVarChar, req.body.starttime)
                 .input('finaltime', sql.NVarChar, req.body.finaltime)
                 .input('finalcount', sql.Float, req.body.finalcount)
-       
+
                 .query(
                     'insert into pw(plandate,customer,cartype,productnumber,sub,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,count,status,people,starttime,finaltime,finalcount)' +
                     ' values(@plandate,@customer,@cartype,@productnumber,@sub,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@count,@status,@people,@starttime,@finaltime,@finalcount)'

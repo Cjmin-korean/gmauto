@@ -105,6 +105,7 @@
         font-size: 25px;
         font-weight: bold;
     }
+
     #inspection2-save:hover {
         color: red;
     }
@@ -112,8 +113,8 @@
 
 <body>
     <div class="main_header">
-        <img src="/img/logo.png" width="100" height="50">
-        <a style="font-size:30px;">P.W 초물검사</a>
+        <!-- <img src="/img/logo.png" width="100" height="50"> -->
+        <a style="font-size:30px;">PRESS 초물검사</a>
     </div>
     <table>
         <tr>
@@ -121,27 +122,16 @@
         </tr>
         <tr>
             <td>검사날짜</td>
-            <td><input type="text" id="plandate-save"></td>
-            <td>고객사</td>
-            <td><input type="text" id="customer-save"></td>
+            <td><input type="text" id="plandate-save" value="2023-12-11"></td>
             <td>차종</td>
-            <td><input type="text" id="cartype-save"></td>
+            <td><input type="text" id="cartype-save" value="KA4"></td>
             <td>품번</td>
             <td><input type="text" id="productnumber-save"></td>
             <td>품명</td>
             <td><input type="text" id="productname-save"></td>
         </tr>
+
         <tr>
-            <td>HW부번</td>
-            <td><input type="text" id="sapum-save"></td>
-            <td>HW품명</td>
-            <td><input type="text" id="sanum-save"></td>
-            <td>HW수량</td>
-            <td><input type="text" id="sacount-save"></td>
-        </tr>
-        <tr>
-            <td>구분</td>
-            <td><input type="text" id="part-save"></td>
             <td>설비명</td>
             <td><input type="text" id="marchine-save"></td>
             <td>타점수</td>
@@ -153,37 +143,7 @@
         </tr>
 
     </table>
-    <table style="width:50%; float: left;">
-        <tr>
-            <th colspan="12">SPEC정보</th>
-        </tr>
-        <tr>
-            <td style="width:50%;">통전</td>
-            <td><input type="text" id="a-save"></td>
-        </tr>
-        <tr>
-            <td style="width:50%;">전류</td>
-            <td><input type="text" id="b-save"></td>
-        </tr>
-        <tr>
-            <td style="width:50%;">초기가압</td>
-            <td><input type="text" id="c-save"></td>
-        </tr>
-        <tr>
-            <td style="width:50%;">유지</td>
-            <td><input type="text" id="d-save"></td>
-        </tr>
-        <tr>
-            <td style="width:50%;">에어압력</td>
-            <td><input type="text" id="e-save"></td>
-        </tr>
-        <tr>
-            <td style="width:50%;">냉각수온도</td>
-            <td><input type="text" id="f-save"></td>
-        </tr>
 
-
-    </table>
     <table style="width:50%; float: left;">
         <tr>
             <th colspan="4">제품검사</th>
@@ -225,7 +185,7 @@
             <th colspan="2">제품이미지</th>
         </tr>
         <tr>
-            <td style="height: 300px;"><img src="../img/L8844-31100.PNG" width="100%" height="100%"></td>
+            <td style="height: 300px;"><img src="../img/A1.png" width="100%" height="100%"></td>
 
 
         </tr>
@@ -233,10 +193,61 @@
 
 
     </table>
-    <button id="captureButton">Capture</button>
+    <table style="width:50%; float: left;">
+        <tr>
+            <th colspan="4">공정 상세</th>
+
+        </tr>
+        <tr>
+            <th style="background-color: whitesmoke; border: 1px solid silver;">공정명</th>
+            <th style="background-color: whitesmoke; border: 1px solid silver;">설비번호</th>
+            <th style="background-color: whitesmoke; border: 1px solid silver;">DIE HEIGHT</th>
+            <th style="background-color: whitesmoke; border: 1px solid silver;">작업자</th>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid silver;">OP10</td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"><a id="inspection-data"></a></td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid silver;">OP20</td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"><a id="inspection1-data"></a></td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid silver;">OP30</td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"><a id="inspection2-data"></a></td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid silver;">OP40</td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"><a id="inspection2-data"></a></td>
+
+        </tr>
+        <tr>
+            <td style="border: 1px solid silver;">OP50</td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"></td>
+            <td style="border: 1px solid silver;"><a id="inspection2-data"></a></td>
+
+        </tr>
+
+
+
+    </table>
+   
+    <!-- <button id="captureButton">Capture</button> -->
     <video id="videoElement" autoplay style="width: 550px; height: 550px;"></video>
 
-    <canvas id="canvas" style="display: none;"></canvas>
+    <!-- <canvas id="canvas" style="display: none;"></canvas> -->
 
 </body>
 <script>
@@ -294,7 +305,7 @@
             inspectionData.textContent = "OK";
         } else {
             alert("외관검사 취소");
-           
+
         }
     });
 
@@ -311,7 +322,7 @@
             inspectionData1.textContent = "OK";
         } else {
             alert("체결검사 취소");
-           
+
         }
     });
 
