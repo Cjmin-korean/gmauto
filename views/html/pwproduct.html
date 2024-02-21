@@ -134,7 +134,7 @@
     <fieldset style="height: 40px; width:140%">
 
         <button id="newRegistrationBtn" onclick="newadd()" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> 작업등록
+            <i class="fas fa-plus-circle"></i> 초물등록
         </button>
 
     </fieldset>
@@ -167,7 +167,7 @@
         </table>
     </div>
 
-    <div id="editModal" style="height: 1000px; width: 70%;">
+    <div id="editModal" style="height: auto; width:70%;">
         <div class="mainheader">
             <h1>PW 작업정보</h1>
             <span class="close" onclick="closeModal()">&times;</span>
@@ -175,17 +175,21 @@
 
 
         <div id="editForm">
-            <fieldset style="height: 40px; width:99%">
+            <fieldset style="height: 40px; width:90%">
                 <b>차종</b>
-                <select id="cartype-select" style="width:200px;">
+                <select id="cartype-select" style="width:150px;">
                     <option></option>
                 </select>
                 <b>품번</b>
-                <select id="productnumber-select">
+                <select id="productnumber-select" style="width:250px;">
+                    <option></option>
+                </select>
+                <b>사양</b>
+                <select id="sa-select" style="width:150px;">
                     <option></option>
                 </select>
                 <b>작업자</b>
-                <select id="productnumber-select">
+                <select id="productnumber-select" style="width:150px;">
                     <option value=""></option>
                     <option value="바룰">바룰</option>
                     <option value="김경분">김경분</option>
@@ -207,102 +211,72 @@
                 </button>
             </fieldset>
             <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
-                <table class="styled-table1" id="datatable" style="max-height: 800px; overflow-y: auto;">
+                <table class="styled-table1" id="datatable">
                     <thead id="tableHead">
                         <tr>
-                            <th style="text-align:center;" colspan="3">제품정보</th>
+                            <th style="text-align:center;" colspan="2">제품정보</th>
+                            <th style="text-align:center;" colspan="2">사양정보</th>
+                            <th style="text-align:center;" colspan="2">설비정보</th>
+                            <th style="text-align:center; " colspan="2">제품이미지</th>
                         </tr>
                         <tr>
                             <th style="text-align: center; width: 100px;">차종</th>
-                            <td style="text-align: center; width:80%;" id="cartype"></td>
-                            <td rowspan="6" colspan="3" style="text-align: center;"> <img alt="" class="loadingImage"
-                                    style="width:200px; height: 200px;" id="img"></td>
+                            <td style="text-align: center; width:250px;"><input type="text" id="cartype-save"></td>
+                            <th style="text-align: center; width: 100px;">사양부번</th>
+                            <td style="text-align: center; width:250px;"><input type="text" id="sanum-save"></td>
+                            <th style="text-align: center; width: 100px;">통전</th>
+                            <td style="text-align: center; width:250px;"><input type="text" id="a-save"></td>
+                            <td rowspan="6" style="text-align: center; vertical-align: middle; width:300px;"><img alt=""
+                                    class="loadingImage" style="max-width: 300px; max-height: 300px;" id="img">
+                            </td>
                         </tr>
                         <tr>
                             <th style="text-align: center;">고객사</th>
-                            <td style="text-align: center;" id="customer"></td>
+                            <td style="text-align: center; width:250px;"><input type="text" id="customer-save"></td>
+                            <th style="text-align: center; width: 100px;">사양품명</th>
+                            <td style="text-align: center; width:250px;"><input type="text" id="sapum-save"></td>
+                            <th style="text-align: center; width: 100px;">전류</th>
+                            <td style="text-align: center; width:250px;"><input type="text" id="b-save">
+                            </td>
                         </tr>
                         <tr>
                             <th style="text-align: center;">품번</th>
-                            <td style="text-align: center;" id="productnumber"></td>
+                            <td style="text-align: center;"><input type="text" id="productnumber-save"></td>
+                            <th style="text-align: center; width: 100px;">사양개수</th>
+                            <td style="text-align: center;"><input type="text" id="sacount-save"></td>
+                            <th style="text-align: center; width: 100px;">초기가압</th>
+                            <td style="text-align: center;"><input type="text" id="c-save"></td>
                         </tr>
-
                         <tr>
                             <th style="text-align: center;">품명</th>
-                            <td style="text-align: center;" id="productname"></td>
+                            <td style="text-align: center;"><input type="text" id="productname-save"></td>
+                            <th style="text-align: center; width: 100px;">재질</th>
+                            <td style="text-align: center;"><input type="text" id="spec-save"></td>
+                            <th style="text-align: center; width: 100px;">유지</th>
+                            <td style="text-align: center;"><input type="text" id="d-save"></td>
                         </tr>
                         <tr>
                             <th style="text-align: center;">호기명</th>
-                            <td style="text-align: center;" id="marchine"></td>
+                            <td style="text-align: center;"><input type="text" id="marchine-save"></td>
+                            <th style="text-align: center; width: 100px;">두께</th>
+                            <td style="text-align: center;"><input type="text" id="t-save"></td>
+                            <th style="text-align: center; width: 100px;">냉각수온도</th>
+                            <td style="text-align: center;"><input type="text" id="e-save"></td>
                         </tr>
                         <tr>
                             <th style="text-align: center;">용접타점수</th>
-                            <td style="text-align: center;" id="touch"></td>
-                        </tr>
-                    </thead>
-
-
-                </table>
-            </div>
-            <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
-                <table class="styled-table1" id="datatable" style="max-height: 800px; overflow-y: auto;">
-                    <thead id="tableHead">
-                        <tr>
-                            <th style="text-align:center;" colspan="6">사양정보</th>
-                        </tr>
-                        <tr>
-                            <th style="text-align: center; width: 100px;">사양부번</th>
-                            <td style="text-align: center; width:20%;" id="cartype"></td>
-                            <th style="text-align: center; width: 100px;">사양품명</th>
-                            <td style="text-align: center; width:20%;" id="productnumber"></td>
-                            <th style="text-align: center; width: 100px;">사양개수</th>
-                            <td style="text-align: center; width:20%;" id="productname"></td>
-
-                        </tr>
-                        <tr>
-                            <th style="text-align: center; width: 100px;">재질</th>
-                            <td style="text-align: center; width:20%;" id="cartype"></td>
-                            <th style="text-align: center; width: 100px;">두께</th>
-                            <td style="text-align: center; width:20%;" id="productnumber"></td>
-                        </tr>
-
-
-                    </thead>
-
-
-                </table>
-            </div>
-            <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
-                <table class="styled-table1" id="datatable" style="max-height: 800px; overflow-y: auto;">
-                    <thead id="tableHead">
-                        <tr>
-                            <th style="text-align:center;" colspan="6">설비정보</th>
-                        </tr>
-                        <tr>
-                            <th style="text-align: center; width: 100px;">통전</th>
-                            <td style="text-align: center; width:20%;" id="cartype"></td>
-                            <th style="text-align: center; width: 100px;">전류</th>
-                            <td style="text-align: center; width:20%;" id="productnumber"></td>
-                            <th style="text-align: center;">초기가압</th>
-                            <td style="text-align: center; width:20%;" id="productname"></td>
-
-                        </tr>
-                        <tr>
-                            <th style="text-align: center; width: 100px;">유지</th>
-                            <td style="text-align: center; width:20%;" id="productnumber"></td>
+                            <td style="text-align: center;"><input type="text" id="touch-save"></td>
+                            <th style="text-align: center;"></th>
+                            <td style="text-align: center;"></td>
                             <th style="text-align: center; width: 100px;">에어압력</th>
-                            <td style="text-align: center; width:20%;" id="cartype"></td>
-                            <th style="text-align: center; width: 100px;">냉각수온도</th>
-                            <td style="text-align: center; width:20%;" id="productnumber"></td>
-
+                            <td style="text-align: center;"><input type="text" id="f-save"></td>
                         </tr>
-
-
                     </thead>
-
-
                 </table>
             </div>
+
+
+
         </div>
     </div>
 
@@ -322,113 +296,81 @@
             showLoading()
             load()
 
-            // 첫 번째 셀렉트 박스 데이터 로딩
             const selectElement = document.getElementById("cartype-select");
             const selectElement1 = document.getElementById("productnumber-select");
-            if (selectElement) {
+            const selectElement2 = document.getElementById("sa-select");
+            $.ajax({
+                type: 'POST',
+                url: server + '/api/selectcartype',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    for (let i = 0; i < result.length; i++) {
+                        const option = document.createElement("option");
+                        option.text = result[i].cartype;
+                        option.value = result[i].cartype;
+                        selectElement.add(option);
+                    }
+                },
+            });
+
+            selectElement.addEventListener('change', function () {
+                selectElement1.innerHTML = '';
+                selectElement2.innerHTML = ''; // 새로운 값을 선택할 때마다 sa-select를 초기화
+
+                const selectedValue = $(this).val(); // 선택된 값 가져오기
                 $.ajax({
                     type: 'POST',
-                    url: server + '/api/selectcartype',
+                    url: server + '/api/pwmainselect',
                     dataType: 'json',
                     contentType: 'application/json',
+                    data: JSON.stringify({
+                        cartype: selectedValue
+                    }),
+                    success: function (result) {
+                        const defaultOption = document.createElement("option");
+                        defaultOption.text = "";
+                        defaultOption.value = "";
+                        defaultOption.selected = true; // 기본 선택 옵션으로 설정
+                        selectElement1.appendChild(defaultOption);
+
+                        for (let i = 0; i < result.length; i++) {
+                            const option = document.createElement("option");
+                            option.text = result[i].productnumber;
+                            option.value = result[i].productnumber;
+                            selectElement1.add(option);
+                        }
+
+                        // 첫 번째 값을 선택했을 때 바로 이미지 로드
+                    },
+                });
+            });
+
+            selectElement1.addEventListener('change', function () {
+                selectElement2.innerHTML = ''; // 선택한 productnumber에 대한 sa-select를 초기화
+
+                const selectedValue = $(this).val();
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/pwmainselectsapum',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        productnumber: selectedValue
+                    }),
                     success: function (result) {
                         for (let i = 0; i < result.length; i++) {
                             const option = document.createElement("option");
-                            option.text = result[i].cartype;
-                            option.value = result[i].cartype;
-                            selectElement.add(option);
+                            option.text = result[i].sapum;
+                            option.value = result[i].sapum;
+                            selectElement2.add(option);
                         }
+                        $('#img').attr('src', '../img/' + $('#productnumber-select').val() + '.jpg');
+
                     },
                 });
-
-                // 두 번째 셀렉트 박스 값 변경 시 데이터 로딩
-                selectElement.addEventListener('change', function () {
-                    selectElement1.innerHTML = '';
-
-                    const selectedValue = $(this).val(); // 선택된 값 가져오기
-                    $.ajax({
-                        type: 'POST',
-                        url: server + '/api/pwmainselect',
-                        dataType: 'json',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            cartype: selectedValue
-                        }),
-                        success: function (result) {
-                            for (let i = 0; i < result.length; i++) {
-                                const option = document.createElement("option");
-                                option.text = result[i].productnumber;
-                                option.value = result[i].productnumber;
-                                selectElement1.add(option);
-                            }
-
-                            // 이미지 로드
-                            $('#img').attr('src', '../img/' + $('#productnumber-select').val() + '.jpg');
-                        },
-                    });
-
-
-                });
-
-                selectElement1.addEventListener('change', function () {
-                    // 새로운 값에 해당하는 이미지 로드
-                    const selectedValue = $(this).val();
-                    $('#img').attr('src', '../img/' + selectedValue + '.jpg');
-                    $('#productnumber-select').text('')
-                });
-
-            }
-
-
+            });
         });
-
-
-
-        $('#searchInput').keypress(function (e) {
-            // Check if the pressed key is "Enter" (key code 13)
-            if (e.which === 13) {
-                // Show loading spinner while searching
-                Swal.fire({
-                    icon: 'info',
-                    title: '검색중입니다...',
-                    allowOutsideClick: false,
-                    showCancelButton: false,
-                    showConfirmButton: false,
-                    timerProgressBar: true,
-                    onBeforeOpen: () => {
-                        Swal.showLoading();
-                    }
-                });
-
-                // Reset previous search results
-                $('#datatable tbody tr').show();
-
-                var searchValue = $(this).val().toLowerCase();
-                var matchingRowCount = 0;
-
-                $('#datatable tbody tr').each(function () {
-                    var rowData = $(this).text().toLowerCase();
-                    var isMatch = rowData.includes(searchValue);
-                    $(this).toggle(isMatch);
-
-                    if (isMatch) {
-                        matchingRowCount++;
-                    }
-                });
-
-                // Display the count of matching rows
-                // var resultMessage = 'Data: ' + matchingRowCount;
-                // $('#searchResultCount').text(resultMessage);
-
-                // Show message if no matching rows
-
-
-                setTimeout(function () {
-                    Swal.close();
-                }, 1700); // Simulated delay of 1.3 seconds
-            }
-        });
-
 
 
 
@@ -644,54 +586,41 @@
                 }
             });
 
-            // $('#Datatbody1').empty();
 
-            // var cartypeSelect = document.getElementById('cartype-select');
-            // var selectedValue = cartypeSelect.value;
+            $('#cartype-save').val($('#cartype-select').val());
+            $('#productnumber-save').val($('#productnumber-select').val());
+            $('#sapum-save').val($('#sa-select').val());
+            $.ajax({
 
-            // $.ajax({
-            //     type: 'POST',
-            //     url: server + '/api/pwmainselect',
-            //     dataType: 'json',
-            //     contentType: 'application/json',
-            //     data: JSON.stringify({
-            //         cartype: selectedValue
-            //     }),
-            //     success: function (result) {
-            //         console.log(result);
-            //         var tableBody = $('#Datatbody1');
-            //         tableBody.empty();
-            //         if (result.length === 0) {
-            //             // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
-            //             tableFoot.text('총 데이터 개수: 0');
-            //         } else {
-            //             result.forEach(function (rowData) {
-            //                 var tableRow = $('<tr>');
-            //                 tableRow.append('<td>' + rowData.customer + '</td>');
-            //                 tableRow.append('<td>' + rowData.cartype + '</td>');
-            //                 tableRow.append('<td>' + rowData.productnumber + '</td>');
-            //                 tableRow.append('<td>' + rowData.productname + '</td>');
-            //                 tableRow.append('<td>' + rowData.marchine + '</td>');
-            //                 tableRow.append('<td>' + rowData.touch + '</td>');
-            //                 tableRow.append('<td>' + rowData.sanum + '</td>');
-            //                 tableRow.append('<td>' + rowData.sapum + '</td>');
-            //                 tableRow.append('<td>' + rowData.sacount + '</td>');
-            //                 tableRow.append('<td>' + rowData.a + '</td>');
-            //                 tableRow.append('<td>' + rowData.b + '</td>');
-            //                 tableRow.append('<td>' + rowData.c + '</td>');
-            //                 tableRow.append('<td>' + rowData.d + '</td>');
-            //                 var selectButton = $('<button>선택</button>');
-            //                 selectButton.click(function () {
-            //                     console.log(rowData); // 해당 행의 데이터를 콘솔에 출력
-            //                 });
-            //                 var buttonCell = $('<td>').append(selectButton);
-            //                 tableRow.append(buttonCell);
-            //                 tableBody.append(tableRow);
-            //             });
-            //         }
-            //     }
-            // });
+                type: 'POST',
+                url: server + '/api/selectpwmaininfo',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "productnumber": $('#productnumber-select').val(),
+                    "sapum": $('#sa-select').val()
+                }),
+                success: function (result) {
+                    console.log(result)
+                    for (let i = 0; i < result.length; i++) {
+                        $('#customer-save').val(result[0].customer);
+                        $('#productname-save').val(result[0].productname);
+                        $('#marchine-save').val(result[0].marchine);
+                        $('#touch-save').val(result[0].touch);
+                        $('#sanum-save').val(result[0].sanum);
+                        $('#sacount-save').val(result[0].sacount);
+                        $('#spec-save').val(result[0].spec);
+                        $('#t-save').val(result[0].t);
+                        $('#a-save').val(result[0].a);
+                        $('#b-save').val(result[0].b);
+                        $('#c-save').val(result[0].c);
+                        $('#d-save').val(result[0].d);
+                        $('#e-save').val(result[0].e);
+                        $('#f-save').val(result[0].f);
 
+                    }
+                },
+            });
 
             setTimeout(function () {
                 Swal.close();

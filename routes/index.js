@@ -45,7 +45,25 @@ module.exports = function (app) {
             return pool.request()
                 .input('cartype', sql.NVarChar, req.body.cartype)
                 .query(
-                    "select * from pwmain where cartype=@cartype"
+                    "select productnumber from  pwmain  where cartype=@cartype group by productnumber"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/pwmainselectsapum', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('productnumber', sql.NVarChar, req.body.productnumber)
+                .query(
+                    "select sapum from  pwmain  where productnumber =@productnumber "
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -156,6 +174,25 @@ module.exports = function (app) {
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
                     "select * from pwmain order by customer,cartype asc"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectpwmaininfo', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('productnumber', sql.NVarChar, req.body.productnumber)
+                .input('sapum', sql.NVarChar, req.body.sapum)
+                .query(
+                    "select * from pwmain where productnumber=@productnumber and sapum=@sapum"
                 )
                 .then(result => {
                     res.json(result.recordset);
