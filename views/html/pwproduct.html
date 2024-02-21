@@ -158,7 +158,9 @@
                     <th style="width: auto; text-align:center;">유지</th>
                     <th style="width: auto; text-align:center;">생산수량</th>
                     <th style="width: auto; text-align:center;">작업자</th>
-                    <th style="width: auto; text-align:center;">상태</th>
+                    <th style="width: auto; text-align:center;">초물</th>
+                    <th style="width: auto; text-align:center;">중물</th>
+                    <th style="width: auto; text-align:center;">종물</th>
                 </tr>
             </thead>
 
@@ -633,12 +635,14 @@
                 url: server + '/api/selectpwplan',
                 dataType: 'json',
                 success: function (data) {
-
                     var tableFoot = $('#dataCount');
                     if (data.length === 0) {
                         tableFoot.text('총 데이터 개수: 0');
                     } else {
                         for (var i = 0; i < data.length; i++) {
+                            var status = data[i].status;
+                            var status1 = data[i].status1;
+                            var status2 = data[i].status2;
 
                             $('#datatable').append(
                                 '<tr>' +
@@ -658,54 +662,56 @@
                                 '<td>' + data[i].d + '</td>' +
                                 '<td>' + data[i].count + '</td>' +
                                 '<td>' + data[i].people + '</td>' +
-                                '<td>' + data[i].status + '</td>' +
+                                '<td' + (status !== '' ? ' style="background-color: lime;"' : '') + '>' + data[i].status + '</td>' +
+                                '<td' + (status1 !== '' ? ' style="background-color: lime;"' : '') + '>' + data[i].status1 + '</td>' +
+                                '<td' + (status2 !== '' ? ' style="background-color: lime;"' : '') + '>' + data[i].status2 + '</td>' +
                                 '<td id="data-id">' + data[i].id + '</td>' +
                                 '</tr>'
                             );
                             $('td#data-id').hide()
-
-
                         }
                     }
-
-                    $('#datatable tbody').on('dblclick', 'tr', function () {
-                        var rowData = $(this).find('td');
-                        var rowDataArray = [];
-                        rowData.each(function () {
-                            rowDataArray.push($(this).text());
-                        });
-                        $('#overlay').fadeIn()
-                        $('#editModal').fadeIn()
-                        $('#customer-save').val(rowDataArray[1])
-                        $('#cartype-save').val(rowDataArray[2])
-                        $('#productnumber-save').val(rowDataArray[3])
-                        $('#sub-save').val(rowDataArray[4])
-                        $('#productname-save').val(rowDataArray[5])
-                        $('#marchine-save').val(rowDataArray[6])
-                        $('#touch-save').val(rowDataArray[7])
-                        $('#sanum-save').val(rowDataArray[8])
-                        $('#sapum-save').val(rowDataArray[9])
-                        $('#sacount-save').val(rowDataArray[10])
-                        $('#a-save').val(rowDataArray[11])
-                        $('#b-save').val(rowDataArray[12])
-                        $('#c-save').val(rowDataArray[13])
-                        $('#d-save').val(rowDataArray[14])
-                        $('#e-save').val(rowDataArray[15])
-                        $('#f-save').val(rowDataArray[16])
-                        $('#g-save').val(rowDataArray[17])
-                        $('#h-save').val(rowDataArray[18])
-                        $('#i-save').val(rowDataArray[19])
-                        $('#j-save').val(rowDataArray[20])
-                        $('#spec-save').val(rowDataArray[21])
-                        $('#t-save').val(rowDataArray[22])
-                        $('#id-save').val(rowDataArray[23])
-                        $('#newRegistrationBtn1').text('수정')
-                    });
                 }
             });
         }
 
 
+
+
+
+        $('#datatable tbody').on('dblclick', 'tr', function () {
+            var rowData = $(this).find('td');
+            var rowDataArray = [];
+            rowData.each(function () {
+                rowDataArray.push($(this).text());
+            });
+            $('#overlay').fadeIn()
+            $('#editModal').fadeIn()
+            $('#customer-save').val(rowDataArray[1])
+            $('#cartype-save').val(rowDataArray[2])
+            $('#productnumber-save').val(rowDataArray[3])
+            $('#sub-save').val(rowDataArray[4])
+            $('#productname-save').val(rowDataArray[5])
+            $('#marchine-save').val(rowDataArray[6])
+            $('#touch-save').val(rowDataArray[7])
+            $('#sanum-save').val(rowDataArray[8])
+            $('#sapum-save').val(rowDataArray[9])
+            $('#sacount-save').val(rowDataArray[10])
+            $('#a-save').val(rowDataArray[11])
+            $('#b-save').val(rowDataArray[12])
+            $('#c-save').val(rowDataArray[13])
+            $('#d-save').val(rowDataArray[14])
+            $('#e-save').val(rowDataArray[15])
+            $('#f-save').val(rowDataArray[16])
+            $('#g-save').val(rowDataArray[17])
+            $('#h-save').val(rowDataArray[18])
+            $('#i-save').val(rowDataArray[19])
+            $('#j-save').val(rowDataArray[20])
+            $('#spec-save').val(rowDataArray[21])
+            $('#t-save').val(rowDataArray[22])
+            $('#id-save').val(rowDataArray[23])
+            $('#newRegistrationBtn1').text('수정')
+        });
     </script>
 
 
