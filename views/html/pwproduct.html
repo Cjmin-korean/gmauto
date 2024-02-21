@@ -156,7 +156,7 @@
                     <th style="width: auto; text-align:center;">전류</th>
                     <th style="width: auto; text-align:center;">초기가압</th>
                     <th style="width: auto; text-align:center;">유지</th>
-                    <th style="width: auto; text-align:center;">생산수량</th>
+                    <th style="width: auto; text-align:center;">작업수량</th>
                     <th style="width: auto; text-align:center;">작업자</th>
                     <th style="width: auto; text-align:center;">초물</th>
                     <th style="width: auto; text-align:center;">중물</th>
@@ -660,7 +660,7 @@
                                 '<td>' + data[i].b + '</td>' +
                                 '<td>' + data[i].c + '</td>' +
                                 '<td>' + data[i].d + '</td>' +
-                                '<td>' + data[i].count + '</td>' +
+                                '<td style="text-align:right;">' + data[i].count.toLocaleString() + '</td>' +
                                 '<td>' + data[i].people + '</td>' +
                                 '<td' + (status !== '' ? ' style="background-color: lime;"' : '') + '>' + data[i].status + '</td>' +
                                 '<td' + (status1 !== '' ? ' style="background-color: lime;"' : '') + '>' + data[i].status1 + '</td>' +
