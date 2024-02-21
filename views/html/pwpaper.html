@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량 관리 테이블</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        button {
+            width: 70px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="preview()">인쇄</button>
+    <table style="width:100%;" id="pwpaper">
+        <thead>
+            <tr>
+                <th colspan="4">P.W 검사 성적서</th>
+            </tr>
+
+            <tr>
+                <th style="width:200px;">차종</th>
+                <td colspan="2"></td>
+                <th style="width:200px;">제품이미지</th>
+
+            </tr>
+            <tr>
+                <th style="width:200px;">품번</th>
+                <td colspan="2"></td>
+                <td rowspan="3"></td>
+
+            </tr>
+            <tr>
+                <th style="width:200px;">관리</th>
+                <td colspan="2"></td>
+
+            </tr>
+            <tr>
+                <th style="width:200px;">날짜</th>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <th rowspan="6" style="width:200px;">신뢰성<br>시험<br>DATA</th>
+                <th colspan="2">이탈강도</th>
+                <th style="width:200px;">H/W사양</th>
+
+            </tr>
+            <tr style="height: 50px;">
+                <td colspan="2"></td>
+                <td></td>
+            </tr>
+            <tr style="height: 50px;">
+                <td colspan="2"></td>
+                <td></td>
+            </tr>
+            <tr style="height: 50px;">
+                <td colspan="2"></td>
+                <td></td>
+            </tr>
+            <tr style="height: 50px;">
+                <td colspan="2"></td>
+                <td></td>
+            </tr>
+            <tr style="height: 50px;">
+                <td colspan="2"></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="width:200px;">외관</th>
+                <td></td>
+                <th style="width:200px;">체결검사<br>(볼팅,너팅)</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="width:200px;">통전</th>
+                <td></td>
+                <th style="width:200px;">유지</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="width:200px;">초기가압</th>
+                <td></td>
+                <th style="width:200px;">전류</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="width:200px;">에어압력</th>
+                <td></td>
+                <th style="width:200px;">냉각수온도</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="width:200px;">H/W수량</th>
+                <td></td>
+                <th style="width:200px;">용접 스패터<br>없을것</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th style="width:200px;">판정</th>
+                <td></td>
+                <th style="width:200px;">확인</th>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+    <script>
+        function preview() {
+            var table = document.getElementById('pwpaper').outerHTML;
+            var newWindow = window.open('', '_blank');
+
+            newWindow.print();
+        }
+    </script>
+</body>
+
+</html>

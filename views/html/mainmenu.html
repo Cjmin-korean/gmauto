@@ -385,6 +385,8 @@
     <div class="top" style="display: flex;">
         <div class="left-menu1">
             <img src="/img/logo.png" width="100" height="50">
+            <b style="margin-top: 10px;">지엠오토 초중종관리 시스템</b>
+
         </div>
 
         <div id="wrapper">
@@ -402,10 +404,7 @@
                             <li onclick="pressmainHtml()" class="small_menu_sub">
                                 <a>PRESS기초정보</a>
                             </li>
-                            <li onclick="camera()" class="small_menu_sub">
-                                <a>img업로드</a>
-                            </li>
-
+                   
 
                         </ul>
 
@@ -413,6 +412,9 @@
                     <ul class="big_menu">
                         <li class="big_menu_sub">P.W<img class="arrow fas fa-angle-right" src="../img/down.png" /></li>
                         <ul class="small_menu">
+                            <li onclick="pwproduct()" class="small_menu_sub">
+                                <a>금일 PW 작업정보</a>
+                            </li>
                             <li onclick="pwplan()" class="small_menu_sub">
                                 <a>작업지시</a>
                             </li>
@@ -559,15 +561,24 @@
         $("#loadHtml").removeClass();
         $("#loadHtml").load("/html/pwplan.html");
     }
+    function pwproduct() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/pwproduct.html");
+    }
     function pwproduction() {
         $("#loadHtml").removeClass();
         $("#loadHtml").load("/html/pwproduction.html");
     }
     function camera() {
         $("#loadHtml").removeClass();
-        $("#loadHtml").load("/html/img.html");
+        $("#loadHtml").load("/html/0.html");
     }
-   
+
+    function img() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/0.html");
+    }
+
 
     document.getElementById('monitoring').addEventListener('click', function () {
         // Open a new window with the URL of monitoring.html

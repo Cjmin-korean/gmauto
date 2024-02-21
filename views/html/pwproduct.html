@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>거래처정보</title>
+    <title>PW작업</title>
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="../css/mesmain.css">
@@ -49,17 +49,76 @@
         font-weight: bold;
     }
 
+    select {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: bold;
+    }
 
     /* machine 열 배경색 스타일 */
     .machine-row {
         background-color: rgb(230, 226, 226);
         /* 원하는 배경색으로 변경 */
     }
+
+    fieldset {
+        display: flex;
+        align-items: center;
+    }
+
+    fieldset b {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+
+    fieldset select {
+        margin-right: 10px;
+        width: 300px;
+        font-size: 20px;
+    }
+
+    fieldset button {
+        height: 100%;
+    }
+
+    #tableWrapper {
+        max-height: 800px;
+        overflow-y: auto;
+    }
+
+    .styled-table1 {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .styled-table1 thead th,
+    .styled-table1 tbody td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table1 tbody td button {
+        display: block;
+        margin: 0 auto;
+        font-weight: bold;
+    }
+
+    .styled-table1 tbody tr:hover {
+        background-color: rgb(224, 224, 224);
+        cursor: pointer;
+        /* 호버 효과에 원하는 배경색을 지정하세요 */
+    }
 </style>
 
 <body>
     <div class="main_header">
-        <i class="fas fa-info-circle"></i>&nbsp; P.W 기초정보
+        <i class="fas fa-wrench"></i>&nbsp; P.W 작업진행현황
     </div>
 
     <!-- <div class="menu-title" style="width:150%;">
@@ -73,148 +132,177 @@
     <div id="overlay"></div>
 
     <fieldset style="height: 40px; width:140%">
-        <input type="text" id="searchInput" placeholder="검색어 입력후 Enter 누르세요..." style="width: 500px; cursor: pointer;"
-            autocomplete="off">
+
         <button id="newRegistrationBtn" onclick="newadd()" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> 신규등록
+            <i class="fas fa-plus-circle"></i> 작업등록
         </button>
-        <button id="deleteBtn" onclick="deletedata()" class="btn btn-danger" style="background-color: red;">
-            <i class="fas fa-trash-alt" onclick="deletedata()"></i> 삭제
-        </button>
-        <button id="exportToExcelBtn" onclick="exportToExcel()" class="btn btn-success"
-            style="background-color: green;">
-            <i class="fas fa-file-excel"></i> 엑셀로 내보내기
-        </button>
+
     </fieldset>
-    <div id="datatable-container" style="width:140%; height: 90%;">
+    <div id="datatable-container" style="width:100%; height: 90%;">
         <table class="styled-table" id="datatable">
             <thead id="tableHead">
                 <tr>
-                    <th style="width:20px;"></th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(1)">고객사</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(2)">차종</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(3)">품번</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(4)">SUB</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(5)">품명</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(6)">호기명</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(7)">용접타점수</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(8)">사양부번</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(9)">사양품명</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(10)">사양개수</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(11)">통전</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(12)">전류</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(13)">초기가압</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(14)">유지</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(15)">에어압력</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(16)">냉각수온도</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(17)">관리번호</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(18)">설비번호</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(19)">Tip연마주기</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(20)">교환주기</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(21)">재질</th>
-                    <th style="width: auto; text-align:center;" onclick="sortTable(22)">두께</th>
+                    <th style="width: auto; text-align:center;">작업날짜</th>
+                    <th style="width: auto; text-align:center;">고객사</th>
+                    <th style="width: auto; text-align:center;">차종</th>
+                    <th style="width: auto; text-align:center;">품번</th>
+                    <th style="width: auto; text-align:center;">품명</th>
+                    <th style="width: auto; text-align:center;">호기명</th>
+                    <th style="width: auto; text-align:center;">용접타점수</th>
+                    <th style="width: auto; text-align:center;">사양부번</th>
+                    <th style="width: auto; text-align:center;">사양품명</th>
+                    <th style="width: auto; text-align:center;">사양개수</th>
+                    <th style="width: auto; text-align:center;">통전</th>
+                    <th style="width: auto; text-align:center;">전류</th>
+                    <th style="width: auto; text-align:center;">초기가압</th>
+                    <th style="width: auto; text-align:center;">유지</th>
+                    <th style="width: auto; text-align:center;">생산수량</th>
+                    <th style="width: auto; text-align:center;">작업자</th>
+                    <th style="width: auto; text-align:center;">상태</th>
                 </tr>
             </thead>
+
             <tbody id="Datatbody">
             </tbody>
         </table>
     </div>
 
-    <div id="editModal">
+    <div id="editModal" style="height: 1000px; width: 70%;">
         <div class="mainheader">
-            <h1>PW기초정보</h1>
+            <h1>PW 작업정보</h1>
             <span class="close" onclick="closeModal()">&times;</span>
         </div>
 
 
         <div id="editForm">
-            <table style="width: 100%; border-collapse: collapse;">
-                <tr style="height: 50px; background-color: #f2f2f2;">
-                    <th style="background-color: black; color:white;">제품정보</th>
-                    <td style="text-align: center;" colspan="8">
-                        <input type="text" id="id-save" style="visibility: hidden;">
-                    </td>
-                    <td><button id="newRegistrationBtn1" onclick="savedata()" class="btn btn-primary">
-                            <i class="fas fa-save"></i> 저장
-                        </button></td>
-                </tr>
-                <tr>
-                    <td style="width:100px;"><label for="bomno-edit">고객사</label></td>
-                    <td><input type="text" id="customer-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td style="width:100px;"><label for="part-edit">차종</label></td>
-                    <td><input type="text" id="cartype-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td style="width:100px;"><label for="part-edit">품번</label></td>
-                    <td><input type="text" id="productnumber-save" value="" autocomplete="off" style="width: 100%;">
-                    </td>
-                    <td style="width:100px;"><label for="part-edit">SUB</label></td>
-                    <td><input type="text" id="sub-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td style="width:90px;"><label for="part-edit">품명</label></td>
-                    <td><input type="text" id="productname-save" value="" autocomplete="off" style="width: 100%;"></td>
+            <fieldset style="height: 40px; width:99%">
+                <b>차종</b>
+                <select id="cartype-select" style="width:200px;">
+                    <option></option>
+                </select>
+                <b>품번</b>
+                <select id="productnumber-select">
+                    <option></option>
+                </select>
+                <b>작업자</b>
+                <select id="productnumber-select">
+                    <option value=""></option>
+                    <option value="바룰">바룰</option>
+                    <option value="김경분">김경분</option>
+                    <option value="숀조이">숀조이</option>
+                    <option value="술리스툐">술리스툐</option>
+                    <option value="알리">알리</option>
+                    <option value="사리">사리</option>
+                    <option value="유광일">유광일</option>
+                    <option value="유습">유습</option>
+                    <option value="소전">소전</option>
+                    <option value="파이살">파이살</option>
+                </select>
+                <button id="newRegistrationBtn" onclick="searching()" class="btn btn-primary">
+                    <i class="fas fa-search"></i> 조회
+                </button>
+                <button id="newRegistrationBtn" onclick="savedata()" style="margin-left: 20px;;"
+                    class="btn btn-primary">
+                    <i class="fas fa-save"></i> 저장
+                </button>
+            </fieldset>
+            <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
+                <table class="styled-table1" id="datatable" style="max-height: 800px; overflow-y: auto;">
+                    <thead id="tableHead">
+                        <tr>
+                            <th style="text-align:center;" colspan="3">제품정보</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; width: 100px;">차종</th>
+                            <td style="text-align: center; width:80%;" id="cartype"></td>
+                            <td rowspan="6" colspan="3" style="text-align: center;"> <img alt="" class="loadingImage"
+                                    style="width:200px; height: 200px;" id="img"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;">고객사</th>
+                            <td style="text-align: center;" id="customer"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;">품번</th>
+                            <td style="text-align: center;" id="productnumber"></td>
+                        </tr>
 
-                <tr>
+                        <tr>
+                            <th style="text-align: center;">품명</th>
+                            <td style="text-align: center;" id="productname"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;">호기명</th>
+                            <td style="text-align: center;" id="marchine"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;">용접타점수</th>
+                            <td style="text-align: center;" id="touch"></td>
+                        </tr>
+                    </thead>
 
-                    <td style="width:100px;"><label for="part-edit">호기명</label></td>
-                    <td><input type="text" id="marchine-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td style="width:100px;"><label for="part-edit">용접타점수</label></td>
-                    <td><input type="text" id="touch-save" value="" autocomplete="off" style="width: 100%;"></td>
-                </tr>
-                <tr>
-                    <th style="background-color: black; color:white;">사양정보</th>
-                </tr>
 
-                <tr>
-                    <td><label for="part-edit">사양부번</label></td>
-                    <td><input type="text" id="sanum-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">사양품명</label></td>
-                    <td><input type="text" id="sapum-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">사양개수</label></td>
-                    <td><input type="text" id="sacount-save" value="" autocomplete="off" style="width: 100%;"></td>
-                </tr>
+                </table>
+            </div>
+            <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
+                <table class="styled-table1" id="datatable" style="max-height: 800px; overflow-y: auto;">
+                    <thead id="tableHead">
+                        <tr>
+                            <th style="text-align:center;" colspan="6">사양정보</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; width: 100px;">사양부번</th>
+                            <td style="text-align: center; width:20%;" id="cartype"></td>
+                            <th style="text-align: center; width: 100px;">사양품명</th>
+                            <td style="text-align: center; width:20%;" id="productnumber"></td>
+                            <th style="text-align: center; width: 100px;">사양개수</th>
+                            <td style="text-align: center; width:20%;" id="productname"></td>
 
-                <tr>
-                    <th style="background-color: black; color:white;">사양상세</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; width: 100px;">재질</th>
+                            <td style="text-align: center; width:20%;" id="cartype"></td>
+                            <th style="text-align: center; width: 100px;">두께</th>
+                            <td style="text-align: center; width:20%;" id="productnumber"></td>
+                        </tr>
 
-                </tr>
-                <tr>
-                    <td><label for="part-edit">통전</label></td>
-                    <td><input type="text" id="a-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">전류</label></td>
-                    <td><input type="text" id="b-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">초기가압</label></td>
-                    <td><input type="text" id="c-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">유지</label></td>
-                    <td><input type="text" id="d-save" value="" autocomplete="off" style="width: 100%;"></td>
-                </tr>
-                <tr>
-                    <td><label for="part-edit">에어압력</label></td>
-                    <td><input type="text" id="e-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">냉각수온도</label></td>
-                    <td><input type="text" id="f-save" value="" autocomplete="off" style="width: 100%;"></td>
 
-                </tr>
-                <tr>
-                    <th style="background-color: black; color:white;">기타정보</th>
+                    </thead>
 
-                </tr>
-                <tr>
-                    <td><label for="part-edit">관리번호</label></td>
-                    <td><input type="text" id="g-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">설비NO</label></td>
-                    <td><input type="text" id="h-save" value="" autocomplete="off" style="width: 100%;"></td>
 
-                </tr>
-                <tr>
-                    <td><label for="part-edit">TIP연마주기</label></td>
-                    <td><input type="text" id="i-save" value="1000타점" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">TIP교환주기</label></td>
-                    <td><input type="text" id="j-save" value="마모 한계선 1 mm 限" autocomplete="off" style="width: 100%;">
-                    </td>
-                    <td><label for="part-edit">재질</label></td>
-                    <td><input type="text" id="spec-save" value="" autocomplete="off" style="width: 100%;"></td>
-                    <td><label for="part-edit">두께</label></td>
-                    <td><input type="text" id="t-save" value="" autocomplete="off" style="width: 100%;"></td>
-                </tr>
-            </table>
+                </table>
+            </div>
+            <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
+                <table class="styled-table1" id="datatable" style="max-height: 800px; overflow-y: auto;">
+                    <thead id="tableHead">
+                        <tr>
+                            <th style="text-align:center;" colspan="6">설비정보</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; width: 100px;">통전</th>
+                            <td style="text-align: center; width:20%;" id="cartype"></td>
+                            <th style="text-align: center; width: 100px;">전류</th>
+                            <td style="text-align: center; width:20%;" id="productnumber"></td>
+                            <th style="text-align: center;">초기가압</th>
+                            <td style="text-align: center; width:20%;" id="productname"></td>
+
+                        </tr>
+                        <tr>
+                            <th style="text-align: center; width: 100px;">유지</th>
+                            <td style="text-align: center; width:20%;" id="productnumber"></td>
+                            <th style="text-align: center; width: 100px;">에어압력</th>
+                            <td style="text-align: center; width:20%;" id="cartype"></td>
+                            <th style="text-align: center; width: 100px;">냉각수온도</th>
+                            <td style="text-align: center; width:20%;" id="productnumber"></td>
+
+                        </tr>
+
+
+                    </thead>
+
+
+                </table>
+            </div>
         </div>
     </div>
 
@@ -233,7 +321,67 @@
         $(document).ready(function () {
             showLoading()
             load()
+
+            // 첫 번째 셀렉트 박스 데이터 로딩
+            const selectElement = document.getElementById("cartype-select");
+            const selectElement1 = document.getElementById("productnumber-select");
+            if (selectElement) {
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/selectcartype',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    success: function (result) {
+                        for (let i = 0; i < result.length; i++) {
+                            const option = document.createElement("option");
+                            option.text = result[i].cartype;
+                            option.value = result[i].cartype;
+                            selectElement.add(option);
+                        }
+                    },
+                });
+
+                // 두 번째 셀렉트 박스 값 변경 시 데이터 로딩
+                selectElement.addEventListener('change', function () {
+                    selectElement1.innerHTML = '';
+
+                    const selectedValue = $(this).val(); // 선택된 값 가져오기
+                    $.ajax({
+                        type: 'POST',
+                        url: server + '/api/pwmainselect',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            cartype: selectedValue
+                        }),
+                        success: function (result) {
+                            for (let i = 0; i < result.length; i++) {
+                                const option = document.createElement("option");
+                                option.text = result[i].productnumber;
+                                option.value = result[i].productnumber;
+                                selectElement1.add(option);
+                            }
+
+                            // 이미지 로드
+                            $('#img').attr('src', '../img/' + $('#productnumber-select').val() + '.jpg');
+                        },
+                    });
+
+
+                });
+
+                selectElement1.addEventListener('change', function () {
+                    // 새로운 값에 해당하는 이미지 로드
+                    const selectedValue = $(this).val();
+                    $('#img').attr('src', '../img/' + selectedValue + '.jpg');
+                    $('#productnumber-select').text('')
+                });
+
+            }
+
+
         });
+
 
 
         $('#searchInput').keypress(function (e) {
@@ -296,29 +444,6 @@
         function newadd() {
             $('#overlay').fadeIn()
             $('#editModal').fadeIn()
-            $('#customer-save').val('')
-            $('#cartype-save').val('')
-            $('#productnumber-save').val('')
-            $('#sub-save').val('')
-            $('#productname-save').val('')
-            $('#marchine-save').val('')
-            $('#touch-save').val('')
-            $('#sanum-save').val('')
-            $('#sapum-save').val('')
-            $('#sacount-save').val('')
-            $('#a-save').val('')
-            $('#b-save').val('')
-            $('#c-save').val('')
-            $('#d-save').val('')
-            $('#e-save').val('')
-            $('#f-save').val('')
-            $('#g-save').val('')
-            $('#h-save').val('')
-            $('#i-save').val('1000타점')
-            $('#j-save').val('마모 한계선 1 mm 限')
-            $('#spec-save').val('')
-            $('#t-save').val('')
-            $('#newRegistrationBtn1').text('저장')
         }
         function closeModal() {
             $('#overlay').fadeOut()
@@ -506,30 +631,92 @@
             }
 
         }
+        function searching() {
+            Swal.fire({
+                icon: 'info',
+                title: '검색중입니다...',
+                allowOutsideClick: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
+            // $('#Datatbody1').empty();
+
+            // var cartypeSelect = document.getElementById('cartype-select');
+            // var selectedValue = cartypeSelect.value;
+
+            // $.ajax({
+            //     type: 'POST',
+            //     url: server + '/api/pwmainselect',
+            //     dataType: 'json',
+            //     contentType: 'application/json',
+            //     data: JSON.stringify({
+            //         cartype: selectedValue
+            //     }),
+            //     success: function (result) {
+            //         console.log(result);
+            //         var tableBody = $('#Datatbody1');
+            //         tableBody.empty();
+            //         if (result.length === 0) {
+            //             // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
+            //             tableFoot.text('총 데이터 개수: 0');
+            //         } else {
+            //             result.forEach(function (rowData) {
+            //                 var tableRow = $('<tr>');
+            //                 tableRow.append('<td>' + rowData.customer + '</td>');
+            //                 tableRow.append('<td>' + rowData.cartype + '</td>');
+            //                 tableRow.append('<td>' + rowData.productnumber + '</td>');
+            //                 tableRow.append('<td>' + rowData.productname + '</td>');
+            //                 tableRow.append('<td>' + rowData.marchine + '</td>');
+            //                 tableRow.append('<td>' + rowData.touch + '</td>');
+            //                 tableRow.append('<td>' + rowData.sanum + '</td>');
+            //                 tableRow.append('<td>' + rowData.sapum + '</td>');
+            //                 tableRow.append('<td>' + rowData.sacount + '</td>');
+            //                 tableRow.append('<td>' + rowData.a + '</td>');
+            //                 tableRow.append('<td>' + rowData.b + '</td>');
+            //                 tableRow.append('<td>' + rowData.c + '</td>');
+            //                 tableRow.append('<td>' + rowData.d + '</td>');
+            //                 var selectButton = $('<button>선택</button>');
+            //                 selectButton.click(function () {
+            //                     console.log(rowData); // 해당 행의 데이터를 콘솔에 출력
+            //                 });
+            //                 var buttonCell = $('<td>').append(selectButton);
+            //                 tableRow.append(buttonCell);
+            //                 tableBody.append(tableRow);
+            //             });
+            //         }
+            //     }
+            // });
+
+
+            setTimeout(function () {
+                Swal.close();
+            }, 1000); // Simulated delay of 1.3 seconds
+        }
         function load() {
             $('#Datatbody').empty();
             $.ajax({
                 type: 'POST',
-                url: server + '/api/selectpwmain',
+                url: server + '/api/selectpwplan',
                 dataType: 'json',
                 success: function (data) {
-                    // updateDataCount(data.length);
 
                     var tableFoot = $('#dataCount');
                     if (data.length === 0) {
-                        // 데이터가 없을 때 "데이터가 없습니다" 문구 추가
                         tableFoot.text('총 데이터 개수: 0');
                     } else {
                         for (var i = 0; i < data.length; i++) {
 
                             $('#datatable').append(
                                 '<tr>' +
-                                '<td><input type="checkbox" name="chk" style="width:18px; height: 18px; cursor:pointer;" ></td>' +
+                                '<td>' + data[i].plandate + '</td>' +
                                 '<td>' + data[i].customer + '</td>' +
                                 '<td>' + data[i].cartype + '</td>' +
                                 '<td>' + data[i].productnumber + '</td>' +
-                                '<td>' + data[i].sub + '</td>' +
                                 '<td>' + data[i].productname + '</td>' +
                                 '<td>' + data[i].marchine + '</td>' +
                                 '<td>' + data[i].touch + '</td>' +
@@ -540,14 +727,9 @@
                                 '<td>' + data[i].b + '</td>' +
                                 '<td>' + data[i].c + '</td>' +
                                 '<td>' + data[i].d + '</td>' +
-                                '<td>' + data[i].e + '</td>' +
-                                '<td>' + data[i].f + '</td>' +
-                                '<td>' + data[i].g + '</td>' +
-                                '<td>' + data[i].h + '</td>' +
-                                '<td>' + data[i].i + '</td>' +
-                                '<td>' + data[i].j + '</td>' +
-                                '<td>' + data[i].spec + '</td>' +
-                                '<td>' + data[i].t + '</td>' +
+                                '<td>' + data[i].count + '</td>' +
+                                '<td>' + data[i].people + '</td>' +
+                                '<td>' + data[i].status + '</td>' +
                                 '<td id="data-id">' + data[i].id + '</td>' +
                                 '</tr>'
                             );
@@ -598,69 +780,7 @@
     </script>
 
 
-    <!-- 다음 스크립트를 사용하여 특정 열의 데이터를 엑셀 파일로 저장합니다. -->
-    <script>
-        function exportToExcel() {
-            // 테이블 데이터를 JavaScript 객체로 추출합니다.
-            var table = document.getElementById("datatable");
-            var rows = table.getElementsByTagName("tr");
-            var data = [];
 
-            // 엑셀에 저장할 열의 인덱스를 지정합니다.
-            var columnIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]; // 1번부터 9번 열까지
-
-            // 첫 번째 행 (테이블 헤더) 추출
-            var headerRow = rows[0];
-            var headerCols = headerRow.getElementsByTagName("th");
-            var headerData = [];
-
-            // 1번부터 9번 열까지의 헤더를 추가합니다.
-            for (var i = 0; i < columnIndices.length; i++) {
-                headerData.push(headerCols[columnIndices[i]].textContent);
-            }
-
-            data.push(headerData);
-
-            // 나머지 행 데이터 추출
-            for (var i = 1; i < rows.length; i++) {
-                var row = rows[i];
-                var cols = row.getElementsByTagName("td");
-                var rowData = [];
-
-                // 1번부터 9번 열까지의 데이터만 추출합니다.
-                for (var j = 0; j < columnIndices.length; j++) {
-                    rowData.push(cols[columnIndices[j]].textContent);
-                }
-
-                data.push(rowData);
-            }
-
-            // 엑셀 파일 생성
-            var ws = XLSX.utils.aoa_to_sheet(data);
-            var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "테이블 데이터");
-
-            // 엑셀 파일을 저장하고 다운로드합니다.
-            XLSX.writeFile(wb, "PW기초정보.xlsx");
-        }
-    </script>
-
-    <script>
-        // document.getElementById("datatable").addEventListener("dblclick", function (event) {
-        //     var target = event.target;
-        //     if (target.tagName === "TD") {
-        //         var newWindow = window.open('/html/pwpaper.html', '_blank', 'width=800,height=1000');
-        //         // 창을 중앙에 위치시키기 위해 창의 크기와 위치를 조정
-        //         if (window.screen) {
-        //             var left = (window.screen.width - 600) / 2;
-        //             var top = (window.screen.height - 600) / 2;
-        //             newWindow.moveTo(left, top);
-        //         }
-        //     }
-        // });
-
-
-    </script>
 </body>
 
 </html>

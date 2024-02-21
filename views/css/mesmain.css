@@ -66,8 +66,8 @@
 .styled-table th:hover,
 .styled-table1 th:hover,
 .styled-table2 th:hover {
-    background-color: silver;
-    color: black;
+    background-color: rgb(71, 71, 71);
+    color: white;
 }
 
 .styled-table th,
