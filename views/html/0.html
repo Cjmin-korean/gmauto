@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MODAL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .item {
+            width: calc(50% - 10px);
+            height: auto;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .item:nth-child(3) {
+            width: calc(100% - 10px);
+        }
+
+        .item:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+
+        .item table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .item th,
+        .item td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .item th {
+            background-color: #f2f2f2;
+        }
+
+        .item input[type="text"] {
+            width: calc(100% - 12px);
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .item img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+        }
+
+        td {
+            width: 150px;
+            background-color: white;
+        }
+
+        th {
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="item" style="width:60%; float: left;" >
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="2">제품 정보</th>
+                        <th colspan="2">사양 정보</th>
+                        <th colspan="2">설비 정보</th>
+                        <th style="width: 250px;">제품 이미지</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>차 종</th>
+                        <td><input type="text" id="cartype-save" readonly></td>
+                        <th>사양부번</th>
+                        <td><input type="text" id="sanum-save" readonly></td>
+                        <th>통전 시간(HZ)</th>
+                        <td><input type="text" id="a-save"></td>
+                        <td rowspan="3"><img alt="" class="loadingImage" id="img"></td>
+                    </tr>
+                    <tr>
+                        <th>고객사</th>
+                        <td><input type="text" id="customer-save" readonly></td>
+                        <th>사양품명</th>
+                        <td><input type="text" id="sapum-save" readonly></td>
+                        <th>용접 전류(A)</th>
+                        <td><input type="text" id="b-save"></td>
+                    </tr>
+                    <tr>
+                        <th>품 번</th>
+                        <td><input type="text" id="productnumber-save" readonly></td>
+                        <th>사양개수</th>
+                        <td><input type="text" id="sacount-save" readonly></td>
+                        <th>초기 가압(kg/㎠)</th>
+                        <td><input type="text" id="c-save"></td>
+                    </tr>
+                    <tr>
+                        <th>품 명</th>
+                        <td><input type="text" id="productname-save" readonly></td>
+                        <th>재 질</th>
+                        <td><input type="text" id="spec-save" readonly></td>
+                        <th>유지 시간(HZ)</th>
+                        <td><input type="text" id="d-save"></td>
+                        <th>사양 이미지</th>
+                    </tr>
+                    <tr>
+                        <th>호기명</th>
+                        <td><input type="text" id="marchine-save"></td>
+                        <th>두 께 (T)</th>
+                        <td><input type="text" id="t-save" readonly></td>
+                        <th>냉각수 온도(˚)</th>
+                        <td><input type="text" id="e-save"></td>
+                        <td rowspan="2"><img alt="" class="loadingImage" id="img1"></td>
+                    </tr>
+                    <tr>
+                        <th>용접타점수</th>
+                        <td><input type="text" id="touch-save" readonly></td>
+                        <th></th>
+                        <td></td>
+                        <th>에어 압력(Mpa)</th>
+                        <td><input type="text" id="f-save"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- <div class="item" style="border:1px solid green;"></div>
+        <div class="item" style="border:1px solid orange;"></div> -->
+    </div>
+    <div class="container"> 
+        
+        <table class="styled-table1" id="datatable" style="width:70%;">
+            <thead id="tableHead">
+                <tr>
+                    <th style="text-align:center;" colspan="9">외관검사</th>
+
+                </tr>
+                <tr>
+                    <th style="width:100px; text-align:center;">강도미달</th>
+                    <th style="width:100px; text-align:center;">나사산마모</th>
+                    <th style="width:100px; text-align:center;">무천동가압</th>
+                    <th style="width:100px; text-align:center;">백비드</th>
+                    <th style="width:100px; text-align:center;">역용접</th>
+                    <th style="width:100px; text-align:center;">용접이물없을것</th>
+                    <th style="width:100px; text-align:center;">편심없을것</th>
+                    <th style="width:100px; text-align:center;">홀누락없을것</th>
+                </tr>
+                <tr>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/강도미달.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/나사산마모.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/무천동가압.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/백비드.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/역용접.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/용접이물없을것.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/편심없을것.PNG">
+                    </td>
+                    <td style="width:100px; text-align: center;"> <img
+                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/홀누락없을것.PNG">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                    <td style="width:100px; text-align: center;"><button>확인</button></td>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>성적서 폼</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>성적서 폼</h2>
+        <form id="grade-form">
+            <table>
+                <tr>
+                    <th>항목</th>
+                    <th>입력</th>
+                </tr>
+                <tr>
+                    <td>차 종</td>
+                    <td><input type="text" id="cartype" name="cartype"></td>
+                </tr>
+                <tr>
+                    <td>고객사</td>
+                    <td><input type="text" id="customer" name="customer"></td>
+                </tr>
+                <tr>
+                    <td>품번</td>
+                    <td><input type="text" id="productnumber" name="productnumber"></td>
+                </tr>
+                <tr>
+                    <td>품명</td>
+                    <td><input type="text" id="productname" name="productname"></td>
+                </tr>
+            </table>
+            <button type="submit" class="btn-submit">제출하기</button>
+        </form>
+    </div>
+
+</body>
+
+</html>

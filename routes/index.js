@@ -391,14 +391,16 @@ module.exports = function (app) {
                 .input('d', sql.Float, req.body.d)
                 .input('count', sql.Float, req.body.count)
                 .input('status', sql.NVarChar, req.body.status)
+                .input('status1', sql.NVarChar, req.body.status1)
+                .input('status2', sql.NVarChar, req.body.status2)
                 .input('people', sql.NVarChar, req.body.people)
                 .input('starttime', sql.NVarChar, req.body.starttime)
                 .input('finaltime', sql.NVarChar, req.body.finaltime)
                 .input('finalcount', sql.Float, req.body.finalcount)
 
                 .query(
-                    'insert into pw(plandate,customer,cartype,productnumber,sub,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,count,status,people,starttime,finaltime,finalcount)' +
-                    ' values(@plandate,@customer,@cartype,@productnumber,@sub,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@count,@status,@people,@starttime,@finaltime,@finalcount)'
+                    'insert into pw(plandate,customer,cartype,productnumber,sub,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,count,status,status1,status2,people,starttime,finaltime,finalcount)' +
+                    ' values(@plandate,@customer,@cartype,@productnumber,@sub,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@count,@status,@status1,@status2,@people,@starttime,@finaltime,@finalcount)'
                 )
 
                 .then(result => {
@@ -452,6 +454,98 @@ module.exports = function (app) {
                     res.end();
 
 
+                });
+        });
+
+    });
+    // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/updatepw', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+
+
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+                .input('plandate', sql.NVarChar, req.body.plandate)
+                .input('customer', sql.NVarChar, req.body.customer)
+                .input('cartype', sql.NVarChar, req.body.cartype)
+                .input('productnumber', sql.NVarChar, req.body.productnumber)
+                .input('sub', sql.NVarChar, req.body.sub)
+                .input('productname', sql.NVarChar, req.body.productname)
+                .input('marchine', sql.NVarChar, req.body.marchine)
+                .input('touch', sql.NVarChar, req.body.touch)
+                .input('sanum', sql.NVarChar, req.body.sanum)
+                .input('sapum', sql.NVarChar, req.body.sapum)
+                .input('sacount', sql.NVarChar, req.body.sacount)
+                .input('a', sql.NVarChar, req.body.a)
+                .input('b', sql.NVarChar, req.body.b)
+                .input('c', sql.NVarChar, req.body.c)
+                .input('d', sql.NVarChar, req.body.d)
+                .input('e', sql.NVarChar, req.body.e)
+                .input('f', sql.NVarChar, req.body.f)
+                .input('g', sql.NVarChar, req.body.g)
+                .input('h', sql.NVarChar, req.body.h)
+                .input('i', sql.NVarChar, req.body.i)
+                .input('j', sql.NVarChar, req.body.j)
+                .input('spec', sql.NVarChar, req.body.spec)
+                .input('t', sql.NVarChar, req.body.t)
+
+
+                .query(
+                    "update " +
+                    " pw " +
+                    " set " +
+                    " plandate=@plandate, " +
+                    " customer=@customer, " +
+                    " cartype=@cartype, " +
+                    " sub=@sub, " +
+                    " productname=@productname, " +
+                    " marchine=@marchine, " +
+                    " touch=@touch, " +
+                    " sanum=@sanum, " +
+                    " sapum=@sapum, " +
+                    " sacount=@sacount, " +
+                    " a=@a, " +
+                    " b=@b,  " +
+                    " c=@c, " +
+                    " d=@d, " +
+                    " e=@e, " +
+                    " f=@f, " +
+                    " count=@count, " +
+                    " people=@people, " +
+                    " status=@status, " +
+                    " status1=@status1, " +
+                    " status2=@status2, " +
+                    " spec=spec, " +
+                    " t=@t " +
+                    " where id=@id")
+
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+        });
+
+    });
+    // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/deletepw', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+
+
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+
+
+
+                .query(
+                    "delete from pw where id = @id ")
+
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
                 });
         });
 
