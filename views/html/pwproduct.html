@@ -289,8 +289,9 @@
                                 <th style="text-align: center; width: 100px;">용접 전류(A)</th>
                                 <td style="text-align: center; width:250px;"><input type="text" id="b-save">
                                 </td>
-                                <th style="text-align: center; width: 100px;">검사결과1</th>
-                                <td style="text-align: center; width: 100px;"><input type="text" id="data1"></td>
+                                <th style="text-align: center; width: 100px;" id="text1">검사결과1</th>
+                                <td style="text-align: center; width: 100px;" id="textdata1"><input type="text"
+                                        id="data1"></td>
                                 <td style="text-align: center; width: 100px;" id="pwdata1"></td>
                                 <td style="text-align: center; width: 100px;" id="result1"></td>
                             </tr>
@@ -302,10 +303,11 @@
                                 <td style="text-align: center;"><input type="text" id="sacount-save" readonly></td>
                                 <th style="text-align: center; width: 100px;">초기 가압(kg/㎠)</th>
                                 <td style="text-align: center;"><input type="text" id="c-save"></td>
-                                <th style="text-align: center; width: 100px;">검사결과2</th>
-                                <td style="text-align: center; width: 100px;"><input type="text" id="data2"></td>
+                                <th style="text-align: center; width: 100px;" id="text2">검사결과2</th>
+                                <td style="text-align: center; width: 100px;" id="textdata2"><input type="text"
+                                        id="data2"></td>
                                 <td style="text-align: center; width: 100px;" id="pwdata2"></td>
-                                <td style="text-align: center; width: 100px;"></td>
+                                <td style="text-align: center; width: 100px;" id="result2"></td>
                             </tr>
                             <tr>
                                 <th style="text-align: center;">품 명</th>
@@ -316,10 +318,11 @@
                                 <td style="text-align: center;"><input type="text" id="d-save"></td>
 
                                 <th style="text-align: center; width: 100px;">사양 이미지</th>
-                                <th style="text-align: center; width: 100px;">검사결과3</th>
-                                <td style="text-align: center; width: 100px;"><input type="text" id="data3"></td>
+                                <th style="text-align: center; width: 100px;" id="text3">검사결과3</th>
+                                <td style="text-align: center; width: 100px;" id="textdata3"><input type="text"
+                                        id="data3"></td>
                                 <td style="text-align: center; width: 100px;" id="pwdata3"></td>
-                                <td style="text-align: center; width: 100px;"></td>
+                                <td style="text-align: center; width: 100px;" id="result3"></td>
 
                             </tr>
                             <tr>
@@ -332,10 +335,11 @@
                                 <td rowspan="2" style="text-align: center; vertical-align: middle; width:300px;"><img
                                         alt="" class="loadingImage" style="max-width: 100px; max-height: 100px;"
                                         id="img1">
-                                <th style="text-align: center; width: 100px;">검사결과4</th>
-                                <td style="text-align: center; width: 100px;"><input type="text" id="data4"></td>
+                                <th style="text-align: center; width: 100px;" id="text4">검사결과4</th>
+                                <td style="text-align: center; width: 100px;" id="textdata4"><input type="text"
+                                        id="data4"></td>
                                 <td style="text-align: center; width: 100px;" id="pwdata4"></td>
-                                <td style="text-align: center; width: 100px;"></td>
+                                <td style="text-align: center; width: 100px;" id="result4"></td>
                             </tr>
                             <tr>
                                 <th style="text-align: center;">용접타점수</th>
@@ -344,10 +348,11 @@
                                 <td style="text-align: center;"></td>
                                 <th style="text-align: center; width: 100px;">에어 압력(Mpa)</th>
                                 <td style="text-align: center;"><input type="text" id="f-save"></td>
-                                <th style="text-align: center; width: 100px;">검사결과5</th>
-                                <td style="text-align: center; width: 100px;"><input type="text" id="data5"></td>
+                                <th style="text-align: center; width: 100px;" id="text5">검사결과5</th>
+                                <td style="text-align: center; width: 100px;" id="textdata5"><input type="text"
+                                        id="data5"></td>
                                 <td style="text-align: center; width: 100px;" id="pwdata5"></td>
-                                <td style="text-align: center; width: 100px;"></td>
+                                <td style="text-align: center; width: 100px;" id="result5"></td>
                             </tr>
 
                         </thead>
@@ -779,18 +784,163 @@
                     }
 
                     if (result[0].sacount === '1') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
 
+
+                        $('#text2').hide()
+                        $('#text3').hide()
+                        $('#text4').hide()
+                        $('#text5').hide()
+                        $('#textdata2').hide()
+                        $('#textdata3').hide()
+                        $('#textdata4').hide()
+                        $('#textdata5').hide()
+                        $('#result2').hide()
+                        $('#result3').hide()
+                        $('#result4').hide()
+                        $('#result5').hide()
+                        $('#pwdata2').hide()
+                        $('#pwdata3').hide()
+                        $('#pwdata4').hide()
+                        $('#pwdata5').hide()
                     }
                     if (result[0].sacount === '2') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
 
+
+                        $('#text3').hide()
+                        $('#text4').hide()
+                        $('#text5').hide()
+                        $('#textdata3').hide()
+                        $('#textdata4').hide()
+                        $('#textdata5').hide()
+                        $('#result3').hide()
+                        $('#result4').hide()
+                        $('#result5').hide()
+                        $('#pwdata3').hide()
+                        $('#pwdata4').hide()
+                        $('#pwdata5').hide()
                     }
                     if (result[0].sacount === '3') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
 
+
+                        $('#text4').hide()
+                        $('#text5').hide()
+                        $('#textdata4').hide()
+                        $('#textdata5').hide()
+                        $('#result4').hide()
+                        $('#result5').hide()
+                        $('#pwdata4').hide()
+                        $('#pwdata5').hide()
                     }
                     if (result[0].sacount === '4') {
 
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
+
+                        $('#text5').hide()
+                        $('#textdata5').hide()
+                        $('#result5').hide()
+                        $('#pwdata5').hide()
+
                     }
-                    if (result[0].sacount === '1') {
+                    if (result[0].sacount === '5') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
 
                     }
                     var saSelectValue = $('#sa-select').val();
