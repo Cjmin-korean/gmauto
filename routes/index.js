@@ -94,6 +94,151 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/selectsa', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('productnumber', sql.NVarChar, req.body.productnumber)
+                .query(
+                    "select sapum from pwmain where productnumber=@productnumber"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/updatemiddle', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('dataid', sql.NVarChar, req.body.dataid)
+                .input('status1', sql.NVarChar, req.body.status1)
+                .input('people1', sql.NVarChar, req.body.people1)
+                .query(
+                    "update pw set status1=@status1,people1=@people1 where dataid=@dataid"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/updatelast', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('dataid', sql.NVarChar, req.body.dataid)
+                .input('status2', sql.NVarChar, req.body.status2)
+                .input('people2', sql.NVarChar, req.body.people2)
+                .query(
+                    "update pw set status2=@status2,people2=@people2 where dataid=@dataid"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/updatemiddlework', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('dataid', sql.NVarChar, req.body.dataid)
+                .input('data11', sql.NVarChar, req.body.data11)
+                .input('data21', sql.NVarChar, req.body.data21)
+                .input('data31', sql.NVarChar, req.body.data31)
+                .input('data41', sql.NVarChar, req.body.data41)
+                .input('data51', sql.NVarChar, req.body.data51)
+                .input('people1', sql.NVarChar, req.body.people1)
+                .query(
+                    "update pwproduct set people1=@people1,data11=@data11,data21=@data21,data31=@data31,data41=@data41,data51=@data51,status='중물' where dataid=@dataid"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/updatelastwork', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('dataid', sql.NVarChar, req.body.dataid)
+                .input('data12', sql.NVarChar, req.body.data12)
+                .input('data22', sql.NVarChar, req.body.data22)
+                .input('data32', sql.NVarChar, req.body.data32)
+                .input('data42', sql.NVarChar, req.body.data42)
+                .input('data52', sql.NVarChar, req.body.data52)
+                .input('people2', sql.NVarChar, req.body.people2)
+                .query(
+                    "update pwproduct set people2=@people2,data12=@data12,data22=@data22,data32=@data32,data42=@data42,data52=@data52,status='종물' where dataid=@dataid"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectpwproduct', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('finish', sql.NVarChar, req.body.finish)
+                .input('start', sql.NVarChar, req.body.start)
+
+                .query(
+                    "select * from pwproduct where productdate between @start and @finish "
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectpwproductpapaer', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('dataid', sql.NVarChar, req.body.dataid)
+
+                .query(
+                    "select * from pwproduct where dataid=@dataid "
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectcarnumber', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -389,6 +534,8 @@ module.exports = function (app) {
                 .input('b', sql.Float, req.body.b)
                 .input('c', sql.Float, req.body.c)
                 .input('d', sql.Float, req.body.d)
+                .input('e', sql.Float, req.body.e)
+                .input('f', sql.Float, req.body.f)
                 .input('count', sql.Float, req.body.count)
                 .input('status', sql.NVarChar, req.body.status)
                 .input('status1', sql.NVarChar, req.body.status1)
@@ -396,11 +543,62 @@ module.exports = function (app) {
                 .input('people', sql.NVarChar, req.body.people)
                 .input('starttime', sql.NVarChar, req.body.starttime)
                 .input('finaltime', sql.NVarChar, req.body.finaltime)
+                .input('dataid', sql.NVarChar, req.body.dataid)
                 .input('finalcount', sql.Float, req.body.finalcount)
 
                 .query(
-                    'insert into pw(plandate,customer,cartype,productnumber,sub,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,count,status,status1,status2,people,starttime,finaltime,finalcount)' +
-                    ' values(@plandate,@customer,@cartype,@productnumber,@sub,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@count,@status,@status1,@status2,@people,@starttime,@finaltime,@finalcount)'
+                    'insert into pw(plandate,customer,cartype,productnumber,sub,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,e,f,count,status,status1,status2,people,starttime,finaltime,finalcount,dataid)' +
+                    ' values(@plandate,@customer,@cartype,@productnumber,@sub,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@e,@f,@count,@status,@status1,@status2,@people,@starttime,@finaltime,@finalcount,@dataid)'
+                )
+
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+
+
+                });
+        });
+
+    });
+    // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/insertpwproduct', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+
+
+            return pool.request()
+                .input('productdate', sql.NVarChar, req.body.productdate)
+                .input('customer', sql.NVarChar, req.body.customer)
+                .input('cartype', sql.NVarChar, req.body.cartype)
+                .input('productnumber', sql.NVarChar, req.body.productnumber)
+                .input('productname', sql.NVarChar, req.body.productname)
+                .input('marchine', sql.NVarChar, req.body.marchine)
+                .input('touch', sql.NVarChar, req.body.touch)
+                .input('sanum', sql.NVarChar, req.body.sanum)
+                .input('sapum', sql.NVarChar, req.body.sapum)
+                .input('sacount', sql.NVarChar, req.body.sacount)
+                .input('a', sql.NVarChar, req.body.a)
+                .input('b', sql.NVarChar, req.body.b)
+                .input('c', sql.NVarChar, req.body.c)
+                .input('d', sql.NVarChar, req.body.d)
+                .input('e', sql.NVarChar, req.body.e)
+                .input('f', sql.NVarChar, req.body.f)
+                .input('status', sql.NVarChar, req.body.status)
+                .input('data1', sql.NVarChar, req.body.data1)
+                .input('data2', sql.NVarChar, req.body.data2)
+                .input('data3', sql.NVarChar, req.body.data3)
+                .input('data4', sql.NVarChar, req.body.data4)
+                .input('data5', sql.NVarChar, req.body.data5)
+                .input('t', sql.NVarChar, req.body.t)
+                .input('spec', sql.NVarChar, req.body.spec)
+                .input('people', sql.NVarChar, req.body.people)
+                .input('dataid', sql.NVarChar, req.body.dataid)
+
+
+                .query(
+                    'insert into pwproduct(productdate,customer,cartype,productnumber,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,e,f,status,data1,data2,data3,data4,data5,t,spec,people,dataid)' +
+                    ' values(@productdate,@customer,@cartype,@productnumber,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@e,@f,@status,@data1,@data2,@data3,@data4,@data5,@t,@spec,@people,@dataid)'
                 )
 
                 .then(result => {

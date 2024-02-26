@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PW작업</title>
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../css/mesmain.css">
+    <link rel="stylesheet" href="../css/mesiteminformation.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../js/sorttable.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<style>
+    #datatable-container {
+        max-height: 1000px;
+        /* Adjust the maximum height as needed */
+        overflow-y: auto;
+        /* Add vertical scrollbars if the content exceeds the container height */
+    }
+
+    #datatable {
+        width: 100%;
+        /* Other table styles */
+    }
+
+    .popup_title {
+        color: red;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #cccccc;
+        border-radius: 4px;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    /* machine 열 배경색 스타일 */
+    .machine-row {
+        background-color: rgb(230, 226, 226);
+        /* 원하는 배경색으로 변경 */
+    }
+
+    fieldset {
+        display: flex;
+        align-items: center;
+    }
+
+    fieldset b {
+        margin-right: 10px;
+        font-size: 20px;
+    }
+
+    fieldset select {
+        margin-right: 10px;
+        width: 300px;
+        font-size: 20px;
+    }
+
+    fieldset button {
+        height: 100%;
+    }
+
+    #tableWrapper {
+        max-height: 800px;
+        overflow-y: auto;
+    }
+
+    .styled-table1 {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    .styled-table1 thead th,
+    .styled-table1 tbody td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+    .styled-table1 tbody td button {
+        display: block;
+        margin: 0 auto;
+        font-weight: bold;
+    }
+
+    .styled-table1 tbody tr:hover {
+        background-color: rgb(224, 224, 224);
+        cursor: pointer;
+        /* 호버 효과에 원하는 배경색을 지정하세요 */
+    }
+
+    th {
+        font-size: 20px;
+        height: 40px;
+    }
+
+    td {
+        background-color: white;
+    }
+
+    td:hover {
+        background-color: rgb(214, 214, 214);
+    }
+
+    input[type="text"] {
+        font-size: 20px;
+    }
+
+    .ok {
+        background-color: blue;
+        color: white;
+    }
+
+    .ng {
+        background-color: red;
+        color: white;
+    }
+</style>
+
+<body>
+    <div class="main_header">
+        <i class="fas fa-wrench"></i>&nbsp; P.W 작업일보 및 성적서
+    </div>
+
+    <!-- <div class="menu-title" style="width:150%;">
+        <i class="fas fa-address-book"></i>P.W 기초정보
+    </div> -->
+    <div id="loadingOverlay">
+        <img src="/img/logo.png" alt="로딩 이미지" class="loadingImage">
+
+    </div>
+
+    <div id="overlay"></div>
+
+    <fieldset style="height: 40px; width:100%">
+        <b>조회기간</b>
+        <input type="date" id="datetimepicker1" style="width:200px;">
+        <input type="date" id="datetimepicker2" style="width:200px;">
+        <button id="newRegistrationBtn" class="btn btn-primary" onclick="load()" style="margin-left: 10px;">
+            <i class="fas fa-search"></i> 조회
+        </button>
+
+    </fieldset>
+    <div id="datatable-container" style="width:100%; height: 90%; ">
+        <table class="styled-table" id="datatable">
+            <thead id="tableHead">
+                <tr>
+                    <th style="width: auto; text-align:center;">생산일자</th>
+                    <th style="width: auto; text-align:center;">고객사</th>
+                    <th style="width: auto; text-align:center;">차종</th>
+                    <th style="width: auto; text-align:center;">품번</th>
+                    <th style="width: auto; text-align:center;">품명</th>
+                    <th style="width: auto; text-align:center;">호기명</th>
+                    <th style="width: auto; text-align:center;">용접타점수</th>
+                    <th style="width: auto; text-align:center;">사양품번</th>
+                    <th style="width: auto; text-align:center;">사양품명</th>
+                    <th style="width: auto; text-align:center;">사양개수</th>
+                    <th style="width: auto; text-align:center;">재질</th>
+                    <th style="width: auto; text-align:center;">두께</th>
+                    <th style="width: auto; text-align:center;">초물</th>
+                    <th style="width: auto; text-align:center;">중물</th>
+                    <th style="width: auto; text-align:center;">종물</th>
+
+                </tr>
+            </thead>
+
+            <tbody id="Datatbody">
+            </tbody>
+        </table>
+    </div>
+
+    <div id="editModal" style="height: auto; width:100%; height: 90%;">
+        <div class="mainheader">
+            <h1>PW 작업정보</h1>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+
+
+        <div id="editForm">
+            <fieldset style="height: 40px; width:90%">
+                <b>차종</b>
+                <select id="cartype-select" style="width:150px;">
+                    <option></option>
+                </select>
+                <b>품번</b>
+                <select id="productnumber-select" style="width:250px;">
+                    <option></option>
+                </select>
+                <b>사양</b>
+                <select id="sa-select" style="width:150px;">
+                    <option></option>
+                </select>
+                <b>작업자</b>
+                <select id="people-select" style="width:150px;">
+                    <option value=""></option>
+                    <option value="바룰">바룰</option>
+                    <option value="김경분">김경분</option>
+                    <option value="숀조이">숀조이</option>
+                    <option value="술리스툐">술리스툐</option>
+                    <option value="알리">알리</option>
+                    <option value="사리">사리</option>
+                    <option value="유광일">유광일</option>
+                    <option value="유습">유습</option>
+                    <option value="소전">소전</option>
+                    <option value="파이살">파이살</option>
+                </select>
+                <button id="newRegistrationBtn" onclick="searching()" class="btn btn-primary">
+                    <i class="fas fa-search"></i> 조회
+                </button>
+                <button id="newRegistrationBtn" onclick="savedata()" style="margin-left: 20px;;"
+                    class="btn btn-primary">
+                    <i class="fas fa-save"></i> 저장
+                </button>
+                <b style="margin-left: 20px;">초/중/종</b>
+                <input type="text" value="초물" id="inspection"
+                    style="text-align: center; width:150px; margin-left: 10px;">
+                <b style="margin-left: 20px;">최종판정</b>
+                <input type="text" value="검사미완료" id="result" style="width:150px; margin-left: 10px; text-align:center;">
+            </fieldset>
+
+            <div style="width:100%; float: left;">
+                <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
+                    <!-- 왼쪽 상단 테이블 -->
+                    <table class="styled-table1" id="datatable">
+                        <thead id="tableHead">
+                            <tr>
+                                <th style="text-align:center;" colspan="2">제품 정보</th>
+                                <th style="text-align:center;" colspan="2">사양 정보</th>
+                                <th style="text-align:center;" colspan="2">설비 정보</th>
+                                <th style="text-align:center; " colspan="1">제품 이미지</th>
+                                <th style="text-align:center; " colspan="4">파괴기 검사</th>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center; width: 100px;">차 종</th>
+                                <td style="text-align: center; width:250px;"><input type="text" id="cartype-save"
+                                        readonly>
+                                </td>
+                                <th style="text-align: center; width: 100px;">사양부번</th>
+                                <td style="text-align: center; width:250px;"><input type="text" id="sanum-save"
+                                        readonly>
+                                </td>
+                                <th style="text-align: center; width: 100px;">통전 시간(HZ)</th>
+                                <td style="text-align: center; width:250px;"><input type="text" id="a-save"></td>
+                                <td rowspan="3" style="text-align: center; vertical-align: middle; width:300px;"><img
+                                        alt="" class="loadingImage" style="max-width: 200px; max-height: 200px;"
+                                        id="img">
+                                </td>
+                                <th style="text-align: center; width: 100px;"></th>
+                                <th style="text-align: center; width: 100px;">결과값</th>
+                                <th style="text-align: center; width: 100px;">기준값</th>
+                                <th style="text-align: center; width: 100px;">판정</th>
+
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">고객사</th>
+                                <td style="text-align: center; width:250px;"><input type="text" id="customer-save"
+                                        readonly>
+                                </td>
+                                <th style="text-align: center; width: 100px;">사양품명</th>
+                                <td style="text-align: center; width:250px;"><input type="text" id="sapum-save"
+                                        readonly>
+                                </td>
+                                <th style="text-align: center; width: 100px;">용접 전류(A)</th>
+                                <td style="text-align: center; width:250px;"><input type="text" id="b-save">
+                                </td>
+                                <th style="text-align: center; width: 100px;" id="text1">검사결과1</th>
+                                <td style="text-align: center; width: 100px;" id="textdata1"><input type="text"
+                                        id="data1"></td>
+                                <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata1"></td>
+                                <td style="text-align: center; width: 100px;" id="result1"></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">품 번</th>
+                                <td style="text-align: center;"><input type="text" id="productnumber-save" readonly>
+                                </td>
+                                <th style="text-align: center; width: 100px;">사양개수</th>
+                                <td style="text-align: center;"><input type="text" id="sacount-save" readonly></td>
+                                <th style="text-align: center; width: 100px;">초기 가압(kg/㎠)</th>
+                                <td style="text-align: center;"><input type="text" id="c-save"></td>
+                                <th style="text-align: center; width: 100px;" id="text2">검사결과2</th>
+                                <td style="text-align: center; width: 100px;" id="textdata2"><input type="text"
+                                        id="data2"></td>
+                                <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata2"></td>
+                                <td style="text-align: center; width: 100px;" id="result2"></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">품 명</th>
+                                <td style="text-align: center;"><input type="text" id="productname-save" readonly></td>
+                                <th style="text-align: center; width: 100px;">재 질</th>
+                                <td style="text-align: center;"><input type="text" id="spec-save" readonly></td>
+                                <th style="text-align: center; width: 100px;">유지 시간(HZ)</th>
+                                <td style="text-align: center;"><input type="text" id="d-save"></td>
+
+                                <th style="text-align: center; width: 100px;">사양 이미지</th>
+                                <th style="text-align: center; width: 100px;" id="text3">검사결과3</th>
+                                <td style="text-align: center; width: 100px;" id="textdata3"><input type="text"
+                                        id="data3"></td>
+                                <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata3"></td>
+                                <td style="text-align: center; width: 100px;" id="result3"></td>
+
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">호기명</th>
+                                <td style="text-align: center;"><input type="text" id="marchine-save"></td>
+                                <th style="text-align: center; width: 100px;">두 께 (T)</th>
+                                <td style="text-align: center;"><input type="text" id="t-save"></td>
+                                <th style="text-align: center; width: 100px;">냉각수 온도(˚)</th>
+                                <td style="text-align: center;"><input type="text" id="e-save"></td>
+                                <td rowspan="2" style="text-align: center; vertical-align: middle; width:300px;"><img
+                                        alt="" class="loadingImage" style="max-width: 100px; max-height: 100px;"
+                                        id="img1">
+                                <th style="text-align: center; width: 100px;" id="text4">검사결과4</th>
+                                <td style="text-align: center; width: 100px;" id="textdata4"><input type="text"
+                                        id="data4"></td>
+                                <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata4"></td>
+                                <td style="text-align: center; width: 100px;" id="result4"></td>
+                            </tr>
+                            <tr>
+                                <th style="text-align: center;">용접타점수</th>
+                                <td style="text-align: center;"><input type="text" id="touch-save"></td>
+                                <th style="text-align: center;"></th>
+                                <td style="text-align: center;"></td>
+                                <th style="text-align: center; width: 100px;">에어 압력(Mpa)</th>
+                                <td style="text-align: center;"><input type="text" id="f-save"></td>
+                                <th style="text-align: center; width: 100px;" id="text5">검사결과5</th>
+                                <td style="text-align: center; width: 100px;" id="textdata5"><input type="text"
+                                        id="data5"></td>
+                                <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata5"></td>
+                                <td style="text-align: center; width: 100px;" id="result5"></td>
+                            </tr>
+
+                        </thead>
+                    </table>
+                </div>
+
+                <!-- 왼쪽 하단 테이블 -->
+
+            </div>
+
+            <table class="styled-table1" id="datatable" style="width:100%;">
+                <thead id="tableHead">
+                    <tr>
+                        <th style="text-align:center;" colspan="9">외관검사</th>
+
+                    </tr>
+                    <tr>
+                        <th style="width:100px; text-align:center;">강도미달</th>
+                        <th style="width:100px; text-align:center;">나사산마모</th>
+                        <th style="width:100px; text-align:center;">무통전가압</th>
+                        <th style="width:100px; text-align:center;">백비드</th>
+                        <th style="width:100px; text-align:center;">역용접</th>
+                        <th style="width:100px; text-align:center;">용접이물없을것</th>
+                        <th style="width:100px; text-align:center;">편심없을것</th>
+                        <th style="width:100px; text-align:center;">홀누락없을것</th>
+                    </tr>
+                    <tr>
+                        <td style="width:100px; text-align: center;"> <img
+                                style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/강도미달.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/나사산마모.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/무천동가압.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/백비드.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/역용접.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/용접이물없을것.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/편심없을것.PNG">
+                        </td>
+                        <td style="width:150px; text-align: center;"> <img
+                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/홀누락없을것.PNG">
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="width:100px; text-align: center; "><button id="button1"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button2"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button3"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button4"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button5"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button6"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button7"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                        <td style="width:100px; text-align: center;"><button id="button8"
+                                style="background-color: rgb(133, 133, 133);"
+                                onclick="changeButtonText(this)">검사</button></td>
+                    </tr>
+                </thead>
+            </table>
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+    <script>
+        var server = '';
+
+        if (window.location.hostname == 'localhost') {
+            server = 'http://localhost:8080';
+        } else {
+            server = 'http://gmauto.xyz';
+        }
+        $(document).ready(function () {
+
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); // 1월이 0부터 시작하므로 1을 더해줍니다.
+            var yyyy = today.getFullYear();
+
+            today = yyyy + '-' + mm + '-' + dd;
+            $('#datetimepicker1').val(today);
+            $('#datetimepicker2').val(today);
+            // showLoading()
+            load()
+
+            const selectElement = document.getElementById("cartype-select");
+            const selectElement1 = document.getElementById("productnumber-select");
+            const selectElement2 = document.getElementById("sa-select");
+            $.ajax({
+                type: 'POST',
+                url: server + '/api/selectcartype',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    for (let i = 0; i < result.length; i++) {
+                        const option = document.createElement("option");
+                        option.text = result[i].cartype;
+                        option.value = result[i].cartype;
+                        selectElement.add(option);
+                    }
+                },
+            });
+
+            selectElement.addEventListener('change', function () {
+                selectElement1.innerHTML = '';
+                selectElement2.innerHTML = ''; // 새로운 값을 선택할 때마다 sa-select를 초기화
+
+                const selectedValue = $(this).val(); // 선택된 값 가져오기
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/pwmainselect',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        cartype: selectedValue
+                    }),
+                    success: function (result) {
+                        const defaultOption = document.createElement("option");
+                        defaultOption.text = "";
+                        defaultOption.value = "";
+                        defaultOption.selected = true; // 기본 선택 옵션으로 설정
+                        selectElement1.appendChild(defaultOption);
+
+                        for (let i = 0; i < result.length; i++) {
+                            const option = document.createElement("option");
+                            option.text = result[i].productnumber;
+                            option.value = result[i].productnumber;
+                            selectElement1.add(option);
+                        }
+
+                        // 첫 번째 값을 선택했을 때 바로 이미지 로드
+                    },
+                });
+            });
+
+            selectElement1.addEventListener('change', function () {
+                selectElement2.innerHTML = ''; // 선택한 productnumber에 대한 sa-select를 초기화
+
+                const selectedValue = $(this).val();
+                $.ajax({
+                    type: 'POST',
+                    url: server + '/api/pwmainselectsapum',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        productnumber: selectedValue
+                    }),
+                    success: function (result) {
+                        for (let i = 0; i < result.length; i++) {
+                            const option = document.createElement("option");
+                            option.text = result[i].sapum;
+                            option.value = result[i].sapum;
+                            selectElement2.add(option);
+                        }
+                        console.error();
+                        for (let i = 0; i < result.length; i++) {
+                            const option = document.createElement(option)
+                        }
+                    },
+                });
+            });
+        });
+
+
+
+        function showLoading() {
+            var loadingOverlay = document.getElementById("loadingOverlay");
+            loadingOverlay.style.display = "flex";
+
+            setTimeout(function () {
+                loadingOverlay.style.display = "none";
+            }, 1000);
+        }
+
+        function newadd() {
+            $('#customer-save').val('')
+            $('#cartype-save').val('')
+            $('#productnumber-save').val('')
+            $('#sub-save').val('')
+            $('#productname-save').val('')
+            $('#marchine-save').val('')
+            $('#touch-save').val('')
+            $('#sanum-save').val('')
+            $('#sapum-save').val('')
+            $('#sacount-save').val('')
+            $('#a-save').val('')
+            $('#b-save').val('')
+            $('#c-save').val('')
+            $('#d-save').val('')
+            $('#e-save').val('')
+            $('#f-save').val('')
+            $('#g-save').val('')
+            $('#h-save').val('')
+            $('#i-save').val('')
+            $('#j-save').val('')
+            $('#spec-save').val('')
+            $('#t-save').val('')
+            $('#inspection').val('초물')
+            $('#result').val('검사미완료')
+            $('#button1').css('background-color', 'rgb(133, 133, 133)');
+            $('#button2').css('background-color', 'rgb(133, 133, 133)');
+            $('#button3').css('background-color', 'rgb(133, 133, 133)');
+            $('#button4').css('background-color', 'rgb(133, 133, 133)');
+            $('#button5').css('background-color', 'rgb(133, 133, 133)');
+            $('#button6').css('background-color', 'rgb(133, 133, 133)');
+            $('#button7').css('background-color', 'rgb(133, 133, 133)');
+            $('#button8').css('background-color', 'rgb(133, 133, 133)');
+            $('#button1').text('검사')
+            $('#button2').text('검사')
+            $('#button3').text('검사')
+            $('#button4').text('검사')
+            $('#button5').text('검사')
+            $('#button6').text('검사')
+            $('#button7').text('검사')
+            $('#button8').text('검사')
+            $('#cartype-select').val('')
+            $('#productnumber-select').val('')
+            $('#sa-select').val('')
+            $('#people-select').val('')
+            $('#overlay').fadeIn()
+            $('#editModal').fadeIn()
+        }
+        function closeModal() {
+            $('#overlay').fadeOut()
+            $('#editModal').fadeOut()
+        }
+        function openmodal() {
+            $('#overlay').fadeIn()
+            $('#editModal1').fadeIn()
+        }
+        function close1Modal() {
+            $('#overlay').fadeOut()
+            $('#editModal1').fadeOut()
+        }
+
+
+        function deletedata() {
+            var selectedIds = [];
+            $('input[name="chk"]:checked').each(function () {
+                selectedIds.push($(this).closest('tr').find('td:eq(23)').text()); // ID는 두 번째 열에 있다고 가정합니다.
+            });
+            Swal.fire({
+                icon: 'warning',
+                title: '정말로 삭제하시겠습니까?',
+                text: '이 작업은 되돌릴 수 없습니다!',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: server + '/api/deletepwmain',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            ids: selectedIds // 선택된 ID 배열을 전송합니다.
+                        }),
+                        success: function (result) {
+                            load();
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: '삭제완료',
+                                text: '데이터 정보가 삭제되었습니다.',
+                            }).then((result) => {
+
+                            });
+                        }
+                    });
+
+
+                }
+            });
+        }
+
+
+        function savedata() {
+            const today = new Date();
+            const year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            month = month < 10 ? '0' + month : month; // 한 자리 월인 경우 앞에 0을 추가
+            let day = today.getDate();
+            day = day < 10 ? '0' + day : day; // 한 자리 일인 경우 앞에 0을 추가
+
+            const formattedDate = `${year}-${month}-${day}`;
+
+            let hours = today.getHours();
+            hours = hours < 10 ? '0' + hours : hours; // 한 자리 시간인 경우 앞에 0을 추가
+            let minutes = today.getMinutes();
+            minutes = minutes < 10 ? '0' + minutes : minutes; // 한 자리 분인 경우 앞에 0을 추가
+
+            const formattedTime = `${hours}:${minutes}`;
+
+            Swal.fire({
+                icon: 'info',
+                title: '저장',
+                text: 'P.W 초물정보를 등록하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Array to store promises for each AJAX request
+
+                    $.ajax({
+                        type: 'POST',
+                        url: server + '/api/insertpwjisi',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "plandate": formattedDate,
+                            "customer": $('#customer-save').val(),
+                            "cartype": $('#cartype-save').val(),
+                            "productnumber": $('#productnumber-save').val(),
+                            "sub": $('#sub-save').val(),
+                            "productname": $('#productname-save').val(),
+                            "marchine": $('#marchine-save').val(),
+                            "touch": $('#touch-save').val(),
+                            "sanum": $('#sanum-save').val(),
+                            "sapum": $('#sapum-save').val(),
+                            "sacount": $('#sacount-save').val(),
+                            "a": $('#a-save').val(),
+                            "b": $('#b-save').val(),
+                            "c": $('#c-save').val(),
+                            "d": $('#d-save').val(),
+                            "e": $('#e-save').val(),
+                            "f": $('#f-save').val(),
+                            "count": '0',
+                            "spec": $('#spec-save').val(),
+                            "t": $('#t-save').val(),
+                            "status": formattedTime,
+                            "status1": '',
+                            "status2": '',
+                            "people": $('#people-select').val()
+
+                        }),
+                        success: function (result) {
+                            load();
+
+                        }
+
+                    });
+
+                    //     .input('productdate', sql.NVarChar, req.body.productdate)
+                    // .input('customer', sql.NVarChar, req.body.customer)
+                    // .input('cartype', sql.NVarChar, req.body.cartype)
+                    // .input('productnumber', sql.NVarChar, req.body.productnumber)
+                    // .input('productname', sql.NVarChar, req.body.productname)
+                    // .input('marchine', sql.NVarChar, req.body.marchine)
+                    // .input('touch', sql.NVarChar, req.body.touch)
+                    // .input('sanum', sql.NVarChar, req.body.sanum)
+                    // .input('sapum', sql.NVarChar, req.body.sapum)
+                    // .input('sacount', sql.NVarChar, req.body.sacount)
+                    // .input('a', sql.NVarChar, req.body.a)
+                    // .input('b', sql.NVarChar, req.body.b)
+                    // .input('c', sql.NVarChar, req.body.c)
+                    // .input('d', sql.NVarChar, req.body.d)
+                    // .input('e', sql.NVarChar, req.body.e)
+                    // .input('f', sql.NVarChar, req.body.f)
+                    // .input('count', sql.Float, req.body.count)
+                    // .input('status', sql.NVarChar, req.body.status)
+                    // .input('data1', sql.NVarChar, req.body.data1)
+                    // .input('data2', sql.NVarChar, req.body.data2)
+                    // .input('data3', sql.NVarChar, req.body.data3)
+                    // .input('data4', sql.NVarChar, req.body.data4)
+                    // .input('data5', sql.NVarChar, req.body.data5)
+                    // .input('t', sql.NVarChar, req.body.t)
+                    // .input('spec', sql.NVarChar, req.body.spec)
+                    $.ajax({
+                        type: 'POST',
+                        url: server + '/api/insertpwproduct',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "product": formattedDate,
+                            "customer": $('#customer-save').val(),
+                            "cartype": $('#cartype-save').val(),
+                            "productnumber": $('#productnumber-save').val(),
+                            "productname": $('#productname-save').val(),
+                            "marchine": $('#marchine-save').val(),
+                            "touch": $('#touch-save').val(),
+                            "sanum": $('#sanum-save').val(),
+                            "sapum": $('#sapum-save').val(),
+                            "sacount": $('#sacount-save').val(),
+                            "a": $('#a-save').val(),
+                            "b": $('#b-save').val(),
+                            "c": $('#c-save').val(),
+                            "d": $('#d-save').val(),
+                            "e": $('#e-save').val(),
+                            "f": $('#f-save').val(),
+                            "spec": $('#spec-save').val(),
+                            "t": $('#t-save').val(),
+                            "status": '초물',
+                            "data1": $('#data1').val(),
+                            "data2": $('#data2').val(),
+                            "data3": $('#data3').val(),
+                            "data4": $('#data4').val(),
+                            "data5": $('#data5').val(),
+                            "people": $('#people-select').val()
+
+                        }),
+                        success: function (result) {
+                            load();
+
+                        }
+
+                    });
+                    $('#overlay').fadeOut()
+                    $('#editModal').fadeOut()
+                    Swal.fire({
+                        icon: 'success',
+                        title: '저장완료',
+                        text: '데이터 정보가 저장 되었습니다.',
+                    }).then((result) => {
+
+                    });
+
+                }
+            });
+
+        }
+        function searching() {
+            Swal.fire({
+                icon: 'info',
+                title: '검색중입니다...',
+                allowOutsideClick: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            $('#button1').css('background-color', 'rgb(133, 133, 133)');
+            $('#button2').css('background-color', 'rgb(133, 133, 133)');
+            $('#button3').css('background-color', 'rgb(133, 133, 133)');
+            $('#button4').css('background-color', 'rgb(133, 133, 133)');
+            $('#button5').css('background-color', 'rgb(133, 133, 133)');
+            $('#button6').css('background-color', 'rgb(133, 133, 133)');
+            $('#button7').css('background-color', 'rgb(133, 133, 133)');
+            $('#button8').css('background-color', 'rgb(133, 133, 133)');
+            $('#button1').text('검사')
+            $('#button2').text('검사')
+            $('#button3').text('검사')
+            $('#button4').text('검사')
+            $('#button5').text('검사')
+            $('#button6').text('검사')
+            $('#button7').text('검사')
+            $('#button8').text('검사')
+
+            $('#img').attr('src', '../img/' + $('#productnumber-select').val() + '.jpg');
+
+            $('#cartype-save').val($('#cartype-select').val());
+            $('#productnumber-save').val($('#productnumber-select').val());
+            $('#sapum-save').val($('#sa-select').val());
+            $.ajax({
+
+                type: 'POST',
+                url: server + '/api/selectpwmaininfo',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "productnumber": $('#productnumber-select').val(),
+                    "sapum": $('#sa-select').val()
+                }),
+                success: function (result) {
+                    for (let i = 0; i < result.length; i++) {
+                        $('#customer-save').val(result[0].customer);
+                        $('#productname-save').val(result[0].productname);
+                        $('#marchine-save').val(result[0].marchine);
+                        $('#touch-save').val(result[0].touch);
+                        $('#sanum-save').val(result[0].sanum);
+                        $('#sacount-save').val(result[0].sacount);
+                        $('#spec-save').val(result[0].spec);
+                        $('#t-save').val(result[0].t);
+                        $('#a-save').val(result[0].a);
+                        $('#b-save').val(result[0].b);
+                        $('#c-save').val(result[0].c);
+                        $('#d-save').val(result[0].d);
+                        $('#e-save').val('');
+                        $('#f-save').val('');
+                        $('#img1').attr('src', '../hw/' + result[0].sanum + '.PNG');
+
+                    }
+
+                    if (result[0].sacount === '1') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
+
+
+                        $('#text2').hide()
+                        $('#text3').hide()
+                        $('#text4').hide()
+                        $('#text5').hide()
+                        $('#textdata2').hide()
+                        $('#textdata3').hide()
+                        $('#textdata4').hide()
+                        $('#textdata5').hide()
+                        $('#result2').hide()
+                        $('#result3').hide()
+                        $('#result4').hide()
+                        $('#result5').hide()
+                        $('#pwdata2').hide()
+                        $('#pwdata3').hide()
+                        $('#pwdata4').hide()
+                        $('#pwdata5').hide()
+                    }
+                    if (result[0].sacount === '2') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
+
+
+                        $('#text3').hide()
+                        $('#text4').hide()
+                        $('#text5').hide()
+                        $('#textdata3').hide()
+                        $('#textdata4').hide()
+                        $('#textdata5').hide()
+                        $('#result3').hide()
+                        $('#result4').hide()
+                        $('#result5').hide()
+                        $('#pwdata3').hide()
+                        $('#pwdata4').hide()
+                        $('#pwdata5').hide()
+                    }
+                    if (result[0].sacount === '3') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
+
+
+                        $('#text4').hide()
+                        $('#text5').hide()
+                        $('#textdata4').hide()
+                        $('#textdata5').hide()
+                        $('#result4').hide()
+                        $('#result5').hide()
+                        $('#pwdata4').hide()
+                        $('#pwdata5').hide()
+                    }
+                    if (result[0].sacount === '4') {
+
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
+
+                        $('#text5').hide()
+                        $('#textdata5').hide()
+                        $('#result5').hide()
+                        $('#pwdata5').hide()
+
+                    }
+                    if (result[0].sacount === '5') {
+                        $('#text1').show()
+                        $('#text2').show()
+                        $('#text3').show()
+                        $('#text4').show()
+                        $('#text5').show()
+                        $('#textdata1').show()
+                        $('#textdata2').show()
+                        $('#textdata3').show()
+                        $('#textdata4').show()
+                        $('#textdata5').show()
+                        $('#result1').show()
+                        $('#result2').show()
+                        $('#result3').show()
+                        $('#result4').show()
+                        $('#result5').show()
+                        $('#pwdata1').show()
+                        $('#pwdata2').show()
+                        $('#pwdata3').show()
+                        $('#pwdata4').show()
+                        $('#pwdata5').show()
+
+                    }
+                    var saSelectValue = $('#sa-select').val();
+                    var tValue = parseFloat(result[0].t);
+
+
+
+
+
+                    if (saSelectValue === "M6 NUT" ||
+                        saSelectValue === "M6(T-NUT)" ||
+                        saSelectValue === "WELD PIN M6*10" ||
+                        saSelectValue === "SPOT" ||
+                        saSelectValue === "수밀볼트" ||
+                        saSelectValue === "6*12 BOLT" ||
+                        saSelectValue === "6*14 BOLT" ||
+                        saSelectValue === "6*16 BOLT" ||
+                        saSelectValue === "6*18 BOLT" ||
+                        saSelectValue === "6*20 BOLT" ||
+                        saSelectValue === "6*20(돌기6EA)") {
+
+                        if (tValue >= 0.6 && tValue <= 0.7) {
+                            $('#pwdata1').text('300');
+                            $('#pwdata2').text('300');
+                            $('#pwdata3').text('300');
+                            $('#pwdata4').text('300');
+                            $('#pwdata5').text('300');
+                        } else if (tValue > 0.7 && tValue <= 0.8) {
+                            $('#pwdata1').text('400');
+                            $('#pwdata2').text('400');
+                            $('#pwdata3').text('400');
+                            $('#pwdata4').text('400');
+                            $('#pwdata5').text('400');
+                        } else if (tValue > 0.8 && tValue <= 1.0) {
+                            $('#pwdata1').text('450');
+                            $('#pwdata2').text('450');
+                            $('#pwdata3').text('450');
+                            $('#pwdata4').text('450');
+                            $('#pwdata5').text('450');
+                        } else if (tValue > 1.0 && tValue <= 1.2) {
+                            $('#pwdata1').text('500');
+                            $('#pwdata2').text('500');
+                            $('#pwdata3').text('500');
+                            $('#pwdata4').text('500');
+                            $('#pwdata5').text('500');
+                        } else if (tValue > 1.2 && tValue <= 1.6) {
+                            $('#pwdata1').text('550');
+                            $('#pwdata2').text('550');
+                            $('#pwdata3').text('550');
+                            $('#pwdata4').text('550');
+                            $('#pwdata5').text('550');
+                        } else if (tValue > 1.6 && tValue <= 2.0) {
+                            $('#pwdata1').text('550');
+                            $('#pwdata2').text('550');
+                            $('#pwdata3').text('550');
+                            $('#pwdata4').text('550');
+                            $('#pwdata5').text('550');
+                        } else if (tValue > 2.0 && tValue <= 2.3) {
+                            $('#pwdata1').text('550');
+                            $('#pwdata2').text('550');
+                            $('#pwdata3').text('550');
+                            $('#pwdata4').text('550');
+                            $('#pwdata5').text('550');
+                        } else if (tValue > 2.3 && tValue <= 6.0) {
+                            $('#pwdata1').text('550');
+                            $('#pwdata2').text('550');
+                            $('#pwdata3').text('550');
+                            $('#pwdata4').text('550');
+                            $('#pwdata5').text('550');
+                        }
+                    }
+
+                    if (saSelectValue === "8*18(도금볼트)" ||
+                        saSelectValue === "8*20 BOLT" ||
+                        saSelectValue === "M8 NUT" ||
+                        saSelectValue === "8*25 BOLT" ||
+                        saSelectValue === "8*45 BOLT" ||
+                        saSelectValue === "8*50 BOLT" ||
+                        saSelectValue === "M8*21 W/D PIN"
+                    ) {
+
+                        if (tValue >= 0.6 && tValue <= 0.7) {
+                            $('#pwdata1').text('400');
+                            $('#pwdata2').text('400');
+                            $('#pwdata3').text('400');
+                            $('#pwdata4').text('400');
+                            $('#pwdata5').text('400');
+                        } else if (tValue > 0.7 && tValue <= 0.8) {
+                            $('#pwdata1').text('500');
+                            $('#pwdata2').text('500');
+                            $('#pwdata3').text('500');
+                            $('#pwdata4').text('500');
+                            $('#pwdata5').text('500');
+                        } else if (tValue > 0.8 && tValue <= 1.0) {
+                            $('#pwdata1').text('550');
+                            $('#pwdata2').text('550');
+                            $('#pwdata3').text('550');
+                            $('#pwdata4').text('550');
+                            $('#pwdata5').text('550');
+                        } else if (tValue > 1.0 && tValue <= 1.2) {
+                            $('#pwdata1').text('600');
+                            $('#pwdata2').text('600');
+                            $('#pwdata3').text('600');
+                            $('#pwdata4').text('600');
+                            $('#pwdata5').text('600');
+                        } else if (tValue > 1.2 && tValue <= 1.6) {
+                            $('#pwdata1').text('700');
+                            $('#pwdata2').text('700');
+                            $('#pwdata3').text('700');
+                            $('#pwdata4').text('700');
+                            $('#pwdata5').text('700');
+                        } else if (tValue > 1.6 && tValue <= 2.0) {
+                            $('#pwdata1').text('750');
+                            $('#pwdata2').text('750');
+                            $('#pwdata3').text('750');
+                            $('#pwdata4').text('750');
+                            $('#pwdata5').text('750');
+                        } else if (tValue > 2.0 && tValue <= 2.3) {
+                            $('#pwdata1').text('750');
+                            $('#pwdata2').text('750');
+                            $('#pwdata3').text('750');
+                            $('#pwdata4').text('750');
+                            $('#pwdata5').text('750');
+                        } else if (tValue > 2.3 && tValue <= 6.0) {
+                            $('#pwdata1').text('750');
+                            $('#pwdata2').text('750');
+                            $('#pwdata3').text('750');
+                            $('#pwdata4').text('750');
+                            $('#pwdata5').text('750');
+                        }
+                    }
+
+                    if (saSelectValue === "M10 NUT"
+
+                    ) {
+
+                        if (tValue >= 0.6 && tValue <= 0.7) {
+                            $('#pwdata1').text('550');
+                            $('#pwdata2').text('550');
+                            $('#pwdata3').text('550');
+                            $('#pwdata4').text('550');
+                            $('#pwdata5').text('550');
+                        } else if (tValue > 0.7 && tValue <= 0.8) {
+                            $('#pwdata1').text('650');
+                            $('#pwdata2').text('650');
+                            $('#pwdata3').text('650');
+                            $('#pwdata4').text('650');
+                            $('#pwdata5').text('650');
+                        } else if (tValue > 0.8 && tValue <= 1.0) {
+                            $('#pwdata1').text('700');
+                            $('#pwdata2').text('700');
+                            $('#pwdata3').text('700');
+                            $('#pwdata4').text('700');
+                            $('#pwdata5').text('700');
+                        } else if (tValue > 1.0 && tValue <= 1.2) {
+                            $('#pwdata1').text('850');
+                            $('#pwdata2').text('850');
+                            $('#pwdata3').text('850');
+                            $('#pwdata4').text('850');
+                            $('#pwdata5').text('850');
+                        } else if (tValue > 1.2 && tValue <= 1.6) {
+                            $('#pwdata1').text('900');
+                            $('#pwdata2').text('900');
+                            $('#pwdata3').text('900');
+                            $('#pwdata4').text('900');
+                            $('#pwdata5').text('900');
+                        } else if (tValue > 1.6 && tValue <= 2.0) {
+                            $('#pwdata1').text('1000');
+                            $('#pwdata2').text('1000');
+                            $('#pwdata3').text('1000');
+                            $('#pwdata4').text('1000');
+                            $('#pwdata5').text('1000');
+                        } else if (tValue > 2.0 && tValue <= 2.3) {
+                            $('#pwdata1').text('1100');
+                            $('#pwdata2').text('1100');
+                            $('#pwdata3').text('1100');
+                            $('#pwdata4').text('1100');
+                            $('#pwdata5').text('1100');
+                        } else if (tValue > 2.3 && tValue <= 6.0) {
+                            $('#pwdata1').text('1100');
+                            $('#pwdata2').text('1100');
+                            $('#pwdata3').text('1100');
+                            $('#pwdata4').text('1100');
+                            $('#pwdata5').text('1100');
+                        }
+                    }
+
+                    if (saSelectValue === "M12 NUT" ||
+                        saSelectValue === "RING NUT"
+                    ) {
+
+                        if (tValue >= 0.6 && tValue <= 0.7) {
+
+                        } else if (tValue > 0.7 && tValue <= 0.8) {
+                            $('#pwdata1').text('700');
+                            $('#pwdata2').text('700');
+                            $('#pwdata3').text('700');
+                            $('#pwdata4').text('700');
+                            $('#pwdata5').text('700');
+                        } else if (tValue > 0.8 && tValue <= 1.0) {
+                            $('#pwdata1').text('800');
+                            $('#pwdata2').text('800');
+                            $('#pwdata3').text('800');
+                            $('#pwdata4').text('800');
+                            $('#pwdata5').text('800');
+                        } else if (tValue > 1.0 && tValue <= 1.2) {
+                            $('#pwdata1').text('950');
+                            $('#pwdata2').text('950');
+                            $('#pwdata3').text('950');
+                            $('#pwdata4').text('950');
+                            $('#pwdata5').text('950');
+                        } else if (tValue > 1.2 && tValue <= 1.6) {
+                            $('#pwdata1').text('1050');
+                            $('#pwdata2').text('1050');
+                            $('#pwdata3').text('1050');
+                            $('#pwdata4').text('1050');
+                            $('#pwdata5').text('1050');
+                        } else if (tValue > 1.6 && tValue <= 2.0) {
+                            $('#pwdata1').text('1150');
+                            $('#pwdata2').text('1150');
+                            $('#pwdata3').text('1150');
+                            $('#pwdata4').text('1150');
+                            $('#pwdata5').text('1150');
+                        } else if (tValue > 2.0 && tValue <= 2.3) {
+                            $('#pwdata1').text('1300');
+                            $('#pwdata2').text('1300');
+                            $('#pwdata3').text('1300');
+                            $('#pwdata4').text('1300');
+                            $('#pwdata5').text('1300');
+                        } else if (tValue > 2.3 && tValue <= 6.0) {
+                            $('#pwdata1').text('1400');
+                            $('#pwdata2').text('1400');
+                            $('#pwdata3').text('1400');
+                            $('#pwdata4').text('1400');
+                            $('#pwdata5').text('1400');
+                        }
+                    }
+                },
+            });
+
+
+            setTimeout(function () {
+                Swal.close();
+            }, 1000); // Simulated delay of 1.3 seconds
+        }
+
+
+        function load() {
+            $('#Datatbody').empty();
+            $.ajax({
+                type: 'POST',
+                url: server + '/api/selectpwproduct',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "start": $('#datetimepicker1').val(),
+                    "finish": $('#datetimepicker2').val()
+                }),
+                success: function (data) {
+                    var tableFoot = $('#dataCount');
+                    if (data.length === 0) {
+                        tableFoot.text('총 데이터 개수: 0');
+                    } else {
+                        for (var i = 0; i < data.length; i++) {
+                            var status = data[i].status;
+                            var status1 = data[i].status1;
+                            var status2 = data[i].status2;
+
+                            $('#datatable').append(
+                                '<tr>' +
+                                '<td style="text-align:center;">' + data[i].productdate + '</td>' +
+                                '<td style="text-align:center;">' + data[i].customer + '</td>' +
+                                '<td style="text-align:center;">' + data[i].cartype + '</td>' +
+                                '<td style="text-align:center;">' + data[i].productnumber + '</td>' +
+                                '<td style="text-align:center;">' + data[i].productname + '</td>' +
+                                '<td style="text-align:center;">' + data[i].marchine + '</td>' +
+                                '<td style="text-align:center;">' + data[i].touch + '</td>' +
+                                '<td style="text-align:center;">' + data[i].sanum + '</td>' +
+                                '<td style="text-align:center;">' + data[i].sapum + '</td>' +
+                                '<td style="text-align:center;">' + data[i].sacount + '</td>' +
+                                '<td style="text-align:center;">' + data[i].spec + '</td>' +
+                                '<td style="text-align:center;">' + data[i].t + '</td>' +
+                                '<td style="text-align:center;">' + data[i].people + '</td>' +
+                                '<td style="text-align:center;">' + data[i].people1 + '</td>' +
+                                '<td style="text-align:center;">' + data[i].people2 + '</td>' +
+                                '<td id="dataid">' + data[i].dataid + '</td>' +
+                                '<td id="data-id">' + data[i].id + '</td>' +
+                                '</tr>'
+                            );
+                            $('td#data-id').hide()
+                            $('td#dataid').hide()
+                        }
+                    }
+                    $('#datatable tr').dblclick(function () {
+                        var rowData = $(this).closest('tr').find('td').map(function () {
+                            return $(this).text();
+                        }).get();
+                        console.log(rowData)
+                        var dataId = $(this).find('#data-id').text();
+                        var newWindow = window.open('/html/paper.html?id=' + dataId, '_blank', 'width=800,height=1000');
+                        // 창을 중앙에 위치시키기 위해 창의 크기와 위치를 조정
+                        if (window.screen) {
+                            var left = (window.screen.width - 800) / 2;
+                            var top = (window.screen.height - 1000) / 2;
+                            newWindow.moveTo(left, top);
+                        }
+
+                        newWindow.onload = function () {
+                            // paper.html이 로드되면 productname 요소에 '123' 설정
+                            newWindow.document.getElementById('productdate').innerText = rowData[0];
+                            newWindow.document.getElementById('customer').innerText = rowData[1];
+                            newWindow.document.getElementById('cartype').innerText = rowData[2];
+                            newWindow.document.getElementById('productnumber').innerText = rowData[3];
+                            newWindow.document.getElementById('productname').innerText = rowData[4];
+                            newWindow.document.getElementById('sanum').innerText = rowData[7];
+                            newWindow.document.getElementById('sapum').innerText = rowData[8];
+                            newWindow.document.getElementById('sacount').innerText = rowData[9];
+                            newWindow.document.getElementById('spec').innerText = rowData[10];
+                            newWindow.document.getElementById('t').innerText = rowData[11];
+
+                            $.ajax({
+                                type: 'POST',
+                                url: server + '/api/selectpwproductpapaer',
+                                dataType: 'json',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    "dataid": rowData[15]
+                                }),
+                                success: function (result) {
+                                    newWindow.document.getElementById('a').innerText = result[0].a;
+                                    newWindow.document.getElementById('b').innerText = result[0].b;
+                                    newWindow.document.getElementById('c').innerText = result[0].c;
+                                    newWindow.document.getElementById('d').innerText = result[0].d;
+                                    newWindow.document.getElementById('e').innerText = result[0].e;
+                                    newWindow.document.getElementById('f').innerText = result[0].f;
+
+                                    newWindow.document.getElementById('data1').innerText = result[0].data1;
+                                    newWindow.document.getElementById('data11').innerText = result[0].data11;
+                                    newWindow.document.getElementById('data12').innerText = result[0].data12;
+
+                                    newWindow.document.getElementById('data2').innerText = result[0].data2;
+                                    newWindow.document.getElementById('data21').innerText = result[0].data21;
+                                    newWindow.document.getElementById('data22').innerText = result[0].data22;
+
+
+                                    newWindow.document.getElementById('data3').innerText = result[0].data3;
+                                    newWindow.document.getElementById('data31').innerText = result[0].data31;
+                                    newWindow.document.getElementById('data32').innerText = result[0].data32;
+
+                                    newWindow.document.getElementById('data4').innerText = result[0].data4;
+                                    newWindow.document.getElementById('data41').innerText = result[0].data41;
+                                    newWindow.document.getElementById('data42').innerText = result[0].data42;
+
+                                    newWindow.document.getElementById('data5').innerText = result[0].data5;
+                                    newWindow.document.getElementById('data51').innerText = result[0].data51;
+                                    newWindow.document.getElementById('data52').innerText = result[0].data52;
+                                },
+                            });
+
+                            newWindow.document.getElementById('img').src = '../img/' + rowData[3] + '.jpg';
+                            newWindow.document.getElementById('img1').src = '../hw/' + rowData[7] + '.PNG';
+                            if (parseInt(rowData[9]) === 1) {
+                                newWindow.document.getElementById('row1').style.display = 'table-row';
+                                newWindow.document.getElementById('row2').style.display = 'none';
+                                newWindow.document.getElementById('row3').style.display = 'none';
+                                newWindow.document.getElementById('row4').style.display = 'none';
+                                newWindow.document.getElementById('row5').style.display = 'none';
+                            }
+                            if (parseInt(rowData[9]) === 2) {
+                                newWindow.document.getElementById('row1').style.display = 'table-row';
+                                newWindow.document.getElementById('row2').style.display = 'table-row';
+                                newWindow.document.getElementById('row3').style.display = 'none';
+                                newWindow.document.getElementById('row4').style.display = 'none';
+                                newWindow.document.getElementById('row5').style.display = 'none';
+                            }
+
+                            if (parseInt(rowData[9]) === 3) {
+                                newWindow.document.getElementById('row1').style.display = 'table-row';
+                                newWindow.document.getElementById('row2').style.display = 'table-row';
+                                newWindow.document.getElementById('row3').style.display = 'table-row';
+                                newWindow.document.getElementById('row4').style.display = 'none';
+                                newWindow.document.getElementById('row5').style.display = 'none';
+                            }
+                            if (parseInt(rowData[9]) === 4) {
+                                newWindow.document.getElementById('row1').style.display = 'table-row';
+                                newWindow.document.getElementById('row2').style.display = 'table-row';
+                                newWindow.document.getElementById('row3').style.display = 'table-row';
+                                newWindow.document.getElementById('row4').style.display = 'table-row';
+                                newWindow.document.getElementById('row5').style.display = 'none';
+
+                            }
+                            if (parseInt(rowData[9]) === 5) {
+                                newWindow.document.getElementById('row1').style.display = 'table-row';
+                                newWindow.document.getElementById('row2').style.display = 'table-row';
+                                newWindow.document.getElementById('row3').style.display = 'table-row';
+                                newWindow.document.getElementById('row4').style.display = 'table-row';
+                                newWindow.document.getElementById('row5').style.display = 'table-row';
+                            }
+                        };
+                    });
+
+                }
+            });
+        }
+
+
+
+
+
+
+    </script>
+
+    <script>
+        // 버튼을 클릭할 때 호출되는 함수
+        function changeButtonText(button) {
+            // 버튼 텍스트를 "OK"로 변경합니다.
+            button.innerText = "OK";
+            // 버튼 배경색을 파란색으로 설정합니다.
+            button.style.backgroundColor = "blue";
+        }
+
+    </script>
+    <script>
+
+        function handleKeypress(dataID, pwdataID, resultID) {
+            $('#' + dataID).on('keypress', function (event) {
+                if (event.which === 13) {
+                    var dataValue = parseFloat($('#' + dataID).val());
+                    var pwdataValue = parseFloat($('#' + pwdataID).text());
+                    var resultText = dataValue >= pwdataValue ? 'OK' : 'NG';
+
+                    $('#' + resultID).text(resultText);
+                    $('#' + resultID).removeClass('ok ng').addClass(resultText.toLowerCase());
+                }
+            });
+        }
+
+        handleKeypress('data1', 'pwdata1', 'result1');
+        handleKeypress('data2', 'pwdata2', 'result2');
+        handleKeypress('data3', 'pwdata3', 'result3');
+        handleKeypress('data4', 'pwdata4', 'result4');
+        handleKeypress('data5', 'pwdata5', 'result5');
+
+
+
+    </script>
+
+</body>
+
+</html>
