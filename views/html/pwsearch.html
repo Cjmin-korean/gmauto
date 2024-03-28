@@ -1325,7 +1325,6 @@
                         var rowData = $(this).closest('tr').find('td').map(function () {
                             return $(this).text();
                         }).get();
-                        console.log(rowData)
                         var dataId = $(this).find('#data-id').text();
                         var newWindow = window.open('/html/paper.html?id=' + dataId, '_blank', 'width=800,height=1000');
                         // 창을 중앙에 위치시키기 위해 창의 크기와 위치를 조정
@@ -1386,7 +1385,7 @@
                                     newWindow.document.getElementById('data52').innerText = result[0].data52;
                                 },
                             });
-
+                
                             newWindow.document.getElementById('img').src = '../img/' + rowData[3] + '.jpg';
                             newWindow.document.getElementById('img1').src = '../hw/' + rowData[7] + '.PNG';
                             if (parseInt(rowData[9]) === 1) {

@@ -242,9 +242,9 @@
                 <input type="text" value="초물" id="inspection"
                     style="text-align: center; width:150px; margin-left: 10px;" readonly>
                 <b style="margin-left: 20px;">최종판정</b>
-                <input type="text" value="검사미완료" id="result" style="width:150px; margin-left: 10px; text-align:center;"
+                <input type="text" value="검사미완료" id="result" style="width:150px; margin-left: 10px; text-align:center; "
                     readonly>
-                <input type="text" style="width:200px;" id="dataidsave">
+                <input type="text" style="width:200px; visibility: hidden;" id="dataidsave">
             </fieldset>
 
             <div style="width:100%; float: left;">
@@ -882,6 +882,8 @@
 
 
         function deletedata() {
+
+
             var selectedIds = [];
             $('input[name="chk"]:checked').each(function () {
                 selectedIds.push($(this).closest('tr').find('td:eq(23)').text()); // ID는 두 번째 열에 있다고 가정합니다.
@@ -925,6 +927,48 @@
 
 
         function savedata() {
+            if ($('#button1').text() !== 'OK' ||
+                $('#button2').text() !== 'OK' ||
+                $('#button3').text() !== 'OK' ||
+                $('#button4').text() !== 'OK' ||
+                $('#button5').text() !== 'OK' ||
+                $('#button6').text() !== 'OK' ||
+                $('#button7').text() !== 'OK' ||
+
+                $('#button8').text() !== 'OK'
+
+            ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '외관검사 누락',
+                    text: '외관검사가 누락되었습니다.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+
+                    confirmButtonText: '확인',
+
+                })
+                return;
+            }
+            if ($('#result1').text() !== 'NG' ||
+                $('#result2').text() !== 'NG' ||
+                $('#result3').text() !== 'NG' ||
+                $('#result3').text() !== 'NG' ||
+                $('#result8').text() !== 'NG'
+
+            ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'NG발생',
+                    text: '파괴기 검사결과가 NG인 항목이 있습니다.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+
+                    confirmButtonText: '확인',
+
+                })
+                return;
+            }
             const today = new Date();
             const year = today.getFullYear();
             let month = today.getMonth() + 1;

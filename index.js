@@ -44,6 +44,9 @@ app.get("/mainall", cors(), (req, res) => {
 app.get("/userui", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/linecode.html");
 });
+app.get("/upload", cors(), (req, res) => {
+    res.sendFile(__dirname + "/views/html/0.html");
+});
 
 
 
