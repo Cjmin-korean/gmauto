@@ -474,7 +474,7 @@
                     style="text-align: center; width:150px; margin-left: 10px;" readonly>
 
 
-                <b style="margin-left: 20px;">생산수량</b>
+                <b style="margin-left: 20px;" id="productcount-editb">생산수량</b>
                 <input type="text" value="" id="productcount-edit"
                     style="text-align: center; width:150px; margin-left: 10px;">
                 <input type="text" id="dataid" style="width: 100px; visibility: hidden;">
@@ -1123,6 +1123,25 @@
                 })
                 return;
             }
+            if ($('#result1-edit').text() == 'NG' ||
+                $('#result2-edit').text() == 'NG' ||
+                $('#result3-edit').text() == 'NG' ||
+                $('#result3-edit').text() == 'NG' ||
+                $('#result8-edit').text() == 'NG'
+
+            ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'NG발생',
+                    text: '파괴기 검사결과가 NG인 항목이 있습니다.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+
+                    confirmButtonText: '확인',
+
+                })
+                return;
+            }
             const today = new Date();
             const year = today.getFullYear();
             let month = today.getMonth() + 1;
@@ -1242,10 +1261,29 @@
                     })
                     return;
                 }
+                if ($('#result1-edit').text() == 'NG' ||
+                    $('#result2-edit').text() == 'NG' ||
+                    $('#result3-edit').text() == 'NG' ||
+                    $('#result3-edit').text() == 'NG' ||
+                    $('#result8-edit').text() == 'NG'
+
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'NG발생',
+                        text: '파괴기 검사결과가 NG인 항목이 있습니다.',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+
+                        confirmButtonText: '확인',
+
+                    })
+                    return;
+                }
                 Swal.fire({
                     icon: 'info',
                     title: '저장',
-                    text: 'P.W 중물정보를 등록하시겠습니까?',
+                    text: 'P.W 종물정보를 등록하시겠습니까?',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -1859,6 +1897,8 @@
                         $('#people-edit').val(rowData[15])
                         $('#overlay').fadeIn()
                         $('#editModal1').fadeIn()
+                        $('#productcount-edit').css('display', 'none');
+                        $('#productcount-editb').css('display', 'none');
 
                         $('#inspection-edit').val('중물')
 
@@ -2343,7 +2383,10 @@
                     if (result.isConfirmed) {
                         $('#overlay').fadeIn()
                         $('#editModal1').fadeIn()
-                        $('#inspection-edit').val('종물')
+                        $('#productcount-edit').css('display', 'block');
+                        $('#productcount-editb').css('display', 'block');
+                        $('#inspection-edit').val('종물');
+                        
 
                         $('#button1-edit').css('background-color', 'rgb(133, 133, 133)');
                         $('#button2-edit').css('background-color', 'rgb(133, 133, 133)');
