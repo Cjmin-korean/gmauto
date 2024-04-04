@@ -453,17 +453,7 @@
 
         <div id="editForm">
             <fieldset style="height: 40px; width:90%">
-                <!-- <b>차종</b>
-                <input type="text" value="" id="cartype-edit" style="width:150px; margin-left: 10px; text-align:center;"
-                    readonly>
 
-                <b>품번</b>
-                <input type="text" value="" id="productnumber-edit"
-                    style="width:250px; margin-left: 10px; text-align   :center;" readonly>
-
-                <b>사양</b>
-                <input type="text" value="" id="sa-edit"
-                style="width:250px; margin-left: 10px; text-align:center;" readonly> -->
                 <b>작업자</b>
                 <select id="people-edit" style="width:150px;">
                     <option value=""></option>
@@ -483,12 +473,18 @@
                 <input type="text" value="" id="inspection-edit"
                     style="text-align: center; width:150px; margin-left: 10px;" readonly>
 
-                <button id="newRegistrationBtn" onclick="savedata1()" style="margin-left: 20px;;"
+
+                <b style="margin-left: 20px;">생산수량</b>
+                <input type="text" value="" id="productcount-edit"
+                    style="text-align: center; width:150px; margin-left: 10px;">
+                <input type="text" id="dataid" style="width: 100px; visibility: hidden;">
+            </fieldset>
+            <div style="margin-top: 20px;">
+                <button id="newRegistrationBtn" onclick="savedata1()" style="margin-left: 20px; "
                     class="btn btn-primary">
                     <i class="fas fa-save"></i> 저장
                 </button>
-                <input type="text" id="dataid" style="width: 100px; ">
-            </fieldset>
+            </div>
 
             <div style="width:100%; float: left;">
                 <div id="tableWrapper" style="max-height: 800px; overflow-y: auto;">
@@ -1027,7 +1023,6 @@
                             "status2": '',
                             "people": $('#people-select').val(),
                             "dataid": $('#dataidsave').val()
-
                         }),
                         success: function (result) {
                             load();
@@ -1094,6 +1089,40 @@
 
         }
         function savedata1() {
+            if ($('#people-edit').val() == ''
+            ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '작업자 누락',
+                    text: '작업자가 누락되었습니다.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인',
+
+                })
+                return;
+            }
+            if ($('#button1-edit').text() !== 'OK' ||
+                $('#button2-edit').text() !== 'OK' ||
+                $('#button3-edit').text() !== 'OK' ||
+                $('#button4-edit').text() !== 'OK' ||
+                $('#button5-edit').text() !== 'OK' ||
+                $('#button6-edit').text() !== 'OK' ||
+                $('#button7-edit').text() !== 'OK' ||
+                $('#button8-edit').text() !== 'OK'
+
+            ) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '외관검사 누락',
+                    text: '외관검사가 누락되었습니다.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인',
+
+                })
+                return;
+            }
             const today = new Date();
             const year = today.getFullYear();
             let month = today.getMonth() + 1;
@@ -1180,6 +1209,39 @@
                 });
             }
             if ($('#inspection-edit').val() === '종물') {
+                if ($('#people-edit').val() == '' || $('#productcount-edit').val() == '') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '작업자 또는 제품 수량 누락',
+                        text: '작업자 또는 제품 수량이 누락되었습니다.',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '확인',
+                    });
+                    return;
+                }
+
+                if ($('#button1-edit').text() !== 'OK' ||
+                    $('#button2-edit').text() !== 'OK' ||
+                    $('#button3-edit').text() !== 'OK' ||
+                    $('#button4-edit').text() !== 'OK' ||
+                    $('#button5-edit').text() !== 'OK' ||
+                    $('#button6-edit').text() !== 'OK' ||
+                    $('#button7-edit').text() !== 'OK' ||
+                    $('#button8-edit').text() !== 'OK'
+
+                ) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '외관검사 누락',
+                        text: '외관검사가 누락되었습니다.',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: '확인',
+
+                    })
+                    return;
+                }
                 Swal.fire({
                     icon: 'info',
                     title: '저장',
@@ -1201,7 +1263,8 @@
 
                                 "dataid": $('#dataid').val(),
                                 "status2": formattedTime,
-                                "people2": $('#people-edit').val()
+                                "people2": $('#people-edit').val(),
+                                "count": $('#productcount-edit').val()
 
                             }),
                             success: function (result) {
@@ -1228,7 +1291,8 @@
                                 "data32": $('#data3-edit').val(),
                                 "data42": $('#data4-edit').val(),
                                 "data52": $('#data5-edit').val(),
-                                "people2": $('#people-edit').val()
+                                "people2": $('#people-edit').val(),
+                                "count": $('#productcount-edit').val()
 
                             }),
                             success: function (result) {
@@ -1774,47 +1838,12 @@
             });
         }
 
-        // $('#datatable tbody').on('dblclick', 'tr', function () {
-        //     var rowData = $(this).find('td');
-        //     var rowDataArray = [];
-        //     rowData.each(function () {
-        //         rowDataArray.push($(this).text());
-        //     });
-        //     $('#overlay').fadeIn()
-        //     $('#editModal1').fadeIn()
-        //     $('#customer-save').val(rowDataArray[1])
-        //     $('#cartype-save').val(rowDataArray[2])
-        //     $('#productnumber-save').val(rowDataArray[3])
-        //     $('#sub-save').val(rowDataArray[4])
-        //     $('#productname-save').val(rowDataArray[5])
-        //     $('#marchine-save').val(rowDataArray[6])
-        //     $('#touch-save').val(rowDataArray[7])
-        //     $('#sanum-save').val(rowDataArray[8])
-        //     $('#sapum-save').val(rowDataArray[9])
-        //     $('#sacount-save').val(rowDataArray[10])
-        //     $('#a-save').val(rowDataArray[11])
-        //     $('#b-save').val(rowDataArray[12])
-        //     $('#c-save').val(rowDataArray[13])
-        //     $('#d-save').val(rowDataArray[14])
-        //     $('#e-save').val(rowDataArray[15])
-        //     $('#f-save').val(rowDataArray[16])
-        //     $('#g-save').val(rowDataArray[17])
-        //     $('#h-save').val(rowDataArray[18])
-        //     $('#i-save').val(rowDataArray[19])
-        //     $('#j-save').val(rowDataArray[20])
-        //     $('#spec-save').val(rowDataArray[21])
-        //     $('#t-save').val(rowDataArray[22])
-        //     $('#id-save').val(rowDataArray[23])
-        //     $('#newRegistrationBtn1').text('수정')
-        // });
-
         $(document).on('dblclick', '#datatable td', function () {
             var rowData = $(this).closest('tr').find('td').map(function () {
                 return $(this).text();
             }).get();
-            console.log(rowData)
             //초물완료
-            if (rowData[16] !== '' && rowData[17] === '' && rowData[18] === '') {
+            if (rowData[15] && !rowData[17] && !rowData[19]) {
                 Swal.fire({
                     icon: 'info',
                     title: '중물검사 시작',
@@ -1824,10 +1853,13 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: '확인',
                     cancelButtonText: '취소',
+
                 }).then((result) => {
                     if (result.isConfirmed) {
+                        $('#people-edit').val(rowData[15])
                         $('#overlay').fadeIn()
                         $('#editModal1').fadeIn()
+
                         $('#inspection-edit').val('중물')
 
                         $('#button1-edit').css('background-color', 'rgb(133, 133, 133)');
@@ -2297,7 +2329,7 @@
                 });
             }
             //중물완료
-            if (rowData[16] !== '' && rowData[18] !== '' && rowData[20] === '') {
+            if (rowData[15] && rowData[17] && !rowData[19]) {
                 Swal.fire({
                     icon: 'info',
                     title: '종물검사 시작',
@@ -2780,18 +2812,18 @@
                 });
             }
             //종물완료
-            if (rowData[16] !== '' && rowData[18] !== '' && rowData[20] !== '') {
-                Swal.fire({
-                    icon: 'info',
-                    title: '검사완료',
-                    text: 'P.W 종물검사가 완료되었습니다',
-                    showCancelButton: false, // 이 부분을 false로 설정하여 취소 버튼을 숨깁니다.
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: '확인'
-                }).then((result) => {
-                    // 확인 버튼이 클릭되었을 때 실행되는 코드를 여기에 추가할 수 있습니다.
-                });
-            }
+            // if (rowData[16] !== '' && rowData[18] !== '' && rowData[20] !== '') {
+            //     Swal.fire({
+            //         icon: 'info',
+            //         title: '검사완료',
+            //         text: 'P.W 종물검사가 완료되었습니다',
+            //         showCancelButton: false, // 이 부분을 false로 설정하여 취소 버튼을 숨깁니다.
+            //         confirmButtonColor: '#3085d6',
+            //         confirmButtonText: '확인'
+            //     }).then((result) => {
+            //         // 확인 버튼이 클릭되었을 때 실행되는 코드를 여기에 추가할 수 있습니다.
+            //     });
+            // }
 
         });
 

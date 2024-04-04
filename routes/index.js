@@ -138,8 +138,9 @@ module.exports = function (app) {
                 .input('dataid', sql.NVarChar, req.body.dataid)
                 .input('status2', sql.NVarChar, req.body.status2)
                 .input('people2', sql.NVarChar, req.body.people2)
+                .input('count', sql.NVarChar, req.body.count)
                 .query(
-                    "update pw set status2=@status2,people2=@people2 where dataid=@dataid"
+                    "update pw set status2=@status2,people2=@people2,count=@count where dataid=@dataid"
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -186,8 +187,9 @@ module.exports = function (app) {
                 .input('data42', sql.NVarChar, req.body.data42)
                 .input('data52', sql.NVarChar, req.body.data52)
                 .input('people2', sql.NVarChar, req.body.people2)
+                .input('count', sql.Float, req.body.count)
                 .query(
-                    "update pwproduct set people2=@people2,data12=@data12,data22=@data22,data32=@data32,data42=@data42,data52=@data52,status='종물' where dataid=@dataid"
+                    "update pwproduct set people2=@people2,data12=@data12,data22=@data22,data32=@data32,data42=@data42,data52=@data52,status='종물',count=@count where dataid=@dataid"
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -262,7 +264,7 @@ module.exports = function (app) {
             return pool.request()
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
-                    "select * from pw order by status desc "
+                    "select * from pw order by plandate,status desc "
                 )
                 .then(result => {
                     res.json(result.recordset);
