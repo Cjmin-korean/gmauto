@@ -95,9 +95,9 @@ const upload = multer({
 });
 
 //upload 루트 패스로 수정
-app.get('/upload', (req, res) => {
-    res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
-});
+// app.get('/upload', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'pwmain.html'));
+// });
 app.post('/upload', upload.single('image'), (req, res) => {
     res.send('ok');
 });
