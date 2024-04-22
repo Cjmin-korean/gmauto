@@ -214,6 +214,23 @@
                     <td><label for="part-edit">두께</label></td>
                     <td><input type="text" id="t-save" value="" autocomplete="off" style="width: 100%;"></td>
                 </tr>
+                <tr>
+                    <th style="background-color: black; color:white;">이미지</th>
+
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div id="image"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <!-- 파일 업로드 인풋을 감싸는 라벨 -->
+                        <label for="fileInput"></label>
+                        <input type="file" id="fileInput">
+                    </td>
+                </tr>
+
             </table>
         </div>
     </div>
@@ -589,6 +606,9 @@
                         $('#t-save').val(rowDataArray[22])
                         $('#id-save').val(rowDataArray[23])
                         $('#newRegistrationBtn1').text('수정')
+                        $('#image').empty(); // 이미지를 새로 설정하기 전에 이전 이미지를 지웁니다.
+                        var img = $('<img>').attr('src', '../hw/' + rowDataArray[8] + '.PNG');
+                        $('#image').append(img);
                     });
                 }
             });
@@ -646,20 +666,19 @@
     </script>
 
     <script>
-        // document.getElementById("datatable").addEventListener("dblclick", function (event) {
-        //     var target = event.target;
-        //     if (target.tagName === "TD") {
-        //         var newWindow = window.open('/html/pwpaper.html', '_blank', 'width=800,height=1000');
-        //         // 창을 중앙에 위치시키기 위해 창의 크기와 위치를 조정
-        //         if (window.screen) {
-        //             var left = (window.screen.width - 600) / 2;
-        //             var top = (window.screen.height - 600) / 2;
-        //             newWindow.moveTo(left, top);
-        //         }
-        //     }
-        // });
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
 
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                document.getElementById('image').innerHTML = '';
+                document.getElementById('image').appendChild(img);
+            }
 
+            reader.readAsDataURL(file);
+        });
     </script>
 </body>
 

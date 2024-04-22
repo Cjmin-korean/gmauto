@@ -38,6 +38,7 @@ module.exports = function (app) {
 
     });
     // **** finish
+
     // **** start 
     sql.connect(config).then(pool => {
         app.post('/api/pwmainselect', function (req, res) {
@@ -491,6 +492,34 @@ module.exports = function (app) {
 
     });
     // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/upload', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+
+            if (!req.file) {
+                return res.status(400).send('No files were uploaded.');
+            }
+
+            const image = req.file.buffer; // 이미지 파일의 내용
+            return pool.request()
+                .input('img', sql.VarBinary(sql.MAX), image)
+                .query(
+                    'INSERT INTO test (img) VALUES (@img)'
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                })
+                .catch(error => {
+                    console.error('Error inserting image:', error);
+                    res.status(500).send('Error inserting image.');
+                });
+        });
+    });
+    // **** finish
+
+
     // **** start       
     sql.connect(config).then(pool => {
         app.post('/api/insertimg', function (req, res) {

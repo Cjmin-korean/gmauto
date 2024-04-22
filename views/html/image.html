@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en-US" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:addthis="https://www.addthis.com/help/api-spec"
+    prefix="og: http://ogp.me/ns#" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Upload Image File using jQuery AJAX</title>
+    <link rel="shortcut icon" href="https://learncodeweb.com/demo/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+        integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+        .file-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        #previews {
+            max-width: 200px;
+            /* 이미지의 최대 너비를 설정합니다. */
+            max-height: 20%;
+            /* 이미지의 최대 너비를 설정합니다. */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluide">
+        <div>
+            <div id="messages"></div>
+            <form method="post" id="imagesforform" enctype="multipart/form-data" onSubmit="return false;">
+                <div class="form-group file-wrapper">
+                    <input type="file" name="file" class="file">
+                    <div class="input-group">
+                        <input type="text" class="form-control" disabled placeholder="Upload image here…"
+                            id="inputfile">
+                        <div class="input-group-append">
+                            <button type="button" class="browses btn btn-danger">Select Image</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <img src="https://placehold.it/150x150" id="previews" class="img-thumbnail">
+                </div>
+                <div class="form-group">
+                    <input type="submit" name="submit" value="Upload image" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var server = '';
+        console.log(window.location.hostname)
+        if (window.location.hostname == '127.0.0.1') {
+            server = 'http://localhost:8080';
+        } else {
+            server = 'http://gmauto.xyz';
+        }
+
+        $(document).on("click", ".browses", function () {
+            var inputfile = $(this)
+                .parent().parent().parent()
+                .find(".file");
+            inputfile.trigger("click");
+        });
+        $('input[type="file"]').change(function (e) {
+            var inputfileName = e.target.files[0].name;
+            $("#inputfile").val(inputfileName);
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#previews").attr("src", e.target.result);
+            };
+            reader.readAsDataURL(this.files[0]);
+        });
+        $(document).ready(function (e) {
+            $("#imagesforform").on("submit", function () {
+                var fileInput = $('input[type="file"]')[0].files[0];
+                if (!fileInput) {
+                    $("#messages").html('<div class="alert alert-danger">Please select an image to upload.</div>');
+                    return false;
+                }
+                var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                if (!allowedExtensions.exec(fileInput.name)) {
+                    $("#messages").html('<div class="alert alert-danger">Only JPG, PNG, JPEG, and GIF images are allowed.</div>');
+                    return false;
+                }
+                var fileSize = fileInput.size;
+                var maxSize = 5 * 1024 * 1024; // 5MB
+                if (fileSize > maxSize) {
+                    $("#messages").html('<div class="alert alert-danger">File size exceeds the limit of 5MB.</div>');
+                    return false;
+                }
+                $("#messages").html('<div class="alert alert-primary">Please wait...</div>');
+                $.ajax({
+                    type: "POST",
+                    url: server + "/api/upload",
+                    data: new FormData(this),
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (data) {
+                     
+                        $("#messages").html('<div class="alert alert-info">Image uploaded successfully.</div>');
+                    },
+                    error: function (xhr, status, error) {
+                        $("#messages").html('<div class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> There is something wrong.</div>');
+                    }
+                });
+
+            });
+        });
+    </script>
+</body>
+
+</html>

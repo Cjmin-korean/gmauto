@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Modal</title>
+    <style>
+        /* 모달 스타일 */
+        #editModal {
+            display: block;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* 모달 내용 */
+        #editForm {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: black;
+            color: white;
+        }
+
+        /* 파일 업로드 라벨 스타일 */
+        label {
+            cursor: pointer;
+        }
+
+        /* 이미지 미리보기 */
+        #image {
+            max-width: 300px;
+            max-height: 300px;
+        }
+
+        /* 입력 텍스트 필드 스타일 */
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin: 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: dodgerblue;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="editModal">
+        <div class="mainheader">
+            <h1>PW기초정보</h1>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div id="editForm">
+            <table>
+                <tr>
+                    <th colspan="10">제품정보</th>
+                </tr>
+                <tr>
+                    <td><label for="bomno-edit">고객사</label></td>
+                    <td colspan="3"><input type="text" id="customer-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">차종</label></td>
+                    <td colspan="3"><input type="text" id="cartype-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">품번</label></td>
+                    <td colspan="3"><input type="text" id="productnumber-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">SUB</label></td>
+                    <td colspan="3"><input type="text" id="sub-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">품명</label></td>
+                    <td colspan="6"><input type="text" id="productname-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">호기명</label></td>
+                    <td colspan="3"><input type="text" id="marchine-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">용접타점수</label></td>
+                    <td colspan="6"><input type="text" id="touch-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <th colspan="10">사양정보</th>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">사양부번</label></td>
+                    <td colspan="3"><input type="text" id="sanum-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">사양품명</label></td>
+                    <td colspan="3"><input type="text" id="sapum-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">사양개수</label></td>
+                    <td colspan="2"><input type="text" id="sacount-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <th colspan="10">사양상세</th>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">통전</label></td>
+                    <td><input type="text" id="a-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">전류</label></td>
+                    <td><input type="text" id="b-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">초기가압</label></td>
+                    <td><input type="text" id="c-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">유지</label></td>
+                    <td><input type="text" id="d-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">에어압력</label></td>
+                    <td><input type="text" id="e-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">냉각수온도</label></td>
+                    <td><input type="text" id="f-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">관리번호</label></td>
+                    <td colspan="3"><input type="text" id="g-save" value="" autocomplete="off"></td>
+                    <td><label for="part-edit">설비NO</label></td>
+                    <td colspan="3"><input type="text" id="h-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <th colspan="10">기타정보</th>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">TIP연마주기</label></td>
+                    <td colspan="3"><input type="text" id="i-save" value="1000타점" autocomplete="off"></td>
+                    <td><label for="part-edit">TIP교환주기</label></td>
+                    <td colspan="3"><input type="text" id="j-save" value="마모 한계선 1 mm 限" autocomplete="off"></td>
+                    <td><label for="part-edit">재질</label></td>
+                    <td colspan="2"><input type="text" id="spec-save" value="" autocomplete="off"></td>
+                </tr>
+                <tr>
+                    <td><label for="part-edit">두께</label></td>
+                    <td colspan="3"><input type="text" id="t-save" value="" autocomplete="off"></td>
+                    <td colspan="3"></td>
+                    <td colspan="4"></td>
+                </tr>
+                <tr>
+                    <th colspan="10">이미지</th>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <div id="image"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <!-- 파일 업로드 인풋을 감싸는 라벨 -->
+                        <label for="fileInput">이미지 파일</label>
+                        <input type="file" id="fileInput">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            var img = document.createElement('img');
+            img.src = e.target.result;
+            document.getElementById('image').innerHTML = '';
+            document.getElementById('image').appendChild(img);
+        }
+
+        reader.readAsDataURL(file);
+    });
+</script>
+
+</html>
