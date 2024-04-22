@@ -60,7 +60,7 @@ try {
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, '1/');
+            done(null, path.join(__dirname, 'views', 'html'));
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
