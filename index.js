@@ -60,7 +60,7 @@ try {
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, path.join(__dirname, '1')); // 파일을 1 폴더에 저장
+            done(null, path.join(__dirname, 'views', 'html')); // 파일을 html 폴더의 상위 폴더에 저장
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
@@ -70,15 +70,19 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
+
 app.post('/upload', upload.single('image'), (req, res) => {
-    res.send('ok');
+    if (req.file) {
+        console.log('File uploaded successfully:', req.file);
+        res.send('ok');
+    } else {
+        console.error('Error uploading file');
+        res.status(500).send('Error uploading file');
+    }
 });
 
 // uploads 폴더의 정적 파일 불러오기
-app.use('/1', express.static(path.join(__dirname, '1')));
-
-
-
+app.use('/uploads', express.static(path.join(__dirname, 'views', 'html')));
 
 app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
