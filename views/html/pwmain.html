@@ -58,6 +58,10 @@
 </style>
 
 <body>
+    <input type="file" id="image" name="image" />
+    <input type="text" id="title" name="title" />
+    <button type="button" onclick="uploadImage()">업로드</button>
+
     <div class="main_header">
         <i class="fas fa-info-circle"></i>&nbsp; P.W 기초정보
     </div>
@@ -215,21 +219,31 @@
                     <td><input type="text" id="t-save" value="" autocomplete="off" style="width: 100%;"></td>
                 </tr>
                 <tr>
-                    <th style="background-color: black; color:white;">이미지</th>
-
+                    <th colspan="10">이미지</th>
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="10">
                         <div id="image"></div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3">
-                        <!-- 파일 업로드 인풋을 감싸는 라벨 -->
-                        <label for="fileInput"></label>
+                    <td colspan="10">
+                        <label for="fileInput">H/W이미지</label>
                         <input type="file" id="fileInput">
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="10">
+                        <div id="image1" style="max-width: 100px; max-height: 100px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <label for="fileInput1">제품이미지</label>
+                        <input type="file" id="fileInput1">
+                    </td>
+                </tr>
+
 
             </table>
         </div>
@@ -335,6 +349,8 @@
             $('#j-save').val('마모 한계선 1 mm 限')
             $('#spec-save').val('')
             $('#t-save').val('')
+            $('#image').empty();
+            $('#image1').empty();
             $('#newRegistrationBtn1').text('저장')
         }
         function closeModal() {
@@ -606,9 +622,12 @@
                         $('#t-save').val(rowDataArray[22])
                         $('#id-save').val(rowDataArray[23])
                         $('#newRegistrationBtn1').text('수정')
-                        $('#image').empty(); // 이미지를 새로 설정하기 전에 이전 이미지를 지웁니다.
+                        $('#image').empty();
+                        $('#image1').empty();
                         var img = $('<img>').attr('src', '../hw/' + rowDataArray[8] + '.PNG');
                         $('#image').append(img);
+                        var img1 = $('<img>').attr('src', '../img/2J844-26500.jpg');
+                        $('#image1').append(img1);
                     });
                 }
             });
@@ -679,6 +698,43 @@
 
             reader.readAsDataURL(file);
         });
+        document.getElementById('fileInput1').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                document.getElementById('image1').innerHTML = '';
+                document.getElementById('image1').appendChild(img);
+            }
+
+            reader.readAsDataURL(file);
+        });
+
+        function uploadImage() {
+            // Get form data
+            const formData = new FormData();
+            formData.append('image', document.getElementById('image').files[0]);
+            formData.append('title', document.getElementById('title').value);
+
+            // Send AJAX request
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/upload', true);
+
+            // Set up onload callback
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('Image uploaded successfully');
+                } else {
+                    console.error('Error uploading image');
+                }
+            };
+
+            // Send form data
+            xhr.send(formData);
+        }
+
     </script>
 </body>
 
