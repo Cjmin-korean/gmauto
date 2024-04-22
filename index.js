@@ -1,20 +1,25 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const multer = require('multer');
-const path = require('path');
+var cors = require('cors');
 
-const app = express();
-const PORT = 3001;
 
+console.log('ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=')
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+var port = process.env.PORT || 8080;
+var router = require('./routes')(app);
+var server = app.listen(port, function () { console.log("Express server has started on port " + port) });
+
+const PORT = 3001;
 
 const corsOptions = {
     origin: '*',
     credentials: true,
 };
 
+console.log('corsOptions', corsOptions)
+console.log('process.env', process.env.PORT)
 app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
@@ -27,47 +32,26 @@ app.use((req, res, next) => {
 // 정적 파일 불러오기
 app.use(express.static(__dirname + "/views"));
 
-app.get("/", (req, res) => {
+app.get("/", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/index.html");
 });
-
-app.get("/main", (req, res) => {
+app.get("/main", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/index.html");
 });
-
-app.get("/mainall", (req, res) => {
+app.get("/mainall", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/mainmenu.html");
 });
-
-app.get("/userui", (req, res) => {
+app.get("/userui", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/linecode.html");
 });
-
-app.get("/upload", (req, res) => {
-    res.sendFile(path.join(__dirname, 'multipart.html'));
+app.get("/upload", cors(), (req, res) => {
+    res.sendFile(__dirname + "/views/html/0.html");
+});
+app.get("/uploads", cors(), (req, res) => {
+    res.sendFile(__dirname + "/views/html/0.html");
 });
 
-// 파일 업로드를 위한 multer 설정
-const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads/');
-        },
-        filename(req, file, done) {
-            const ext = path.extname(file.originalname);
-            done(null, path.basename(file.originalname, ext) + Date.now() + ext);
-        },
-    }),
-    limits: { fileSize: 5 * 1024 * 1024 },
-});
 
-app.post('/uploads', upload.single('image'), (req, res) => {
-    console.log(req.file);
-    res.send('ok');
-});
-
-// uploads 폴더의 정적 파일 불러오기
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
