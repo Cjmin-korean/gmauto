@@ -52,10 +52,39 @@ app.get("/upload", (req, res) => {
 });
 
 // 파일 업로드를 위한 multer 설정
+dotenv.config();
+const app = express();
+app.set('port', process.env.PORT || 3000);
+
+app.use(morgan('dev'));
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+        httpOnly: true,
+        secure: false,
+    },
+    name: 'session-cookie',
+}));
+
+const multer = require('multer');
+const fs = require('fs');
+
+try {
+    fs.readdirSync('uploads');
+} catch (error) {
+    console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
+    fs.mkdirSync('uploads');
+}
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, path.join(__dirname, 'views', 'img')); // 파일을 html 폴더의 상위 폴더에 저장
+            done(null, 'uploads/');
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
@@ -65,19 +94,14 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-
+//upload 루트 패스로 수정
+app.get('/upload', (req, res) => {
+    res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
+});
 app.post('/upload', upload.single('image'), (req, res) => {
-    if (req.file) {
-        res.send('ok');
-    } else {
-        console.error('Error uploading file');
-        res.status(500).send('Error uploading file');
-    }
+    res.send('ok');
 });
 
-// uploads 폴더의 정적 파일 불러오기
-app.use('/upload', express.static(path.join(__dirname, 'views', 'img')));
-
-app.listen(PORT, () => {
-    console.log(`Listen : ${PORT}`);
+app.listen(app.get('port'), () => {
+    console.log(app.get('port'), '번 포트에서 대기 중');
 });
