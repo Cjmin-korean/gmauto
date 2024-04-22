@@ -1,6 +1,7 @@
 var cors = require('cors');
 var multer = require('multer');
 var path = require('path');
+var fs = require('fs');
 
 
 console.log('ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=')
@@ -49,7 +50,12 @@ app.get("/userui", cors(), (req, res) => {
 app.get("/upload", (req, res) => {
     res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
 });
-
+try {
+    fs.readdirSync('1');
+} catch (error) {
+    console.error('1 폴더가 없어 1 폴더를 생성합니다.');
+    fs.mkdirSync('1');
+}
 // 파일 업로드를 위한 multer 설정
 const upload = multer({
     storage: multer.diskStorage({
@@ -65,12 +71,11 @@ const upload = multer({
 });
 
 app.post('/upload', upload.single('image'), (req, res) => {
-    console.log(req.file);
     res.send('ok');
 });
 
 // uploads 폴더의 정적 파일 불러오기
-app.use('/uploads', express.static(path.join(__dirname, 'pw')));
+app.use('/1', express.static(path.join(__dirname, '1')));
 
 
 
