@@ -3,8 +3,6 @@ var multer = require('multer');
 var path = require('path');
 var fs = require('fs');
 
-
-console.log('ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=')
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -12,7 +10,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var port = process.env.PORT || 8080;
 var router = require('./routes')(app);
-var server = app.listen(port, function () { console.log("Express server has started on port " + port) });
 
 const PORT = 3001;
 
@@ -84,6 +81,10 @@ app.post('/upload', upload.single('image'), (req, res) => {
 // uploads 폴더의 정적 파일 불러오기
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.listen(PORT, () => {
+var server = app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
+});
+
+server.on('listening', () => {
+    console.log('Server is ReStarted');
 });
