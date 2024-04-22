@@ -47,7 +47,7 @@ app.get("/userui", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/linecode.html");
 });
 app.get("/upload", (req, res) => {
-    res.sendFile(path.join(__dirname, 'pwmain.html'));
+    res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
 });
 
 // 파일 업로드를 위한 multer 설정
@@ -70,7 +70,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 // uploads 폴더의 정적 파일 불러오기
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'pw')));
 
 
 
