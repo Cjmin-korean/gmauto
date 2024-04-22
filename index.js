@@ -60,7 +60,7 @@ try {
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, path.join(__dirname, 'views', 'html'));
+            done(null, path.join(__dirname, '1')); // 파일을 1 폴더에 저장
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
