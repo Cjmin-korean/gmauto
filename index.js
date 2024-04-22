@@ -60,7 +60,7 @@ try {
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, path.join(__dirname, 'views', 'html')); // 파일을 html 폴더의 상위 폴더에 저장
+            done(null, path.join(__dirname, 'views', 'img')); // 파일을 html 폴더의 상위 폴더에 저장
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
@@ -82,7 +82,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 // uploads 폴더의 정적 파일 불러오기
-app.use('/uploads', express.static(path.join(__dirname, 'views', 'html')));
+app.use('/upload', express.static(path.join(__dirname, 'views', 'img')));
 
 app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
