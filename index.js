@@ -51,11 +51,17 @@ app.get("/upload", (req, res) => {
     res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
 });
 
+try {
+    fs.readdirSync('uploads');
+} catch (error) {
+    console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
+    fs.mkdirSync('uploads');
+}
 // 파일 업로드를 위한 multer 설정
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, path.join(__dirname, 'views', 'img')); // 파일을 html 폴더의 상위 폴더에 저장
+            done(null, path.join(__dirname, 'uploads')); // uploads 폴더에 저장
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
@@ -76,7 +82,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 // uploads 폴더의 정적 파일 불러오기
-app.use('/upload', express.static(path.join(__dirname, 'views', 'img')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
