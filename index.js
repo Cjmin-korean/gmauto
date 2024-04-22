@@ -50,12 +50,7 @@ app.get("/userui", cors(), (req, res) => {
 app.get("/upload", (req, res) => {
     res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
 });
-try {
-    fs.readdirSync('1');
-} catch (error) {
-    console.error('1 폴더가 없어 1 폴더를 생성합니다.');
-    fs.mkdirSync('1');
-}
+
 // 파일 업로드를 위한 multer 설정
 const upload = multer({
     storage: multer.diskStorage({
@@ -73,7 +68,6 @@ const upload = multer({
 
 app.post('/upload', upload.single('image'), (req, res) => {
     if (req.file) {
-        console.log('File uploaded successfully:', req.file);
         res.send('ok');
     } else {
         console.error('Error uploading file');
