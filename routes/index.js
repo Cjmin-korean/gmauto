@@ -278,6 +278,37 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/selectimg', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .query(
+                    "SELECT " +
+                    "     p.id, " +
+                    "     p.customer," +
+                    "     p.cartype," +
+                    "     p.productnumber," +
+                    "     p.productname," +
+                    "     CASE" +
+                    "         WHEN i.filename IS NOT NULL THEN 'Y'" +
+                    "         ELSE 'N'" +
+                    "     END AS has_image" +
+                    " FROM" +
+                    "     [gmauto].[dbo].[pwmain] p" +
+                    " LEFT JOIN" +
+                    "     imgstorage i ON p.productnumber = i.filename;                "
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectpwplanmonitoring', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -494,27 +525,20 @@ module.exports = function (app) {
     // **** finish
     // **** start       
     sql.connect(config).then(pool => {
-        app.post('/api/upload', function (req, res) {
+        app.post('/api/insertfilename', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
 
-            if (!req.file) {
-                return res.status(400).send('No files were uploaded.');
-            }
 
-            const image = req.file.buffer; // 이미지 파일의 내용
             return pool.request()
-                .input('img', sql.VarBinary(sql.MAX), image)
+                .input('filename', sql.NVarChar, req.body.filename)
                 .query(
-                    'INSERT INTO test (img) VALUES (@img)'
+                    'INSERT INTO imgstorage (filename) VALUES (@filename)'
                 )
                 .then(result => {
                     res.json(result.recordset);
                     res.end();
                 })
-                .catch(error => {
-                    console.error('Error inserting image:', error);
-                    res.status(500).send('Error inserting image.');
-                });
+
         });
     });
     // **** finish

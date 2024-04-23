@@ -404,7 +404,9 @@
                             <li onclick="pressmainHtml()" class="small_menu_sub">
                                 <a>PRESS기초정보</a>
                             </li>
-
+                            <li onclick="testHtml()" class="small_menu_sub">
+                                <a>P.W이미지</a>
+                            </li>
 
                         </ul>
 
@@ -433,14 +435,8 @@
 
                 </div>
             </div>
-            <!-- <div class="overlay"></div> -->
         </div>
-        <!-- <div class="content_name">
-            <div class="user_name"></div>
-            <div class="user_name_sub">님 안녕하세요</div>
-            <div class="user_part"></div>
-            <img class="logout_img" src="../img/power-off.png" onclick="logout()" />
-        </div> -->
+
 
     </div>
 
@@ -574,6 +570,10 @@
     function img() {
         $("#loadHtml").removeClass();
         $("#loadHtml").load("/html/0.html");
+    }
+    function testHtml() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/imgstorage.html");
     }
 
 
