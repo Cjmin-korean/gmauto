@@ -50,33 +50,6 @@ app.get("/userui", cors(), (req, res) => {
 app.get("/upload", (req, res) => {
     res.sendFile(path.join(__dirname, '/views/html/pwmain.html'));
 });
-const express = require('express');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const dotenv = require('dotenv');
-const path = require('path');
-
-dotenv.config();
-const app = express();
-
-
-app.use(morgan('dev'));
-app.use('/', express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(session({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-        httpOnly: true,
-        secure: false,
-    },
-    name: 'session-cookie',
-}));
-
 
 try {
     fs.readdirSync('uploads');
@@ -84,10 +57,11 @@ try {
     console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
     fs.mkdirSync('uploads');
 }
+// 파일 업로드를 위한 multer 설정
 const upload = multer({
     storage: multer.diskStorage({
         destination(req, file, done) {
-            done(null, 'uploads/');
+            done(null, path.join(__dirname, 'uploads')); // uploads 폴더에 저장
         },
         filename(req, file, done) {
             const ext = path.extname(file.originalname);
@@ -97,15 +71,19 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-//upload 루트 패스로 수정
-app.get('/upload', (req, res) => {
-    res.sendFile(path.join(__dirname, 'pwmain.html'));
-});
+
 app.post('/upload', upload.single('image'), (req, res) => {
-    console.log(req.file);
-    res.send('ok');
+    if (req.file) {
+        res.send('ok');
+    } else {
+        console.error('Error uploading file');
+        res.status(500).send('Error uploading file');
+    }
 });
 
-app.listen(app.get('port'), () => {
-    console.log(app.get('port'), '번 포트에서 대기 중');
+// uploads 폴더의 정적 파일 불러오기
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.listen(PORT, () => {
+    console.log(`Listen : ${PORT}`);
 });
