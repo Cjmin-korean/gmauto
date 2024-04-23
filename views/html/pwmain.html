@@ -58,12 +58,16 @@
 </style>
 
 <body>
-    <form>
+    <!-- <form>
         <input type="file" name="image" />
         <input type="text" name="title" />
         <button onclick="uploadImage()">업로드</button>
+    </form> -->
+    <form id="form" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" />
+        <input type="text" name="title" />
+        <button type="submit">업로드</button>
     </form>
-
     <div class="main_header">
         <i class="fas fa-info-circle"></i>&nbsp; P.W 기초정보1
     </div>
@@ -220,32 +224,40 @@
                     <td><label for="part-edit">두께</label></td>
                     <td><input type="text" id="t-save" value="" autocomplete="off" style="width: 100%;"></td>
                 </tr>
+
+
+
+
+            </table>
+        </div>
+        <div>
+            <table>
                 <tr>
-                    <th colspan="10">이미지</th>
+                    <th style="background-color: black; color:white;">H/W이미지</th>
+                    <th style="background-color: black; color:white;">제품이미지</th>
                 </tr>
                 <tr>
-                    <td colspan="10">
-                        <div id="image"></div>
+                    <td>
+                        <div id="image"
+                            style="max-width: 200px; max-height: 200px; overflow: hidden; text-align: center;"></div>
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        <label for="fileInput">H/W이미지</label>
-                        <input type="file" id="fileInput">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        <div id="image1" style="max-width: 100px; max-height: 100px;">
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="10">
-                        <label for="fileInput1">제품이미지</label>
-                        <input type="file" id="fileInput1">
+                    <td>
+                        <div id="image1"
+                            style="max-width: 200px; max-height: 200px; overflow: hidden; text-align: center;"></div>
                     </td>
                 </tr>
 
+                <tr>
+                    <td>
+                        <input type="file" id="fileInput">
+
+                    </td>
+                    <td>
+                        <input type="file" id="fileInput1">
+
+                    </td>
+
+                </tr>
 
             </table>
         </div>
@@ -628,8 +640,9 @@
                         $('#image1').empty();
                         var img = $('<img>').attr('src', '../hw/' + rowDataArray[8] + '.PNG');
                         $('#image').append(img);
-                        var img1 = $('<img>').attr('src', '../img/2J844-26500.jpg');
+                        var img1 = $('<img>').attr('src', '../img/' + rowDataArray[3] + '.jpg').css({ 'max-width': '200px', 'max-height': '200px' });
                         $('#image1').append(img1);
+                        console.log(rowDataArray[3])
                     });
                 }
             });
@@ -694,6 +707,8 @@
             reader.onload = function (e) {
                 var img = document.createElement('img');
                 img.src = e.target.result;
+                img.style.maxWidth = '200px'; // 이미지의 최대 너비 설정
+                img.style.maxHeight = '200px'; // 이미지의 최대 높이 설정
                 document.getElementById('image').innerHTML = '';
                 document.getElementById('image').appendChild(img);
             }
@@ -707,6 +722,8 @@
             reader.onload = function (e) {
                 var img = document.createElement('img');
                 img.src = e.target.result;
+                img.style.maxWidth = '200px'; // 이미지의 최대 너비 설정
+                img.style.maxHeight = '200px'; // 이미지의 최대 높이 설정
                 document.getElementById('image1').innerHTML = '';
                 document.getElementById('image1').appendChild(img);
             }
