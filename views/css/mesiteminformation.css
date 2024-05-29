@@ -141,7 +141,7 @@ textarea {
     font-weight: bold;
 }
 
-#searchingmaterialinfobody tr:hover {
+/* #searchingmaterialinfobody tr:hover {
     background-color: rgb(204, 201, 201);
     cursor: pointer;
 }
@@ -149,4 +149,4 @@ textarea {
 #searchingcustomernameinfobody tr:hover {
     background-color: rgb(204, 201, 201);
     cursor: pointer;
-}
+} */

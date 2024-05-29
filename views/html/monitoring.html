@@ -121,12 +121,9 @@
                     <th style="width:auto; font-weight: bold;">HW품명</th>
                     <th style="width:auto; font-weight: bold;">HW수량</th>
                     <th style="width:auto; font-weight: bold;">작업자</th>
-                    <th style="width:auto; font-weight: bold;">지시수량</th>
                     <th style="width:auto; font-weight: bold;">생산수량</th>
-                    <th style="width:auto; font-weight: bold;">달성율</th>
                     <th style="width:auto; font-weight: bold;">시작시간</th>
                     <th style="width:auto; font-weight: bold;">종료시간</th>
-                    <th style="width:auto; font-weight: bold;">상태</th>
 
 
 
@@ -921,11 +918,8 @@
                                 '<td style="font-weight:bold; font-size:18px;">' + result[i].sacount + '</td>' +
                                 '<td style="font-weight:bold; font-size:18px;">' + result[i].people + '</td>' +
                                 '<td style="font-weight:bold; font-size:18px;">' + result[i].count + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + result[i].finalcount + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + percentage + '%</td>' + // Display the percentage
-                                '<td style="font-weight:bold; font-size:18px;">' + result[i].starttime + '</td>' +
-                                '<td style="font-weight:bold; font-size:18px;">' + result[i].finaltime + '</td>' +
-                                '<td class="' + blinkingClass + '" style="color: ' + statusTextColor + '; background-color: ' + statusColor + ';">' + result[i].status + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].status + '</td>' +
+                                '<td style="font-weight:bold; font-size:18px;">' + result[i].status2 + '</td>' +
 
                                 '<td id="data-id">' + result[i].id + '</td>' +
                                 '</tr>'

@@ -133,6 +133,26 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/updatepeople', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('id', sql.NVarChar, req.body.id)
+                .input('part', sql.NVarChar, req.body.part)
+                .input('people', sql.NVarChar, req.body.people)
+                .query(
+                    "update people set part=@part,people=@people where id=@id"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/updatelast', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -223,6 +243,26 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/selectfirstpeople', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('finish', sql.NVarChar, req.body.finish)
+                // .input('start', sql.NVarChar, req.body.start)
+
+                .query(
+                    "select * from people where part='pw' order by people asc "
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectpwproductpapaer', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -263,9 +303,15 @@ module.exports = function (app) {
         app.post('/api/selectpwplan', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
-                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .input('start', sql.NVarChar, req.body.start)
+                .input('finish', sql.NVarChar, req.body.finish)
                 .query(
-                    "select * from pw order by plandate,status desc "
+                    "select " +
+                    " * " +
+                    " from " +
+                    " pw " +
+                    // " where plandate between @start and @finish " +
+                    " order by plandate,status desc "
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -353,6 +399,24 @@ module.exports = function (app) {
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
                     "select * from pwmain order by customer,cartype asc"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectpeople', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .query(
+                    "select * from people order by part asc"
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -542,7 +606,50 @@ module.exports = function (app) {
         });
     });
     // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/insertpeople', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
 
+
+            return pool.request()
+                .input('people', sql.NVarChar, req.body.people)
+                .input('part', sql.NVarChar, req.body.part)
+                .query(
+                    'INSERT INTO people (people,part) VALUES (@people,@part)'
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                })
+
+        });
+    });
+    // **** finish
+    // **** start       
+    sql.connect(config).then(pool => {
+        app.post('/api/deletepeople', function (req, res) {
+
+
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+
+                .input('id', sql.Int, req.body.id)
+                // .input('orderstatus', sql.NVarChar, req.body.orderstatus)
+
+
+                .query(
+                    'delete from  people where id=@id'
+                )
+                .then(result => {
+
+                    res.json(result.recordset);
+                    res.end();
+                });
+        });
+
+    });
+    // **** finish
 
     // **** start       
     sql.connect(config).then(pool => {

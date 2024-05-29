@@ -67,7 +67,7 @@ app.get("/userui", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/linecode.html");
 });
 app.get("/selectpwmain", cors(), (req, res) => {
-    res.sendFile(__dirname + "/views/html/pwmain.html");
+    res.sendFile(__dirname + "/views/html/0.html");
 });
 
 app.get('/upload', (req, res) => {
