@@ -6,8 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+    <link rel="stylesheet" href="../css/style.css">
 </head>
+<link rel="stylesheet" href="../css/login1.css">
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -17,6 +19,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;200;300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+
 
 <style>
     body {
@@ -408,6 +415,9 @@
                             <li onclick="pressmainHtml()" class="small_menu_sub">
                                 <a>PRESS기초정보</a>
                             </li>
+                            <li onclick="pressinfoHtml()" class="small_menu_sub">
+                                <a>PRESS검사항목</a>
+                            </li>
                             <li onclick="testHtml()" class="small_menu_sub">
                                 <a>P.W이미지</a>
                             </li>
@@ -426,7 +436,7 @@
                             </li>
 
                             <li onclick="pwproduction()" class="small_menu_sub">
-                                <a>P.W 작업일보</a>
+                                <a>P.W 작업일보 & 성적서</a>
                             </li>
                             <li id="monitoring" class="small_menu_sub">
                                 <a>모니터링</a>
@@ -434,7 +444,7 @@
                         </ul>
 
                     </ul>
-                    <!-- <ul class="big_menu">
+                    <ul class="big_menu">
                         <li class="big_menu_sub">PRESS<img class="arrow fas fa-angle-right" src="../img/down.png" />
                         </li>
                         <ul class="small_menu">
@@ -450,7 +460,7 @@
                             </li>
                         </ul>
 
-                    </ul> -->
+                    </ul>
 
 
 
@@ -465,8 +475,19 @@
     </div>
     <div id="loadHtml" style="overflow-y: auto;">
 
-        <img src="/img/logo.png" width="200" height="100" style="margin-left: 800px; margin-top: 500px;">
-        <b style="margin-top: 10px; font-size: 40px;">(주)지엠오토 초중종관리 시스템</b>
+        <div class="header">
+            <img class="header_img" src="img/manufacturing-teaser.jpeg" />
+            <img class="header_logo_img" src="img/logo.png" style="margin-top: -180px;">
+            <a>(주)지엠오토 초중종 관리 시스템</a>
+            <p>
+                System is a vital tool in the manufacturing industry for efficiently managing and optimizing
+                production processes.
+            </p>
+        </div>
+        <div class="ft_box2">
+            주식회사 지엠오토 &nbsp;대표 : 박종배 &nbsp;경기 화성시 남양읍 무하로110번길 85-21<br>
+
+        </div>
     </div>
 </body>
 <script>
@@ -566,11 +587,15 @@
 
     function pressmainHtml() {
         $("#loadHtml").removeClass();
-        $("#loadHtml").load("/html/accountinformation.html");
+        $("#loadHtml").load("/html/pressbase.html");
+    }
+    function pressinfoHtml() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/pressinfo.html");
     }
     function pwmainHtml() {
         $("#loadHtml").removeClass();
-        $("#loadHtml").load("/html/pwmain.html");
+        $("#loadHtml").load("/html/pwbase.html");
     }
     function pwplan() {
         $("#loadHtml").removeClass();
@@ -578,11 +603,15 @@
     }
     function pwproduct() {
         $("#loadHtml").removeClass();
-        $("#loadHtml").load("/html/pwproduct.html");
+        $("#loadHtml").load("/html/pwproduct1.html");
+    }
+    function pressproduct() {
+        $("#loadHtml").removeClass();
+        $("#loadHtml").load("/html/pressproduct.html");
     }
     function pwproduction() {
         $("#loadHtml").removeClass();
-        $("#loadHtml").load("/html/pwproduction.html");
+        $("#loadHtml").load("/html/pwworkdailyreport.html");
     }
     function pressproduction() {
         $("#loadHtml").removeClass();

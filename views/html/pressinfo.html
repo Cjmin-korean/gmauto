@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="../css/pwbase.css">
+    <link rel="stylesheet" href="../css/spiner.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="../js/searchtable.js"></script>
+
+    <title>PRESS 검사항목</title>
+</head>
+
+<body>
+
+    <div class="header-container">
+        <div class="header-title">
+            <h2><i class="fas fa-warehouse"></i> &nbsp;PRESS 검사항목</h2>
+        </div>
+        <div class="header-subtitle">
+            <h4>기초정보 > PRESS 검사항목</h4>
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <div id="overlay1" class="overlay"></div>
+
+    <fieldset>
+        <legend>검색조건</legend>
+        <i class="fas fa-search"></i>
+        <input type="text" id="inputdata" placeholder="검색 후 ENTER 입력 바랍니다." style="width:400px; margin-left: 10px;"
+            autocomplete="off">
+        <button class="save-button" onclick="openModal()">신규등록</button>
+
+
+    </fieldset>
+    <div class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div id="maintable" class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>차종</th>
+                    <th>품번</th>
+                    <th>품명</th>
+                    <th>고객사</th>
+                    <th>검사항목</th>
+                    <th>확인방법</th>
+                    <th>검사규격</th>
+                    <th>기준값1</th>
+                    <th>공차1</th>
+                    <th>기준값2</th>
+                    <th>공차2</th>
+                    <th>측정위치</th>
+                    <th style="width: 5%;"></th>
+                    <th style="width: 5%;"></th>
+                </tr>
+
+            </thead>
+            <tbody id="iteminfobody">
+            </tbody>
+            <tfoot id="iteminfofoot">
+            </tfoot>
+        </table>
+    </div>
+
+
+
+
+
+
+    <script>
+        var server = '';
+        var gridApi;
+        if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+            server = 'http://localhost:8080';
+        } else {
+            server = 'http://gmauto.xyz';
+        }
+
+        $(document).ready(function () {
+            load()
+        });
+
+        $('#inputdata').on('keyup', function (event) {
+            if (event.key === 'Enter') { // 엔터 키가 눌렸는지 확인
+                searchTable();
+            }
+        });
+
+        function load() {
+            var spinnerOverlay = document.querySelector('.spinner-overlay');
+            spinnerOverlay.style.display = 'flex'; // Spiner 표시
+
+
+            $.ajax({
+                url: server + '/api/selectpressinfo',
+                method: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+
+                }),
+
+                success: function (result) {
+                    $('#iteminfobody').empty();
+
+                    for (var i = 0; i < result.length; i++) {
+                        $('#iteminfobody').append(
+                            '<tr>' +
+                            '<td>' + result[i].model + '</td>' +
+                            '<td>' + result[i].partnumber + '</td>' +
+                            '<td>' + result[i].partname + '</td>' +
+                            '<td>' + result[i].customer + '</td>' +
+                            '<td>' + result[i].inspectionitems + '</td>' +
+                            '<td>' + result[i].insepectionmethod + '</td>' +
+                            '<td>' + result[i].inspectionspecification + '</td>' +
+                            '<td>' + result[i].referencevalue1 + '</td>' +
+                            '<td>' + result[i].tolerance1 + '</td>' +
+                            '<td>' + result[i].referencevalue2 + '</td>' +
+                            '<td>' + result[i].tolerance2 + '</td>' +
+                            '<td>' + result[i].measurementioncation + '</td>' +
+                            '<td id="data-id">' + (result[i].id || '') + '</td>' +
+                            '<td><button class="btninfo" onclick="showinfo(this)">상세</button></td>' +
+                            '<td><button class="btninfo" style="background-color:red;" onclick="deletedata(this)">삭제</button></td>' +
+                            '</tr>'
+                        );
+                    }
+
+                    $('td#data-id').hide();
+                    setTimeout(function () {
+                        spinnerOverlay.style.display = 'none'; // 1초 후에 Spiner 숨김
+                    }, 1100);
+
+                }
+            });
+
+        }
+
+        function showinfo(button) {
+            var row = $(button).closest('tr');
+            var rowData = row.find('td').map(function () {
+                return $(this).text();
+            }).get();
+
+            $('#customer-save').val(rowData[0])
+            $('#cartype-save').val(rowData[1])
+            $('#productnumber-save').val(rowData[2])
+            $('#sub-save').val(rowData[3])
+            $('#productname-save').val(rowData[4])
+            $('#marchine-save').val(rowData[5])
+            $('#touch-save').val(rowData[6])
+            $('#sanum-save').val(rowData[7])
+            $('#sapum-save').val(rowData[8])
+            $('#sacount-save').val(rowData[9])
+            $('#a-save').val(rowData[10])
+            $('#b-save').val(rowData[11])
+            $('#c-save').val(rowData[12])
+            $('#d-save').val(rowData[13])
+            $('#e-save').val(rowData[14])
+            $('#f-save').val(rowData[15])
+            $('#g-save').val(rowData[16])
+            $('#h-save').val(rowData[17])
+            $('#i-save').val(rowData[18])
+            $('#j-save').val(rowData[19])
+            $('#spec-save').val(rowData[20])
+            $('#t-save').val(rowData[21])
+            $('#dataid').val(rowData[22]);
+
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+
+            $('#customer-save').val('')
+            $('#cartype-save').val('')
+            $('#productnumber-save').val('')
+            $('#sub-save').val('완성')
+            $('#productname-save').val('')
+            $('#marchine-save').val('')
+            $('#touch-save').val('')
+            $('#sanum-save').val('')
+            $('#sapum-save').val('')
+            $('#sacount-save').val('')
+            $('#a-save').val('')
+            $('#b-save').val('')
+            $('#c-save').val('')
+            $('#d-save').val('')
+            $('#e-save').val('')
+            $('#f-save').val('')
+            $('#g-save').val('')
+            $('#h-save').val('')
+            $('#i-save').val('1000타점')
+            $('#j-save').val('마모 한계선 1 mm 限')
+            $('#spec-save').val('')
+            $('#t-save').val('')
+
+            $('#dataid').val('');
+
+            setTimeout(function () {
+                $('#customer-input').focus();
+            }, 100);
+        }
+
+        function save() {
+            // 데이터가 있으면
+            if ($('#dataid').val()) {
+                Swal.fire({
+                    icon: 'info',
+                    title: '수정',
+                    text: 'PW 정보를 수정 하시겠습니까?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: server + '/api/updatepwmain',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                "id": $('#dataid').val(),
+                                "customer": $('#customer-save').val(),
+                                "cartype": $('#cartype-save').val(),
+                                "productnumber": $('#productnumber-save').val(),
+                                "sub": $('#sub-save').val(),
+                                "productname": $('#productname-save').val(),
+                                "marchine": $('#marchine-save').val(),
+                                "touch": $('#touch-save').val(),
+                                "sanum": $('#sanum-save').val(),
+                                "sapum": $('#sapum-save').val(),
+                                "sacount": $('#sacount-save').val(),
+                                "a": $('#a-save').val(),
+                                "b": $('#b-save').val(),
+                                "c": $('#c-save').val(),
+                                "d": $('#f-save').val(),
+                                "e": $('#e-save').val(),
+                                "f": $('#f-save').val(),
+                                "g": $('#g-save').val(),
+                                "h": $('#h-save').val(),
+                                "i": $('#i-save').val(),
+                                "j": $('#j-save').val(),
+                                "spec": $('#spec-save').val(),
+                                "t": $('#t-save').val()
+                            })
+                        });
+                        Swal.fire({
+                            icon: 'success',
+                            title: '수정 완료',
+                            text: 'PW 정보가 수정 되었습니다.',
+                        }).then(() => {
+                            $('#modal').fadeOut();
+                            $('#overlay').fadeOut();
+                            load();
+                        });
+                    }
+                });
+            } else {
+                // 데이터가 없으면(등록)
+                Swal.fire({
+                    icon: 'info',
+                    title: '저장',
+                    text: 'PW 정보를 등록 하시겠습니까?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: '확인',
+                    cancelButtonText: '취소',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: server + '/api/insertpwmain',
+                            dataType: 'json',
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                "customer": $('#customer-save').val(),
+                                "cartype": $('#cartype-save').val(),
+                                "productnumber": $('#productnumber-save').val(),
+                                "sub": $('#sub-save').val(),
+                                "productname": $('#productname-save').val(),
+                                "marchine": $('#marchine-save').val(),
+                                "touch": $('#touch-save').val(),
+                                "sanum": $('#sanum-save').val(),
+                                "sapum": $('#sapum-save').val(),
+                                "sacount": $('#sacount-save').val(),
+                                "a": $('#a-save').val(),
+                                "b": $('#b-save').val(),
+                                "c": $('#c-save').val(),
+                                "d": $('#f-save').val(),
+                                "e": $('#e-save').val(),
+                                "f": $('#f-save').val(),
+                                "g": $('#g-save').val(),
+                                "h": $('#h-save').val(),
+                                "i": $('#i-save').val(),
+                                "j": $('#j-save').val(),
+                                "spec": $('#spec-save').val(),
+                                "t": $('#t-save').val()
+                            })
+                        });
+                        Swal.fire({
+                            icon: 'success',
+                            title: '저장 완료',
+                            text: 'PW 정보가 저장 되었습니다.',
+                        }).then(() => {
+                            $('#modal').fadeOut();
+                            $('#overlay').fadeOut();
+                            load();
+                        });
+                    }
+                });
+            }
+
+        }
+        //111
+        function deletedata(button) {
+            var row = $(button).closest('tr');
+            var rowData = row.find('td').map(function () {
+                return $(this).text();
+            }).get();
+
+            Swal.fire({
+                icon: 'warning',
+                title: '삭제',
+                text: 'PW 정보를 삭제하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: server + '/api/deletepwmain',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "id": rowData[22],
+                        }),
+                        success: function (result) {
+
+                        },
+
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: '삭제 완료',
+                        text: 'PW 정보가 삭제 되었습니다.',
+                    }).then(() => {
+                        $('#modal').fadeOut();
+                        $('#overlay').fadeOut();
+                        load();
+                    });
+                }
+            });
+        }
+
+
+
+
+    </script>
+
+</body>
+
+</html>

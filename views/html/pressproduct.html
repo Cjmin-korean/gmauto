@@ -5,23 +5,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" href="../css/pwproduct1.css">
+    <link rel="stylesheet" href="../css/pressproduct.css">
     <link rel="stylesheet" href="../css/spiner.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <title>금일 PW 진행현황</title>
+    <title>금일 PRESS 진행현황</title>
 </head>
 
 <body>
 
     <div class="header-container">
         <div class="header-title">
-            <h2><i class="fas fa-wrench"></i> &nbsp;금일 PW 진행현황</h2>
+            <h2><i class="fas fa-wrench"></i> &nbsp;PRESS 진행현황</h2>
         </div>
         <div class="header-subtitle">
-            <h4>P.W > PW 작업정보</h4>
+            <h4>PRESS > PRESS 작업정보</h4>
         </div>
     </div>
     <div id="overlay" class="overlay"></div>
@@ -47,8 +47,7 @@
                 <th>고객사</th>
                 <th>차종</th>
                 <th>품번</th>
-                <th>품명</th>
-                <th>호기명</th>
+                <th>생산라인</th>
                 <th>용접타점수</th>
                 <th>사양부번</th>
                 <th>사양품명</th>
@@ -75,7 +74,7 @@
 
     <div class="modal" id="modal">
         <div class="mainheader">
-            <h2><i class="fas fa-wrench"></i> &nbsp;PW 작업정보</h2>
+            <h2><i class="fas fa-wrench"></i> &nbsp;PRESS 작업정보</h2>
         </div>
         <fieldset>
             <legend>품목정보</legend>
@@ -87,30 +86,30 @@
             <select id="productnumber-select" style="width:250px;">
                 <option></option>
             </select>
-            <b style="margin-left: 10px;">사양</b>
-            <select id="sa-select" style="width:150px;">
+            <b style="margin-left: 10px;">생산라인</b>
+            <select id="marchine-select" style="width:250px;">
                 <option></option>
             </select>
-            <b style="margin-left: 10px;">작업자</b>
+            <!-- <b style="margin-left: 10px;">작업자</b>
             <select id="people-select" style="width:150px;">
                 <option value=""></option>
-            </select>
-
+            </select> -->
+            <b style="margin-left: 20px;">PITCH</b>
+            <input type="text" value="" id="pitch-input" style="width:150px; margin-left: 10px; text-align:center; "
+                readonly>
+            <b style="margin-left: 20px;">전공정LOT</b>
+            <input type="text" value="" id="lotno-input" style="width:150px; margin-left: 10px; text-align:center; "
+                readonly>
+            <b style="margin-left: 20px;">초/중/종</b>
+            <input type="text" value="초물" id="inspection" style="text-align: center; width:150px; margin-left: 10px;"
+                readonly>
             <button id="newRegistrationBtn" onclick="searching()" style="margin-left: 20px;;" class="close-button">
                 조회
             </button>
             <button id="newRegistrationBtn" onclick="savedata()" style="margin-left: 20px;;" class="close-button">
                 저장
             </button>
-            <b style="margin-left: 20px;">초/중/종</b>
-            <input type="text" value="초물" id="inspection" style="text-align: center; width:150px; margin-left: 10px;"
-                readonly>
-            <b style="margin-left: 20px;">최종판정</b>
-            <input type="text" value="검사미완료" id="result" style="width:150px; margin-left: 10px; text-align:center; "
-                readonly>
-            <input type="text" style="width:200px; visibility: hidden;" id="dataidsave">
-            <button class="delete-button" style="float: right;" onclick="closeModal()">닫기</button>
-
+            <button style="margin-left: 20px;" class="delete-button" onclick="closeModal()">닫기</button>
         </fieldset>
 
         <div style="width:100%; float: left;">
@@ -119,190 +118,18 @@
                 <table class="styled-table1" id="datatable">
                     <thead id="tableHead">
                         <tr>
-                            <th style="text-align:center;" colspan="2">제품 정보</th>
-                            <th style="text-align:center;" colspan="2">사양 정보</th>
-                            <th style="text-align:center;" colspan="2">설비 정보</th>
-                            <th style="text-align:center; " colspan="1">제품 이미지</th>
-                            <th style="text-align:center; " colspan="4">파괴기 검사</th>
+                            <th>공정명</th>
+                            <th>설비번호</th>
+                            <th>DIE HEIGHT</th>
+                            <th>작업자</th>
                         </tr>
-                        <tr>
-                            <th style="text-align: center; width: 100px;">차 종</th>
-                            <td style="text-align: center; width:250px;"><input type="text" id="cartype-save" readonly>
-                            </td>
-                            <th style="text-align: center; width: 100px;">사양부번</th>
-                            <td style="text-align: center; width:250px;"><input type="text" id="sanum-save" readonly>
-                            </td>
-                            <th style="text-align: center; width: 100px;">통전 시간<br>(HZ)</th>
-                            <td style="text-align: center; width:250px;"><input type="text" id="a-save"
-                                    autocomplete="off"></td>
-                            <td rowspan="3" style="text-align: center; vertical-align: middle; width:300px;"><img alt=""
-                                    class="loadingImage" style="max-width: 200px; max-height: 200px;" id="img">
-                            </td>
-                            <th style="text-align: center; width: 100px;"></th>
-                            <th style="text-align: center; width: 100px;">결과값</th>
-                            <th style="text-align: center; width: 100px;">기준값</th>
-                            <th style="text-align: center; width: 100px;">판정</th>
-
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;">고객사</th>
-                            <td style="text-align: center; width:250px;"><input type="text" id="customer-save" readonly>
-                            </td>
-                            <th style="text-align: center; width: 100px;">사양품명</th>
-                            <td style="text-align: center; width:250px;"><input type="text" id="sapum-save" readonly>
-                            </td>
-                            <th style="text-align: center; width: 100px;">용접 전류<br>(A)</th>
-                            <td style="text-align: center; width:250px;"><input type="text" id="b-save"
-                                    autocomplete="off">
-                            </td>
-                            <th style="text-align: center; width: 100px;" id="text1">검사결과1</th>
-                            <td style="text-align: center; width: 100px;" id="textdata1">
-                                <input type="text" id="data1" autocomplete="off">
-                            </td>
-                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata1"></td>
-                            <td style="text-align: center; width: 100px;" id="result1"></td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;">품 번</th>
-                            <td style="text-align: center;"><input type="text" id="productnumber-save" readonly>
-                            </td>
-                            <th style="text-align: center; width: 100px;">사양개수</th>
-                            <td style="text-align: center;"><input type="text" id="sacount-save" readonly></td>
-                            <th style="text-align: center; width: 100px;">초기 가압<br>(kg/㎠)</th>
-                            <td style="text-align: center;"><input type="text" id="c-save" autocomplete="off"></td>
-                            <th style="text-align: center; width: 100px;" id="text2">검사결과2</th>
-                            <td style="text-align: center; width: 100px;" id="textdata2"><input type="text" id="data2"
-                                    autocomplete="off"></td>
-                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata2"></td>
-                            <td style="text-align: center; width: 100px;" id="result2"></td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;">품 명</th>
-                            <td style="text-align: center;"><input type="text" id="productname-save" readonly></td>
-                            <th style="text-align: center; width: 100px;">재 질</th>
-                            <td style="text-align: center;"><input type="text" id="spec-save" readonly></td>
-                            <th style="text-align: center; width: 100px;">유지 시간<br>(HZ)</th>
-                            <td style="text-align: center;"><input type="text" id="d-save" autocomplete="off"></td>
-
-                            <th style="text-align: center; width: 100px;">사양 이미지</th>
-                            <th style="text-align: center; width: 100px;" id="text3">검사결과3</th>
-                            <td style="text-align: center; width: 100px;" id="textdata3"><input type="text" id="data3"
-                                    autocomplete="off"></td>
-                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata3"></td>
-                            <td style="text-align: center; width: 100px;" id="result3"></td>
-
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;">호기명</th>
-                            <td style="text-align: center;"><input type="text" id="marchine-save"></td>
-                            <th style="text-align: center; width: 100px;">두 께 <br>(T)</th>
-                            <td style="text-align: center;"><input type="text" id="t-save" readonly></td>
-                            <th style="text-align: center; width: 100px;">냉각수 온도<br>(˚)</th>
-                            <td style="text-align: center;"><input type="text" id="e-save" autocomplete="off"></td>
-                            <td rowspan="2" style="text-align: center; vertical-align: middle; width:300px;"><img alt=""
-                                    class="loadingImage" style="max-width: 100px; max-height: 100px;" id="img1">
-                            <th style="text-align: center; width: 100px;" id="text4">검사결과4</th>
-                            <td style="text-align: center; width: 100px;" id="textdata4"><input type="text" id="data4"
-                                    autocomplete="off"></td>
-                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata4"></td>
-                            <td style="text-align: center; width: 100px;" id="result4"></td>
-                        </tr>
-                        <tr>
-                            <th style="text-align: center;">용접타점수</th>
-                            <td style="text-align: center;"><input type="text" id="touch-save" readonly></td>
-                            <th style="text-align: center;"></th>
-                            <td style="text-align: center;"></td>
-                            <th style="text-align: center; width: 100px;">에어 압력<br>(Mpa)</th>
-                            <td style="text-align: center;"><input type="text" id="f-save" autocomplete="off"></td>
-                            <th style="text-align: center; width: 100px;" id="text5">검사결과5</th>
-                            <td style="text-align: center; width: 100px;" id="textdata5"><input type="text" id="data5"
-                                    autocomplete="off"></td>
-                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata5"></td>
-                            <td style="text-align: center; width: 100px;" id="result5"></td>
-                        </tr>
-
                     </thead>
                 </table>
             </div>
 
-            <!-- 왼쪽 하단 테이블 -->
+
 
         </div>
-
-        <table class="styled-table1" id="datatable" style="width:100%;">
-            <thead id="tableHead">
-                <tr>
-                    <th style="text-align:center;" colspan="9">외관검사</th>
-
-                </tr>
-                <tr>
-                    <th style="width:100px; text-align:center;">강도미달</th>
-                    <th style="width:100px; text-align:center;">나사산마모</th>
-                    <th style="width:100px; text-align:center;">무통전가압</th>
-                    <th style="width:100px; text-align:center;">백비드</th>
-                    <th style="width:100px; text-align:center;">역용접</th>
-                    <th style="width:100px; text-align:center;">용접이물없을것</th>
-                    <th style="width:100px; text-align:center;">편심없을것</th>
-                    <th style="width:100px; text-align:center;">홀누락없을것</th>
-                </tr>
-                <tr>
-                    <td style="width:100px; text-align: center;"> <img
-                            style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/강도미달.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/나사산마모.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/무천동가압.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/백비드.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/역용접.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/용접이물없을것.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/편심없을것.PNG">
-                    </td>
-                    <td style="width:150px; text-align: center;"> <img
-                            style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/홀누락없을것.PNG">
-                    </td>
-
-                </tr>
-                <tr>
-                    <td style="width:100px; text-align: center; "><button id="button1" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button2" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button3" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button4" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button5" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button6" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button7" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                    <td style="width:100px; text-align: center;"><button id="button8" style="width:100px;"
-                            style="background-color: rgb(133, 133, 133);" class="save-button"
-                            onclick="changeButtonText(this)">검사</button></td>
-                </tr>
-            </thead>
-        </table>
-
-
-
     </div>
 
 
@@ -472,79 +299,7 @@
             <!-- 왼쪽 하단 테이블 -->
 
         </div>
-        <div style="width:100%;">
-            <table class="styled-table1" id="datatable" style="width:100%;">
-                <thead id="tableHead">
-                    <tr>
-                        <th style="text-align:center;" colspan="9">외관검사</th>
 
-                    </tr>
-                    <tr>
-                        <th style="width:100px; text-align:center;">강도미달</th>
-                        <th style="width:100px; text-align:center;">나사산마모</th>
-                        <th style="width:100px; text-align:center;">무통전가압</th>
-                        <th style="width:100px; text-align:center;">백비드</th>
-                        <th style="width:100px; text-align:center;">역용접</th>
-                        <th style="width:100px; text-align:center;">용접이물없을것</th>
-                        <th style="width:100px; text-align:center;">편심없을것</th>
-                        <th style="width:100px; text-align:center;">홀누락없을것</th>
-                    </tr>
-                    <tr>
-                        <td style="width:100px; text-align: center;"> <img
-                                style="vertical-align: middle; width:100px; height: 100px;" src="../pwlook/강도미달.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/나사산마모.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/무천동가압.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/백비드.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/역용접.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/용접이물없을것.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/편심없을것.PNG">
-                        </td>
-                        <td style="width:150px; text-align: center;"> <img
-                                style="vertical-align: middle; width:150px; height: 150px;" src="../pwlook/홀누락없을것.PNG">
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td style="width:100px; text-align: center; "><button id="button1-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button2-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button3-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button4-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button5-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button6-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button7-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                        <td style="width:100px; text-align: center;"><button id="button8-edit" style="width:100px;"
-                                style="background-color: rgb(133, 133, 133);" class="save-button"
-                                onclick="changeButtonText(this)">검사</button></td>
-                    </tr>
-                </thead>
-            </table>
-        </div>
 
 
 
@@ -576,7 +331,7 @@
             const selectElement2 = document.getElementById("sa-select");
             $.ajax({
                 type: 'POST',
-                url: server + '/api/selectcartype',
+                url: server + '/api/selectcartype1',
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
@@ -592,7 +347,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: server + '/api/selectfirstpeople',
+                url: server + '/api/selectfirstpeople1',
                 dataType: 'json',
                 contentType: 'application/json',
                 success: function (result) {
@@ -629,7 +384,7 @@
                 const selectedValue = $(this).val(); // 선택된 값 가져오기
                 $.ajax({
                     type: 'POST',
-                    url: server + '/api/pwmainselect',
+                    url: server + '/api/pwmainselect1',
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify({
@@ -647,35 +402,6 @@
                             option.text = result[i].productnumber;
                             option.value = result[i].productnumber;
                             selectElement1.add(option);
-                        }
-
-                        // 첫 번째 값을 선택했을 때 바로 이미지 로드
-                    },
-                });
-            });
-
-            selectElement1.addEventListener('change', function () {
-                selectElement2.innerHTML = ''; // 선택한 productnumber에 대한 sa-select를 초기화
-
-                const selectedValue = $(this).val();
-                $.ajax({
-                    type: 'POST',
-                    url: server + '/api/pwmainselectsapum',
-                    dataType: 'json',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        productnumber: selectedValue
-                    }),
-                    success: function (result) {
-                        for (let i = 0; i < result.length; i++) {
-                            const option = document.createElement("option");
-                            option.text = result[i].sapum;
-                            option.value = result[i].sapum;
-                            selectElement2.add(option);
-                        }
-                        console.error();
-                        for (let i = 0; i < result.length; i++) {
-                            const option = document.createElement(option)
                         }
                     },
                 });
@@ -726,7 +452,6 @@
                                 '<td style="text-align:center;">' + (data.customer || '') + '</td>' +
                                 '<td style="text-align:center;">' + (data.cartype || '') + '</td>' +
                                 '<td style="text-align:center;">' + (data.productnumber || '') + '</td>' +
-                                '<td style="text-align:center;">' + (data.productname || '') + '</td>' +
                                 '<td style="text-align:center;">' + (data.marchine || '') + '</td>' +
                                 '<td style="text-align:center;">' + (data.touch || '') + '</td>' +
                                 '<td style="text-align:center;">' + (data.sanum || '') + '</td>' +
@@ -768,8 +493,8 @@
         function newadd() {
             Swal.fire({
                 icon: 'info',
-                title: '저장',
-                text: 'P.W 초물검사를 시작하시겠습니까?',
+                title: '초물검사',
+                text: 'PRESS 초물검사를 시작하시겠습니까?',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -809,7 +534,7 @@
                     $('#spec-save').val('')
                     $('#t-save').val('')
                     $('#inspection').val('초물')
-                    $('#result').val('검사미완료')
+                    $('#result').val('')
                     $('#button1').css('background-color', 'rgb(133, 133, 133)');
                     $('#button2').css('background-color', 'rgb(133, 133, 133)');
                     $('#button3').css('background-color', 'rgb(133, 133, 133)');

@@ -59,6 +59,41 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/pwmainselect1', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('cartype', sql.NVarChar, req.body.cartype)
+                .query(
+                    "select endpartnumber from  main  where cartype=@cartype group by endpartnumber"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectpressinfo', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .query(
+                    "select * from  pressinfo"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/pwmainselectsapum', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()
@@ -83,6 +118,24 @@ module.exports = function (app) {
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
                     "select cartype from pwmain group by cartype order by cartype asc"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectcartype1', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .query(
+                    "select cartype from main group by cartype order by cartype asc"
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -184,8 +237,15 @@ module.exports = function (app) {
                 .input('data41', sql.NVarChar, req.body.data41)
                 .input('data51', sql.NVarChar, req.body.data51)
                 .input('people1', sql.NVarChar, req.body.people1)
+                .input('a1', sql.NVarChar, req.body.a1)
+                .input('b1', sql.NVarChar, req.body.b1)
+                .input('c1', sql.NVarChar, req.body.c1)
+                .input('d1', sql.NVarChar, req.body.d1)
+                .input('e1', sql.NVarChar, req.body.e1)
+                .input('f1', sql.NVarChar, req.body.f1)
+                .input('status2', sql.NVarChar, req.body.status2)
                 .query(
-                    "update pwproduct set people1=@people1,data11=@data11,data21=@data21,data31=@data31,data41=@data41,data51=@data51,status='중물' where dataid=@dataid"
+                    "update pwproduct set people1=@people1,data11=@data11,data21=@data21,data31=@data31,data41=@data41,data51=@data51,status='중물',status2=@status2,a1=@a1,b1=@b1,c1=@c1,d1=@d1,e1=@e1,f1=@f1 where dataid=@dataid"
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -209,16 +269,21 @@ module.exports = function (app) {
                 .input('data52', sql.NVarChar, req.body.data52)
                 .input('people2', sql.NVarChar, req.body.people2)
                 .input('count', sql.Float, req.body.count)
+                .input('a2', sql.NVarChar, req.body.a2)
+                .input('b2', sql.NVarChar, req.body.b2)
+                .input('c2', sql.NVarChar, req.body.c2)
+                .input('d2', sql.NVarChar, req.body.d2)
+                .input('e2', sql.NVarChar, req.body.e2)
+                .input('f2', sql.NVarChar, req.body.f2)
+                .input('status3', sql.NVarChar, req.body.status3)
                 .query(
-                    "update pwproduct set people2=@people2,data12=@data12,data22=@data22,data32=@data32,data42=@data42,data52=@data52,status='종물',count=@count where dataid=@dataid"
+                    "update pwproduct set people2=@people2,data12=@data12,data22=@data22,data32=@data32,data42=@data42,data52=@data52,status='종물',count=@count,a2=@a2,b2=@b2,c2=@c2,d2=@d2,e2=@e2,f2=@f2,status3=@status3 where dataid=@dataid"
                 )
                 .then(result => {
                     res.json(result.recordset);
                     res.end();
                 });
-
         });
-
     });
     // **** finish
     // **** start 
@@ -251,6 +316,24 @@ module.exports = function (app) {
 
                 .query(
                     "select * from people where part='pw' order by people asc "
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/selectfirstpeople1', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+
+                .query(
+                    "select * from people where part='press' order by people asc "
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -309,9 +392,9 @@ module.exports = function (app) {
                     "select " +
                     " * " +
                     " from " +
-                    " pw " +
-                    // " where plandate between @start and @finish " +
-                    " order by plandate,status desc "
+                    " pwproduct " +
+                    " where productdate between @start and @finish " +
+                    " order by productdate,status desc "
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -756,11 +839,14 @@ module.exports = function (app) {
                 .input('spec', sql.NVarChar, req.body.spec)
                 .input('people', sql.NVarChar, req.body.people)
                 .input('dataid', sql.NVarChar, req.body.dataid)
+                .input('status1', sql.NVarChar, req.body.status1)
+                .input('status2', sql.NVarChar, req.body.status2)
+                .input('status3', sql.NVarChar, req.body.status3)
 
 
                 .query(
-                    'insert into pwproduct(productdate,customer,cartype,productnumber,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,e,f,status,data1,data2,data3,data4,data5,t,spec,people,dataid)' +
-                    ' values(@productdate,@customer,@cartype,@productnumber,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@e,@f,@status,@data1,@data2,@data3,@data4,@data5,@t,@spec,@people,@dataid)'
+                    'insert into pwproduct(productdate,customer,cartype,productnumber,productname,marchine,touch,sanum,sapum,sacount,a,b,c,d,e,f,status,data1,data2,data3,data4,data5,t,spec,people,dataid,status1,status2,status3)' +
+                    ' values(@productdate,@customer,@cartype,@productnumber,@productname,@marchine,@touch,@sanum,@sapum,@sacount,@a,@b,@c,@d,@e,@f,@status,@data1,@data2,@data3,@data4,@data5,@t,@spec,@people,@dataid,@status1,@status2,@status3)'
                 )
 
                 .then(result => {
@@ -910,29 +996,6 @@ module.exports = function (app) {
         });
 
     });
-    // **** finish
-    sql.connect(config).then(pool => {
-        app.post('/api/deletepwmain', function (req, res) {
-            res.header("Access-Control-Allow-Origin", "*");
-
-            var ids = req.body.ids; // 클라이언트로부터 받은 ID 배열
-
-            // 각 ID에 대해 삭제 쿼리를 실행합니다.
-            Promise.all(ids.map(id => {
-                return pool.request()
-                    .input('id', sql.Int, id)
-                    .query("DELETE FROM pwmain WHERE id=@id");
-            }))
-                .then(results => {
-                    // 모든 삭제 작업이 완료되면 결과를 클라이언트로 응답합니다.
-                    res.json(results.map(result => result.recordset));
-                })
-                .catch(err => {
-                    // 오류가 발생한 경우 오류 메시지를 클라이언트에게 보냅니다.
-                    res.status(500).send(err.message);
-                });
-        });
-    })
 
 
     // **** start       
@@ -964,7 +1027,7 @@ module.exports = function (app) {
                 .input('j', sql.NVarChar, req.body.j)
                 .input('spec', sql.NVarChar, req.body.spec)
                 .input('t', sql.NVarChar, req.body.t)
-                .input('t', sql.Int, req.body.id)
+                .input('id', sql.Int, req.body.id)
 
 
                 .query(
@@ -1090,6 +1153,24 @@ module.exports = function (app) {
                 .input('id', sql.Int, req.body.id)
                 .query(
                     "delete from main where id=@id"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
+        app.post('/api/deletepwmain', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                .input('id', sql.Int, req.body.id)
+                .query(
+                    "delete from pwmain where id=@id"
                 )
                 .then(result => {
                     res.json(result.recordset);
