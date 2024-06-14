@@ -50,34 +50,7 @@
                     <th>End구분</th>
                     <th>하위Sub품번</th>
                     <th>하위Press품번</th>
-                    <th>프레스<br>생산라인<br>코드</th>
-                    <th>프레스생산라인명</th>
-                    <th>프레스구분</th>
-                    <th>프레스<br>Cavity</th>
-                    <th>프레스<br>Sepa</th>
-                    <th>프레스<br>Sepa품번</th>
-                    <th>OP10</th>
-                    <th>OP10<br>공정명</th>
-                    <th>OP10<br>설비번호</th>
-                    <th>OP20</th>
-                    <th>OP20<br>공정명</th>
-                    <th>OP20<br>설비번호</th>
-                    <th>OP30</th>
-                    <th>OP30<br>공정명</th>
-                    <th>OP30<br>설비번호</th>
-                    <th>OP40</th>
-                    <th>OP40<br>공정명</th>
-                    <th>OP40<br>설비번호</th>
-                    <th>OP50</th>
-                    <th>OP50<br>공정명</th>
-                    <th>OP50<br>설비번호</th>
-                    <th>하위블랭킹<br>품번</th>
-                    <th>블랭킹<br>생산라인<br>코드</th>
-                    <th>블랭킹<br>생산라인명</th>
-                    <th>블랭킹<br>구분</th>
-                    <th>블랭킹<br>Cavity</th>
-                    <th>원자재정보</th>
-                    <th>RM중량</th>
+                    <th>검사항목개수</th>
                     <th style="width: 5%;"></th>
                     <th style="width: 5%;"></th>
                 </tr>
@@ -195,7 +168,7 @@
 
 
             $.ajax({
-                url: server + '/api/mainall',
+                url: server + '/api/selectmainpress',
                 method: 'post',
                 dataType: 'json',
                 contentType: 'application/json',
@@ -215,34 +188,7 @@
                             '<td>' + result[i].endcategory + '</td>' +
                             '<td>' + result[i].subpartnumber + '</td>' +
                             '<td>' + result[i].subpresspartnumber + '</td>' +
-                            '<td>' + result[i].pressproductionlinecode + '</td>' +
-                            '<td>' + result[i].pressproductionlinename + '</td>' +
-                            '<td>' + result[i].presscategory + '</td>' +
-                            '<td>' + result[i].presscavity + '</td>' +
-                            '<td>' + result[i].presssepartion + '</td>' +
-                            '<td>' + result[i].pressseparationpartnumber + '</td>' +
-                            '<td>' + result[i].op10 + '</td>' +
-                            '<td>' + result[i].op10proccessname + '</td>' +
-                            '<td>' + result[i].op10equipmentnumber + '</td>' +
-                            '<td>' + result[i].op20 + '</td>' +
-                            '<td>' + result[i].op20proccessname + '</td>' +
-                            '<td>' + result[i].op20equipmentnumber + '</td>' +
-                            '<td>' + result[i].op30 + '</td>' +
-                            '<td>' + result[i].op30proccessname + '</td>' +
-                            '<td>' + result[i].op30equipmentnumber + '</td>' +
-                            '<td>' + result[i].op40 + '</td>' +
-                            '<td>' + result[i].op40proccessname + '</td>' +
-                            '<td>' + result[i].op40equipmentnumber + '</td>' +
-                            '<td>' + result[i].op50 + '</td>' +
-                            '<td>' + result[i].op50proccessname + '</td>' +
-                            '<td>' + result[i].op50equipmentnumber + '</td>' +
-                            '<td>' + result[i].subblankingpartnumber + '</td>' +
-                            '<td>' + result[i].blankingproductionlinecode + '</td>' +
-                            '<td>' + result[i].blankingproductionlinename + '</td>' +
-                            '<td>' + result[i].blankingcategory + '</td>' +
-                            '<td>' + result[i].blankingcavity + '</td>' +
-                            '<td>' + result[i].rawmaterialinformation + '</td>' +
-                            '<td>' + result[i].rawmaterialweight + '</td>' +
+                            '<td>' + result[i].pressinfo_count + '</td>' +
                             '<td id="data-id">' + (result[i].id || '') + '</td>' +
                             '<td><button class="btninfo" onclick="showinfo(this)">상세</button></td>' +
                             '<td><button class="btninfo" style="background-color:red;" onclick="deletedata(this)">삭제</button></td>' +

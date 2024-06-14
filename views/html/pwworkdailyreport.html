@@ -250,6 +250,7 @@
 
 
 
+
         function openInvoice(button) {
             var row = button.closest('tr'); // Find the parent row
             var rowData = $(row).find('td').map(function () {
@@ -258,18 +259,22 @@
             var newWindow = window.open('/html/paper.html', '_blank', 'width=1200,height=1000');
 
             newWindow.onload = function () {
-                // 발주서 창이 로딩되면 해당 데이터를 전달
-                newWindow.document.getElementById("productdate").innerText = rowData[0] || '';
+                let value = rowData[11];
+                if (Number.isInteger(value)) {
+                    newWindow.document.getElementById("t").innerText = value + '.0';
+                } else {
+                    newWindow.document.getElementById("t").innerText = value || '';
+
+                } newWindow.document.getElementById("productdate").innerText = rowData[0] || '';
                 newWindow.document.getElementById("customer").innerText = rowData[1] || '';
                 newWindow.document.getElementById("cartype").innerText = rowData[2] || '';
                 newWindow.document.getElementById("productnumber").innerText = rowData[3] || '';
                 newWindow.document.getElementById("productname").innerText = rowData[4] || '';
-                newWindow.document.getElementById("sanum").innerText = rowData[6] || '';
-                newWindow.document.getElementById("sapum").innerText = rowData[7] || '';
-                newWindow.document.getElementById("sacount").innerText = rowData[8] || '';
+                newWindow.document.getElementById("sanum").innerText = rowData[7] || '';
+                newWindow.document.getElementById("sapum").innerText = rowData[8] || '';
+                newWindow.document.getElementById("sacount").innerText = rowData[9] || '';
                 newWindow.document.getElementById("spec").innerText = rowData[10] || '';
-                newWindow.document.getElementById("t").innerText = rowData[9] || '';
-                newWindow.document.getElementById("t").innerText = rowData[9] || '';
+                newWindow.document.getElementById("t").innerText = rowData[11] || '';
                 newWindow.document.getElementById('img').src = '../img/' + rowData[3] + '.jpg'; // Fixing image source setting
                 newWindow.document.getElementById('img1').src = '../hw/' + rowData[7] + '.PNG'; // Fixing image source setting
 
@@ -329,6 +334,11 @@
                         newWindow.document.getElementById("data32").innerText = data[0].data32 || '';
                         newWindow.document.getElementById("data42").innerText = data[0].data42 || '';
                         newWindow.document.getElementById("data52").innerText = data[0].data52 || '';
+
+                        newWindow.document.getElementById("people1").innerText = data[0].people || '';
+                        newWindow.document.getElementById("people2").innerText = data[0].people1 || '';
+                        newWindow.document.getElementById("people3").innerText = data[0].people2 || '';
+                        newWindow.document.getElementById("quantity").innerText = data[0].count || '';
                     },
 
                 });

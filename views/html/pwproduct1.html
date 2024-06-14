@@ -194,7 +194,25 @@
                         </tr>
                         <tr>
                             <th style="text-align: center;">호기명</th>
-                            <td style="text-align: center;"><input type="text" id="marchine-save"></td>
+                            <td style="text-align: center;">
+                                <select id="marchine-save">
+                                    <option value=""></option>
+                                    <option value="1호기">1호기</option>
+                                    <option value="2호기">2호기</option>
+                                    <option value="3호기">3호기</option>
+                                    <option value="4호기">4호기</option>
+                                    <option value="5호기">5호기</option>
+                                    <option value="6호기">6호기</option>
+                                    <option value="7호기">7호기</option>
+                                    <option value="8호기">8호기</option>
+                                    <option value="9호기">9호기</option>
+                                    <option value="10호기">10호기</option>
+                                    <option value="11호기">11호기</option>
+                                    <option value="12호기">12호기</option>
+                                    <option value="13호기">13호기</option>
+                                </select>
+                            </td>
+
                             <th style="text-align: center; width: 100px;">두 께 <br>(T)</th>
                             <td style="text-align: center;"><input type="text" id="t-save" readonly></td>
                             <th style="text-align: center; width: 100px;">냉각수 온도<br>(˚)</th>
@@ -232,7 +250,8 @@
         <table class="styled-table1" id="datatable" style="width:100%;">
             <thead id="tableHead">
                 <tr>
-                    <th style="text-align:center;" colspan="9">외관검사</th>
+                    <th style="text-align:center;" colspan="9"><a onclick="allcheck()" style="cursor: pointer;">외관검사</a>
+                    </th>
 
                 </tr>
                 <tr>
@@ -433,8 +452,25 @@
                         </tr>
                         <tr>
                             <th style="text-align: center;">호기명</th>
-                            <td style="text-align: center;"><input type="text" id="marchine-edit"
-                                    style="text-align:center;"></td>
+                            <td>
+                                <select id="marchine-edit">
+                                    <option value=""></option>
+                                    <option value="1호기">1호기</option>
+                                    <option value="2호기">2호기</option>
+                                    <option value="3호기">3호기</option>
+                                    <option value="4호기">4호기</option>
+                                    <option value="5호기">5호기</option>
+                                    <option value="6호기">6호기</option>
+                                    <option value="7호기">7호기</option>
+                                    <option value="8호기">8호기</option>
+                                    <option value="9호기">9호기</option>
+                                    <option value="10호기">10호기</option>
+                                    <option value="11호기">11호기</option>
+                                    <option value="12호기">12호기</option>
+                                    <option value="13호기">13호기</option>
+                                </select>
+                            </td>
+
                             <th style="text-align: center; width: 100px;">두 께 <br>(T)</th>
                             <td style="text-align: center;"><input type="text" id="t-edit" readonly
                                     style="text-align:center;"></td>
@@ -476,7 +512,8 @@
             <table class="styled-table1" id="datatable" style="width:100%;">
                 <thead id="tableHead">
                     <tr>
-                        <th style="text-align:center;" colspan="9">외관검사</th>
+                        <th style="text-align:center;" colspan="9" onclick="allcheck1()" style="cursor: pointer;">외관검사
+                        </th>
 
                     </tr>
                     <tr>
@@ -839,13 +876,43 @@
 
         }
         function closeModal() {
-            $('#overlay').fadeOut()
-            $('#modal').fadeOut()
+            Swal.fire({
+                icon: 'warning',
+                title: '종료',
+                text: 'P.W 초물검사를 종료 하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $('#overlay').fadeOut()
+                    $('#modal').fadeOut()
+
+
+                }
+            });
+
 
         }
         function closeModal1() {
-            $('#overlay').fadeOut()
-            $('#modal1').fadeOut()
+            Swal.fire({
+                icon: 'warning',
+                title: '종료',
+                text: 'P.W 검사를 종료 하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#overlay').fadeOut()
+                    $('#modal1').fadeOut()
+                }
+            });
         }
         function openmodal() {
             $('#overlay').fadeIn()
@@ -2549,6 +2616,17 @@
                 });
                 return;
             }
+            // if ($('#marchine-save').val().trim() === '') {
+            //     Swal.fire({
+            //         icon: 'warning',
+            //         title: '호기명 누락',
+            //         text: '호기명 선택 누락되었습니다',
+            //         showCancelButton: true,
+            //         confirmButtonColor: '#3085d6',
+            //         confirmButtonText: '확인',
+            //     });
+            //     return;
+            // }
             Swal.fire({
                 icon: 'info',
                 title: '검색중입니다...',
@@ -3054,6 +3132,45 @@
         fields.forEach(function (field) {
             handleKeypress(field[0], field[1], field[2]);
         });
+
+        function allcheck() {
+            $('#button1').text('OK')
+            $('#button1').css('background-color', 'blue')
+            $('#button2').text('OK')
+            $('#button2').css('background-color', 'blue')
+            $('#button3').text('OK')
+            $('#button3').css('background-color', 'blue')
+            $('#button4').text('OK')
+            $('#button4').css('background-color', 'blue')
+            $('#button5').text('OK')
+            $('#button5').css('background-color', 'blue')
+            $('#button6').text('OK')
+            $('#button6').css('background-color', 'blue')
+            $('#button7').text('OK')
+            $('#button7').css('background-color', 'blue')
+            $('#button8').text('OK')
+            $('#button8').css('background-color', 'blue')
+
+        }
+        function allcheck1() {
+            $('#button1-edit').text('OK')
+            $('#button1-edit').css('background-color', 'blue')
+            $('#button2-edit').text('OK')
+            $('#button2-edit').css('background-color', 'blue')
+            $('#button3-edit').text('OK')
+            $('#button3-edit').css('background-color', 'blue')
+            $('#button4-edit').text('OK')
+            $('#button4-edit').css('background-color', 'blue')
+            $('#button5-edit').text('OK')
+            $('#button5-edit').css('background-color', 'blue')
+            $('#button6-edit').text('OK')
+            $('#button6-edit').css('background-color', 'blue')
+            $('#button7-edit').text('OK')
+            $('#button7-edit').css('background-color', 'blue')
+            $('#button8-edit').text('OK')
+            $('#button8-edit').css('background-color', 'blue')
+
+        }
         function changeButtonText(button) {
 
             button.textContent = "OK"; // 버튼 텍스트 변경
@@ -3068,11 +3185,6 @@
                     allButtonsOK = false;
                 }
             });
-
-            // 모든 버튼이 "OK"일 경우 id가 "result"인 요소의 값을 "OK"로 설정
-            if (allButtonsOK) {
-                document.getElementById("result-edit").value = "OK";
-            }
         }
     </script>
 

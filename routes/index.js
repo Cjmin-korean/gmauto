@@ -494,6 +494,44 @@ module.exports = function (app) {
     // **** finish
     // **** start 
     sql.connect(config).then(pool => {
+        app.post('/api/selectmainpress', function (req, res) {
+            res.header("Access-Control-Allow-Origin", "*");
+            return pool.request()
+                // .input('searchText', sql.NVarChar, req.body.searchText)
+                .query(
+                    "SELECT "+
+                    "     m.customer, "+
+                    "     m.cartype, "+
+                    "     m.endpartnumber, "+
+                    "     m.endcategory, "+
+                    "     m.subpartnumber, "+
+                    "     m.subpresspartnumber, "+
+                    "     COALESCE(pi.pressinfo_count, 0) AS pressinfo_count "+
+                    " FROM "+
+                    "     main m "+
+                    " LEFT JOIN ( "+
+                    "     SELECT "+
+                    "         partnumber, "+
+                    "         COUNT(*)-2 AS pressinfo_count "+
+                    "     FROM "+
+                    "         pressinfo "+
+                    "     GROUP BY "+
+                    "         partnumber "+
+                    " ) pi ON m.subpresspartnumber = pi.partnumber "+
+                    " ORDER BY "+
+                    "     m.cartype ASC;"
+                )
+                .then(result => {
+                    res.json(result.recordset);
+                    res.end();
+                });
+
+        });
+
+    });
+    // **** finish
+    // **** start 
+    sql.connect(config).then(pool => {
         app.post('/api/selectpeople', function (req, res) {
             res.header("Access-Control-Allow-Origin", "*");
             return pool.request()

@@ -111,42 +111,61 @@
 <body>
     <button onclick="printContent()">인쇄</button>
     <div class="container">
-        <h2 style="text-align: center;">(주)지엠오토 PW 검사 성적서</h2>
+        <img src="/img/logo.png" width="30" height="30"><br>
+        <h2 style="text-align: center;">(주)지엠오토 검사 성적서 (P/W)</h2>
         <table>
             <thead>
+                <tr>
+                    <th colspan="7">작업 정보</th>
+                </tr>
+                <tr>
+                    <th colspan="2">작업날짜</th>
+                    <th colspan="2">작업시간</th>
+                    <th>초물작업자</th>
+                    <th>중물작업자</th>
+                    <th>종물작업자</th>
+                </tr>
+                <tr>
+                    <td colspan="2" id="productdate"></td>
+                    <td colspan="2" id="time"></td>
+                    <td id="people1"></td>
+                    <td id="people2"></td>
+                    <td id="people3"></td>
+
+                </tr>
                 <tr>
                     <th colspan="7">품목 정보</th>
                 </tr>
                 <tr>
-                    <th>작업날짜</th>
                     <th>고객사</th>
                     <th>차종</th>
                     <th>품번</th>
                     <th colspan="3">품명</th>
+                    <th>생산수량</th>
                 </tr>
                 <tr>
-                    <td id="productdate"></td>
                     <td id="customer"></td>
                     <td id="cartype"></td>
                     <td id="productnumber"></td>
                     <td colspan="3" id="productname"></td>
+                    <td id="quantity"></td>
                 </tr>
                 <tr>
                     <th colspan="7">사양정보</th>
                 </tr>
                 <tr>
-                    <th>사양품번</th>
+                    <th colspan="2">사양품번</th>
                     <th>사양품명</th>
                     <th>사양개수</th>
-                    <th>재질</th>
-                    <th colspan="3">두께(T) </th>
+                    <th colspan="2">재질</th>
+                    <th colspan="2">두께(T) </th>
                 </tr>
                 <tr>
-                    <td id="sanum"></td>
+                    <td id="sanum" colspan="2"></td>
                     <td id="sapum"></td>
                     <td id="sacount"></td>
-                    <td id="spec"></td>
-                    <td id="t" colspan="3"></td>
+                    <td id="spec" colspan="2"></td>
+                    <td id="t"></td>
                 </tr>
                 <tr>
                     <th colspan="7">설비정보</th>
