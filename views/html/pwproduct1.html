@@ -959,6 +959,18 @@
                 });
                 return;
             }
+            if ($('#marchine-save').val().trim() === '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '설비 누락',
+                    text: '설비 선택이 누락되었습니다',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인',
+                });
+                return;
+            }
+
             if ($('#f-save').val().trim() === '') {
                 Swal.fire({
                     icon: 'warning',
@@ -2263,6 +2275,19 @@
                 });
                 return;
             }
+
+            if ($('#marchine-edit').val().trim() === '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '설비 누락',
+                    text: '설비 선택이 누락되었습니다',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인',
+                });
+                return;
+            }
+
             if ($('#f-edit').val().trim() === '') {
                 Swal.fire({
                     icon: 'warning',
