@@ -445,30 +445,15 @@
                             <th style="text-align: center; width: 100px;" id="text3-edit">검사결과3</th>
                             <td style="text-align: center; width: 100px;" id="textdata3-edit"><input type="text"
                                     id="data3-edit" style="text-align: center;" autocomplete="off"></td>
-                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata3-edit"
-                                style="text-align: center;"></td>
+                            <td style="text-align: center; width: 100px; font-weight: bold;" id="pwdata3-edit"></td>
                             <td style="text-align: center; width: 100px;" id="result3-edit"></td>
 
                         </tr>
                         <tr>
                             <th style="text-align: center;">호기명</th>
                             <td>
-                                <select id="marchine-edit">
-                                    <option value=""></option>
-                                    <option value="1호기">1호기</option>
-                                    <option value="2호기">2호기</option>
-                                    <option value="3호기">3호기</option>
-                                    <option value="4호기">4호기</option>
-                                    <option value="5호기">5호기</option>
-                                    <option value="6호기">6호기</option>
-                                    <option value="7호기">7호기</option>
-                                    <option value="8호기">8호기</option>
-                                    <option value="9호기">9호기</option>
-                                    <option value="10호기">10호기</option>
-                                    <option value="11호기">11호기</option>
-                                    <option value="12호기">12호기</option>
-                                    <option value="13호기">13호기</option>
-                                </select>
+                                <input type="text" id="marchine-edit" readonly style="text-align: center;"
+                                    autocomplete="off">
                             </td>
 
                             <th style="text-align: center; width: 100px;">두 께 <br>(T)</th>
@@ -1254,8 +1239,7 @@
             var rowData = $('#iteminfobody').find('tr').eq(index).find('td').map(function () {
                 return $(this).text();
             }).get();
-
-            if ($('#btnproduct').text() === '중물시작') {
+            if (rowData[22] === '중물시작') {
                 Swal.fire({
                     icon: 'info',
                     title: '작업시작',
@@ -1749,7 +1733,7 @@
 
 
 
-            } else if ($('#btnproduct').text() === '종물시작') {
+            } else if (rowData[22] === '종물시작') {
                 Swal.fire({
                     icon: 'info',
                     title: '작업시작',
@@ -2275,8 +2259,19 @@
                 });
                 return;
             }
+            if ($('#people-input').val().trim() === '') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '작업자 누락',
+                    text: '작업자가 누락되었습니다.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: '확인',
+                });
+                return;
+            }
 
-            if ($('#marchine-edit').val().trim() === '') {
+            if ($('#marchine-edit').val() === '') {
                 Swal.fire({
                     icon: 'warning',
                     title: '설비 누락',
@@ -2425,7 +2420,7 @@
                                 "data31": $('#data3-edit').val(),
                                 "data41": $('#data4-edit').val(),
                                 "data51": $('#data5-edit').val(),
-                                "people2": $('#people-input').val(),
+                                "people1": $('#people-input').val(),
                                 "status2": formattedTime
 
                             }),
@@ -3137,6 +3132,7 @@
                 }
             });
         }
+
 
 
         // 입력 필드와 결과 표시 영역의 ID 배열

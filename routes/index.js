@@ -499,26 +499,26 @@ module.exports = function (app) {
             return pool.request()
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
-                    "SELECT "+
-                    "     m.customer, "+
-                    "     m.cartype, "+
-                    "     m.endpartnumber, "+
-                    "     m.endcategory, "+
-                    "     m.subpartnumber, "+
-                    "     m.subpresspartnumber, "+
-                    "     COALESCE(pi.pressinfo_count, 0) AS pressinfo_count "+
-                    " FROM "+
-                    "     main m "+
-                    " LEFT JOIN ( "+
-                    "     SELECT "+
-                    "         partnumber, "+
-                    "         COUNT(*)-2 AS pressinfo_count "+
-                    "     FROM "+
-                    "         pressinfo "+
-                    "     GROUP BY "+
-                    "         partnumber "+
-                    " ) pi ON m.subpresspartnumber = pi.partnumber "+
-                    " ORDER BY "+
+                    "SELECT " +
+                    "     m.customer, " +
+                    "     m.cartype, " +
+                    "     m.endpartnumber, " +
+                    "     m.endcategory, " +
+                    "     m.subpartnumber, " +
+                    "     m.subpresspartnumber, " +
+                    "     COALESCE(pi.pressinfo_count, 0) AS pressinfo_count " +
+                    " FROM " +
+                    "     main m " +
+                    " LEFT JOIN ( " +
+                    "     SELECT " +
+                    "         partnumber, " +
+                    "         COUNT(*)-2 AS pressinfo_count " +
+                    "     FROM " +
+                    "         pressinfo " +
+                    "     GROUP BY " +
+                    "         partnumber " +
+                    " ) pi ON m.subpresspartnumber = pi.partnumber " +
+                    " ORDER BY " +
                     "     m.cartype ASC;"
                 )
                 .then(result => {
