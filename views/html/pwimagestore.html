@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="../css/pwimagestore.css">
+    <link rel="stylesheet" href="../css/spiner.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src="../js/searchtable.js"></script>
+
+    <title>P.W이미지정보</title>
+</head>
+
+<body>
+
+    <div class="header-container">
+        <div class="header-title">
+            <h2><i class="fas fa-image"></i> &nbsp;P.W 이미지</h2>
+        </div>
+        <div class="header-subtitle">
+            <h4>기초정보 > P.W이미지</h4>
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+    <div id="overlay1" class="overlay"></div>
+
+    <fieldset>
+        <legend>검색조건</legend>
+        <i class="fas fa-search"></i>
+        <input type="text" id="inputdata" placeholder="검색 후 ENTER 입력 바랍니다." style="width:400px; margin-left: 10px;"
+            autocomplete="off">
+    </fieldset>
+    <div class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div id="maintable" class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>고객사</th>
+                    <th>차종</th>
+                    <th>품번</th>
+                    <th>품명</th>
+                    <th style="width: 10%;">IMG</th>
+                    <th style="width: 10%;"></th>
+                </tr>
+
+            </thead>
+            <tbody id="iteminfobody">
+            </tbody>
+            <tfoot id="iteminfofoot">
+            </tfoot>
+        </table>
+    </div>
+
+
+
+
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <span style="font-weight: bold;"> <i class="fas fa-address-book"></i>&nbsp;P.W이미지 정보</span>
+            <input type="text" id="dataid" style="width:60px; visibility: hidden;">
+        </div>
+        <div class="modal-footer">
+            <button class="close-button" onclick="datasave()">저장</button>
+            <button class="delete-button" style="margin-left: 10px;" onclick="closeModal()">취소</button>
+        </div>
+        <div class="modal-content">
+            <table class="styled-table" id="Podatatable">
+                <thead id="tableHead">
+                    <tr>
+                        <th style="width:150px;">고객사</th>
+                        <td id="customer"></td>
+                    </tr>
+                    <tr>
+                        <th>차종</th>
+                        <td id="modelname"></td>
+                    </tr>
+                    <tr>
+                        <th>품번</th>
+                        <td id="productnumber"></td>
+                    </tr>
+                    <tr>
+                        <th>품명</th>
+                        <td id="itemcode"></td>
+                    </tr>
+                    <tr style="height: 250px;">
+                        <th>제품이미지</th>
+                        <td>
+                            <div id="image"></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <th>파일첨부</th>
+                        <td>
+                            <form id="form" action="/imgupload" method="post" enctype="multipart/form-data">
+                                <input id="fileInput1" style="width: 60%;" type="file" name="image"
+                                    accept=".jpg, .jpeg, .png" />
+                                <button class="close-button" onclick="datasave()">저장</button>
+
+                            </form>
+                        </td>
+
+
+                    </tr>
+
+                </thead>
+                <tbody id="itemtbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        var server = '';
+        var gridApi;
+        if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') {
+            server = 'http://localhost:8080';
+        } else {
+            server = 'http://techonmes.co.kr';
+        }
+
+        $(document).ready(function () {
+            load()
+        });
+
+        $('#inputdata').on('keyup', function (event) {
+            if (event.key === 'Enter') { // 엔터 키가 눌렸는지 확인
+                searchTable();
+            }
+        });
+
+        function load() {
+            var spinnerOverlay = document.querySelector('.spinner-overlay');
+            spinnerOverlay.style.display = 'flex'; // Spiner 표시
+
+
+            $.ajax({
+                url: server + '/api/selectimg',
+                method: 'post',
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    // contents: contents
+                }),
+                success: function (data) {
+                    $('#iteminfobody').empty();
+                    for (var i = 0; i < data.length; i++) {
+                        var hasImage = data[i].has_image;
+                        var backgroundColor = hasImage === 'N' ? 'white' : 'white'; // 'n'이면 빨간색, 아니면 기본값(투명)
+                        var color = hasImage === 'N' ? 'red' : 'black'; // 'n'이면 빨간색, 아니면 기본값(투명)
+
+                        $('#iteminfobody').append(
+                            '<tr>' +
+                            '<td>' + (data[i].customer || '') + '</td>' +
+                            '<td>' + (data[i].cartype || '') + '</td>' +
+                            '<td>' + (data[i].productnumber || '') + '</td>' +
+                            '<td>' + (data[i].productname || '') + '</td>' +
+                            '<td style="background-color: ' + backgroundColor + '; color:' + color + '" >' + (data[i].has_image || '') + '</td>' +
+                            '<td style="width:100px;"><button class="btninfo"  onclick="showinfo(this)">상세정보</button></td>' +
+                            '</tr>'
+                        );
+                    }
+                    $('td#data-id').hide();
+                    setTimeout(function () {
+                        spinnerOverlay.style.display = 'none'; // 1초 후에 Spiner 숨김
+                    }, 1100);
+                }
+            });
+
+        }
+
+        function showinfo(button) {
+            var row = $(button).closest('tr');
+            var rowData = row.find('td').map(function () {
+                return $(this).text();
+            }).get();
+
+            $('#customer').text(rowData[0])
+            $('#modelname').text(rowData[1])
+            $('#productnumber').text(rowData[2])
+            $('#itemcode').text(rowData[3])
+
+            $('#image').empty();
+
+            var img1 = $('<img>').attr('src', '../img/' + rowData[3] + '.jpg').css({ 'max-width': '200px', 'max-height': '200px' });
+            $('#image').append(img1);
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+
+            // Clear input values
+            $('#housecode-input').val('');
+            $('#housename-input').val('');
+            $('#part-input').val('');
+            $('#partname-input').val('');
+            $('#dataid').val('');
+
+            setTimeout(function () {
+                $('#housecode-input').focus();
+            }, 100);
+        }
+
+        function datasave() {
+            // 데이터가 있으면
+            Swal.fire({
+                icon: 'info',
+                title: '저장',
+                text: 'P.W이미지를 등록하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: server + '/api/insertfilename',
+                        method: 'post',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            filename: $('#productnumber').text()
+                        }),
+                        success: function (data) {
+
+                        }
+                    });
+
+
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: '저장완료',
+                        text: '이미지 정보가 저장 되었습니다.',
+                    }).then((result) => {
+                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.esc || result.dismiss === Swal.DismissReason.overlay) {
+
+                            $('#overlay').fadeOut()
+                            $('#modal').fadeOut()
+
+                            load()
+                        }
+                    });
+
+                }
+            });
+
+        }
+        //111
+        function deletedata(button) {
+            var row = $(button).closest('tr');
+            var rowData = row.find('td').map(function () {
+                return $(this).text();
+            }).get();
+
+            Swal.fire({
+                icon: 'warning',
+                title: '삭제',
+                text: '창고 정보를 삭제하시겠습니까?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '확인',
+                cancelButtonText: '취소',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'POST',
+                        url: server + '/api/housedeletedata',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            "id": rowData[4],
+                        }),
+                        success: function (result) {
+
+                        },
+
+                    });
+                    Swal.fire({
+                        icon: 'success',
+                        title: '삭제 완료',
+                        text: '창고 정보가 삭제 되었습니다.',
+                    }).then(() => {
+                        $('#modal').fadeOut();
+                        $('#overlay').fadeOut();
+                        load();
+                    });
+                }
+            });
+        }
+
+
+
+        document.getElementById('fileInput1').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '200px'; // 이미지의 최대 너비 설정
+                img.style.maxHeight = '200px'; // 이미지의 최대 높이 설정
+                document.getElementById('image').innerHTML = '';
+                document.getElementById('image').appendChild(img);
+            }
+
+            reader.readAsDataURL(file);
+        });
+
+    </script>
+
+</body>
+
+</html>

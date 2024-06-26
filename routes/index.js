@@ -412,20 +412,25 @@ module.exports = function (app) {
             return pool.request()
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
-                    "SELECT " +
-                    "     p.id, " +
-                    "     p.customer," +
-                    "     p.cartype," +
-                    "     p.productnumber," +
-                    "     p.productname," +
-                    "     CASE" +
-                    "         WHEN i.filename IS NOT NULL THEN 'Y'" +
-                    "         ELSE 'N'" +
-                    "     END AS has_image" +
-                    " FROM" +
-                    "     [gmauto].[dbo].[pwmain] p" +
-                    " LEFT JOIN" +
-                    "     imgstorage i ON p.productnumber = i.filename;                "
+                    "SELECT  "+
+                    "     p.customer, "+
+                    "     p.cartype, "+
+                    "     p.productnumber, "+
+                    "     p.productname, "+
+                    "     CASE "+
+                    "         WHEN i.filename IS NOT NULL THEN 'Y' "+
+                    "         ELSE 'N' "+
+                    "     END AS has_image "+
+                    " FROM "+
+                    "     [gmauto].[dbo].[pwmain] p "+
+                    " LEFT JOIN  "+
+                    "     imgstorage i ON p.productnumber = i.filename "+
+                    " GROUP BY  "+
+                    "     p.customer,  "+
+                    "     p.cartype,  "+
+                    "     p.productnumber,  "+
+                    "     p.productname, "+
+                    "     i.filename;                "
                 )
                 .then(result => {
                     res.json(result.recordset);

@@ -39,16 +39,18 @@ const fs = require('fs');
 //     fs.mkdirSync('uploads');
 // }
 
+const storage = multer.diskStorage({
+    destination: function (req, file, done) {
+        done(null, 'views/img/');
+    },
+    filename: function (req, file, done) {
+        done(null, file.originalname);
+    },
+});
+
 const upload = multer({
-    storage: multer.diskStorage({
-        destination: function (req, file, done) {
-            done(null, 'views/img/');
-        },
-        filename: function (req, file, done) {
-            done(null, file.originalname);
-        },
-    }),
-    limits: { fileSize: 5 * 1024 * 1024 },
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB file size limit
 });
 
 // 정적 파일 불러오기
@@ -70,12 +72,16 @@ app.get("/selectpwmain", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/0.html");
 });
 
-app.get('/upload', (req, res) => {
-    res.sendFile(path.join(__dirname, 'pwmain.html'));
+app.get('/imgupload', (req, res) => {
+    res.sendFile(path.join(__dirname, '../views/html/pwimagestore.html'));
 });
-app.post('/upload', upload.single('image'), (req, res) => {
+app.post('/imgupload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+    res.send('File uploaded successfully!');
+});
 
-});
 app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
 });
