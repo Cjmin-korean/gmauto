@@ -223,12 +223,11 @@
             const fileInput = document.getElementById('fileInput1');
             const file = fileInput.files[0];
 
-            // Check if a file is selected
             if (file) {
-                // Extract the file type
-                const fileType = file.type.split('/')[1]; // e.g., 'image/jpeg' => 'jpeg'
-                console.log(fileType)
-                // Data confirmation prompt
+                // Extract the file extension from the file name
+                const fileNameParts = file.name.split('.');
+                const fileExtension = fileNameParts[fileNameParts.length - 1]; // Get the last part after the dot
+
                 Swal.fire({
                     icon: 'info',
                     title: '저장',
@@ -248,7 +247,7 @@
                             contentType: 'application/json',
                             data: JSON.stringify({
                                 filename: $('#productnumber').text(),
-                                filestyle: fileType // Include the file type
+                                filestyle: fileExtension // Include the file extension
                             }),
                             success: function (data) {
                                 // Handle success
@@ -278,6 +277,7 @@
                 });
             }
         }
+
 
         //111
         function deletedata(button) {
