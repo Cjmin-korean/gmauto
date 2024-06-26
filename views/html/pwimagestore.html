@@ -186,9 +186,8 @@
             $('#productnumber').text(rowData[2])
             $('#itemcode').text(rowData[3])
 
-            $('#image').empty();
-
-            var img1 = $('<img>').attr('src', '../img/' + rowData[3] + '.jpg').css({ 'max-width': '200px', 'max-height': '200px' });
+            $('#image').empty()
+            var img1 = $('<img>').attr('src', '../img/' + rowData[2] + '.jpg').css({ 'max-width': '200px', 'max-height': '200px' });
             $('#image').append(img1);
             document.getElementById('modal').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
@@ -242,9 +241,6 @@
 
                         }
                     });
-
-
-
                     Swal.fire({
                         icon: 'success',
                         title: '저장완료',
