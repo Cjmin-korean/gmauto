@@ -412,25 +412,26 @@ module.exports = function (app) {
             return pool.request()
                 // .input('searchText', sql.NVarChar, req.body.searchText)
                 .query(
-                    "SELECT  "+
-                    "     p.customer, "+
-                    "     p.cartype, "+
-                    "     p.productnumber, "+
-                    "     p.productname, "+
-                    "     CASE "+
-                    "         WHEN i.filename IS NOT NULL THEN 'Y' "+
-                    "         ELSE 'N' "+
-                    "     END AS has_image "+
-                    " FROM "+
-                    "     [gmauto].[dbo].[pwmain] p "+
-                    " LEFT JOIN  "+
-                    "     imgstorage i ON p.productnumber = i.filename "+
-                    " GROUP BY  "+
-                    "     p.customer,  "+
-                    "     p.cartype,  "+
-                    "     p.productnumber,  "+
-                    "     p.productname, "+
-                    "     i.filename;                "
+                    "SELECT  " +
+                    "     p.customer, " +
+                    "     p.cartype, " +
+                    "     p.productnumber, " +
+                    "     p.productname, " +
+                    "     CASE " +
+                    "         WHEN i.filename IS NOT NULL THEN 'Y' " +
+                    "         ELSE 'N' " +
+                    "     END AS has_image ," +
+                    "     i.filestyle" +
+                    " FROM " +
+                    "     [gmauto].[dbo].[pwmain] p " +
+                    " LEFT JOIN  " +
+                    "     imgstorage i ON p.productnumber = i.filename " +
+                    " GROUP BY  " +
+                    "     p.customer,  " +
+                    "     p.cartype,  " +
+                    "     p.productnumber,  " +
+                    "     p.productname, " +
+                    "     i.filename,i.filestyle;                "
                 )
                 .then(result => {
                     res.json(result.recordset);
@@ -722,7 +723,7 @@ module.exports = function (app) {
             return pool.request()
                 .input('filename', sql.NVarChar, req.body.filename)
                 .query(
-                    'INSERT INTO imgstorage (filename) VALUES (@filename)'
+                    'INSERT INTO imgstorage (filename,filestyle) VALUES (@filename,@filestyle)'
                 )
                 .then(result => {
                     res.json(result.recordset);
