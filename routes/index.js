@@ -722,6 +722,7 @@ module.exports = function (app) {
 
             return pool.request()
                 .input('filename', sql.NVarChar, req.body.filename)
+                .input('filestyle', sql.NVarChar, req.body.filestyle)
                 .query(
                     'INSERT INTO imgstorage (filename,filestyle) VALUES (@filename,@filestyle)'
                 )
