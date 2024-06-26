@@ -245,6 +245,14 @@ select {
     background-color: rgb(70, 119, 255);
 }
 
+#maintable tbody {
+    /* display: block; */
+    max-height: 300px;
+    /* 원하는 높이로 설정 */
+    overflow-y: auto;
+    /* 테이블의 tbody에만 스크롤 허용 */
+}
+
 input[type="date"]:hover {
     cursor: pointer;
 }
