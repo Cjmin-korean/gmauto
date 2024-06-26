@@ -71,12 +71,12 @@ app.get("/selectpwmain", cors(), (req, res) => {
 
 
 app.post('/upload', upload.single('image'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
-    res.status(200).send(`File ${req.file.originalname} uploaded successfully.`);
+    // if (!req.file) {
+    //     return res.status(400).send('No file uploaded.');
+    // }
+    // res.status(200).send(`File ${req.file.originalname} uploaded successfully.`);
 });
-
+app.use('/img', express.static(path.join(__dirname, 'views/img')));
 app.listen(PORT, () => {
     console.log(`Listen : ${PORT}`);
 });

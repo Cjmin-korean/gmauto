@@ -134,7 +134,26 @@
                 searchTable();
             }
         });
+        document.getElementById('form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
 
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('File upload failed');
+                }
+            }).then(result => {
+                alert(result); // Show a success message
+                location.reload(); // Refresh the page
+            }).catch(error => {
+                alert(error.message); // Show an error message
+            });
+        });
         function load() {
             var spinnerOverlay = document.querySelector('.spinner-overlay');
             spinnerOverlay.style.display = 'flex'; // Spiner 표시
@@ -162,7 +181,7 @@
                             '<td>' + (data[i].productnumber || '') + '</td>' +
                             '<td>' + (data[i].productname || '') + '</td>' +
                             '<td style="background-color: ' + backgroundColor + '; color:' + color + '" >' + (data[i].has_image || '') + '</td>' +
-                            '<td style="width:100px;"><button class="btninfo"  onclick="showinfo(this)">상세정보</button></td>' +
+                            '<td style="width:100px;"><button class="btninfo" onclick="showinfo(this)">상세정보</button></td>' +
                             '</tr>'
                         );
                     }
@@ -187,7 +206,7 @@
             $('#itemcode').text(rowData[3])
 
             $('#image').empty()
-            var img1 = $('<img>').attr('src', '../img/' + rowData[2] + '.jpg').css({ 'max-width': '200px', 'max-height': '200px' });
+            var img1 = $('<img>').attr('src', '../img/' + rowData[2] + '.PNG').css({ 'max-width': '200px', 'max-height': '200px' });
             $('#image').append(img1);
             document.getElementById('modal').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
