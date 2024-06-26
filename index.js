@@ -73,13 +73,10 @@ app.get("/selectpwmain", cors(), (req, res) => {
 });
 
 app.get('/imgupload', (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/html/pwimagestore.html'));
+    res.sendFile(path.join(__dirname, '/views/html/pwimagestore.html'));
 });
 app.post('/imgupload', upload.single('image'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
-    res.send('File uploaded successfully!');
+
 });
 
 app.listen(PORT, () => {
