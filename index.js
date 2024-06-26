@@ -1,12 +1,15 @@
-var cors = require('cors');
+const express = require('express');
+const bodyParser = require('body-parser');
 const multer = require('multer');
+const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
+
 
 
 console.log('ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=ReStart=>=>=>=>=>=>=>=')
-var express = require('express');
+
 var app = express();
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 var port = process.env.PORT || 8080;
@@ -30,14 +33,8 @@ app.use((req, res, next) => {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-const fs = require('fs');
 
-// try {
-//     fs.readdirSync('uploads');
-// } catch (error) {
-//     console.error('uploads 폴더가 없어 uploads 폴더를 생성합니다.');
-//     fs.mkdirSync('uploads');
-// }
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, done) {
@@ -72,11 +69,12 @@ app.get("/selectpwmain", cors(), (req, res) => {
     res.sendFile(__dirname + "/views/html/0.html");
 });
 
-app.get('/imgupload', (req, res) => {
-    res.sendFile(path.join(__dirname, '/views/html/pwimagestore.html'));
-});
-app.post('/imgupload', upload.single('image'), (req, res) => {
 
+app.post('/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+    res.status(200).send(`File ${req.file.originalname} uploaded successfully.`);
 });
 
 app.listen(PORT, () => {
