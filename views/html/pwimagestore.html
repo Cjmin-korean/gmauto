@@ -263,7 +263,7 @@
                             if (result.isConfirmed || result.dismiss === Swal.DismissReason.esc || result.dismiss === Swal.DismissReason.overlay) {
                                 $('#overlay').fadeOut();
                                 $('#modal').fadeOut();
-                                searchTable();
+                                load()
                             }
                         });
                     }
